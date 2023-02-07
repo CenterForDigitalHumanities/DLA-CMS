@@ -1,0 +1,21 @@
+{
+  "name": "DLA CMS App",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/dla_cms.js",
+    "test": "jest",
+    "runtest": "node ./bin/testApp.js"
+  },
+  "dependencies": {
+    "express": "^4.16.4",
+    "express-urlrewrite": "^2.0.0",
+    "http-errors": "~1.6.3",
+    "jest-cli": "^27.5.1"
+  },
+  "devDependencies": {
+    "@jest-mock/express": "^1.4.5",
+    "jest": "^27.5.1",
+    "supertest": "^6.2.2"
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "@id" : "http://store.rerum.io/v1/id/61ae693050c86821e60b5d13",
+  "@context" : "https://schema.org/",
+  "@type" : "ItemList",
+  "name" : "Correspondence between Paul Laurence Dunbar and Alice Moore Dunbar",
+  "numberOfItems" : 10,
+  "itemListElement" : [ 
+    {
+    "label" : "Dayton. Autograph letter signed",
+    "@id" : "http://store.rerum.io/v1/id/618d9b9a50c86821e60b2cbc"
+    }, 
+    {
+      "label" : "Indianapolis. Autograph letter signed",
+      "@id" : "http://store.rerum.io/v1/id/618d9b9a50c86821e60b2cbe"
+    }, 
+    {
+      "label" : "Indianapolis. Autograph letter signed",
+      "@id" : "http://store.rerum.io/v1/id/618d9b9a50c86821e60b2cc0"
+    }, 
+    {
+      "label" : "Indianapolis. Autograph letter signed",
+      "@id" : "http://store.rerum.io/v1/id/618d9b9a50c86821e60b2cc2"
+    }, 
+    {
+      "label" : "Lakeside, Ohio. Autograph letter signed",
+      "@id" : "http://store.rerum.io/v1/id/618d9b9a50c86821e60b2cc4"
+    }, 
+    {
+      "label" : "Eagle Lake, Ind. Autograph letter signed",
+      "@id" : "http://store.rerum.io/v1/id/618d9b9a50c86821e60b2cc6"
+    }, 
+    {
+      "label" : "Dayton. Autograph letter signed",
+      "@id" : "http://store.rerum.io/v1/id/618d9b9a50c86821e60b2cc8"
+    }, 
+    {
+      "label" : "Indianapolis. Autograph letter signed",
+      "@id" : "http://store.rerum.io/v1/id/618d9b9a50c86821e60b2cca"
+    }, 
+    {
+      "label" : "Dayton. Autograph letter signed",
+      "@id" : "http://store.rerum.io/v1/id/618d9b9a50c86821e60b2ccc"
+    }, 
+    {
+      "label" : "Dayton. Autograph letter signed",
+      "@id" : "http://store.rerum.io/v1/id/618d9b9a50c86821e60b2cce"
+    },
+    {
+    "label" : "New York. Autograph letter signed",
+    "@id" : "http://store.rerum.io/v1/id/618d9b9a50c86821e60b2d18"
+  }, {
+    "label" : "[Brooklyn], Alice to Paul. Autograph letter signed",
+    "@id" : "http://store.rerum.io/v1/id/618d9b9a50c86821e60b2d1b"
+  }, {
+    "label" : "New York. Autograph letter signed",
+    "@id" : "http://store.rerum.io/v1/id/618d9b9a50c86821e60b2d1c"
+  }, {
+    "label" : "[Brooklyn], Alice to Paul. Autograph letter signed",
+    "@id" : "http://store.rerum.io/v1/id/618d9b9a50c86821e60b2d1f"
+  }, {
+    "label" : "Washington, D.C., Autograph letter signed",
+    "@id" : "http://store.rerum.io/v1/id/618d9b9a50c86821e60b2d20"
+  }, {
+    "label" : "Dayton. Autograph letter signed",
+    "@id" : "http://store.rerum.io/v1/id/618d9b9a50c86821e60b2d25"
+  }, {
+    "label" : "[Brooklyn], Alice to Paul. Autograph letter signed",
+    "@id" : "http://store.rerum.io/v1/id/618d9b9a50c86821e60b2d26"
+  }, {
+    "label" : "Dayton. Autograph letter signed",
+    "@id" : "http://store.rerum.io/v1/id/618d9b9a50c86821e60b2d27"
+  }, {
+    "label" : "Washington, D.C., Autograph letter signed",
+    "@id" : "http://store.rerum.io/v1/id/618d9b9a50c86821e60b2d28"
+  }, {
+    "label" : "[Brooklyn], Alice to Paul. Autograph letter signed",
+    "@id" : "http://store.rerum.io/v1/id/618d9b9a50c86821e60b2d2e"
+  }, {
+    "label" : "Washington, D.C., Autograph letter signed",
+    "@id" : "http://store.rerum.io/v1/id/618d9b9a50c86821e60b2d2f"
+  }, {
+    "label" : "Washington, D.C., Autograph letter signed",
+    "@id" : "http://store.rerum.io/v1/id/618d9b9a50c86821e60b2d2d"
+  }, {
+    "label" : "Washington, D.C., Autograph letter signed",
+    "@id" : "http://store.rerum.io/v1/id/618d9b9a50c86821e60b2d30"
+  }, {
+    "label" : "Washington, D.C., Autograph letter signed",
+    "@id" : "http://store.rerum.io/v1/id/618d9b9a50c86821e60b2d35"
+  }, {
+    "label" : "Washington, D.C., Autograph letter signed",
+    "@id" : "http://store.rerum.io/v1/id/618d9b9a50c86821e60b2d32"
+  }, {
+    "label" : "Brooklyn. Telegram",
+    "@id" : "http://store.rerum.io/v1/id/618d9b9a50c86821e60b2d36"
+  }
+  ]
+}

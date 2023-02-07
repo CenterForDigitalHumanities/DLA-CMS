@@ -1,0 +1,4168 @@
+{
+    "expand": [
+       "parentCommunityList",
+       "parentCommunity",
+       "license",
+       "logo",
+       "all"
+    ],
+    "handle": "19716/28181",
+    "id": "599",
+    "name": "I.1. Correspondence between Paul Laurence Dunbar and Alice Moore Dunbar",
+    "type": "collection",
+    "copyrightText": "",
+    "introductoryText": "",
+    "items": [
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28242",
+          "id": "29512",
+          "name": "Dayton. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:35.816",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28243",
+          "id": "29514",
+          "name": "Indianapolis. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:35.25",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28244",
+          "id": "29515",
+          "name": "Indianapolis. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:34.773",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28245",
+          "id": "29516",
+          "name": "Indianapolis. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:34.061",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28246",
+          "id": "29517",
+          "name": "Indianapolis. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:49.62",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28247",
+          "id": "29518",
+          "name": "Dayton. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:49.164",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28248",
+          "id": "29519",
+          "name": "Eagle Lake, Ind. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:48.539",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28249",
+          "id": "29520",
+          "name": "Lakeside, Ohio. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:47.068",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28250",
+          "id": "29521",
+          "name": "Dayton. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:46.378",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28251",
+          "id": "29522",
+          "name": "Dayton. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:43.668",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28252",
+          "id": "29523",
+          "name": "Dayton. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:43.124",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28253",
+          "id": "29524",
+          "name": "Dayton. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:41.952",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28254",
+          "id": "29525",
+          "name": "Dayton. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:41.694",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28255",
+          "id": "29526",
+          "name": "Dayton. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:38.512",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28256",
+          "id": "29527",
+          "name": "Dayton. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:37.931",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28257",
+          "id": "29528",
+          "name": "Dayton. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:37.776",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28258",
+          "id": "29529",
+          "name": "Indianapolis. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:37.066",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28259",
+          "id": "29530",
+          "name": "Dayton. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:36.911",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28260",
+          "id": "29531",
+          "name": "Toledo. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:35.929",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28261",
+          "id": "29532",
+          "name": "Dayton. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:35.449",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28262",
+          "id": "29533",
+          "name": "[Dayton, Ohio]. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:33.905",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28263",
+          "id": "29534",
+          "name": "Dayton. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:33.408",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28264",
+          "id": "29535",
+          "name": "New York. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:48.819",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28265",
+          "id": "29536",
+          "name": "New York. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:48.438",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28266",
+          "id": "29537",
+          "name": "Dayton. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:47.967",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28267",
+          "id": "29538",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:46.814",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28276",
+          "id": "29548",
+          "name": "Steamship \"UMBRIA.\" Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:44.035",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28277",
+          "id": "29549",
+          "name": "London. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:41.244",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28278",
+          "id": "29550",
+          "name": "London. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:43.456",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28279",
+          "id": "29551",
+          "name": "London. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:43.845",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28280",
+          "id": "29552",
+          "name": "London. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:40.944",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28281",
+          "id": "29553",
+          "name": "London. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:48.237",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28282",
+          "id": "29555",
+          "name": "London. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:48.706",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28284",
+          "id": "29556",
+          "name": "London. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:49.025",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28286",
+          "id": "29558",
+          "name": "London. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:34.238",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28287",
+          "id": "29560",
+          "name": "London. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:35.643",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28289",
+          "id": "29561",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:37.458",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28290",
+          "id": "29562",
+          "name": "London. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:38.378",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28293",
+          "id": "29565",
+          "name": "London. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:49.27",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28285",
+          "id": "29557",
+          "name": "London. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:49.441",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28291",
+          "id": "29563",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:42.65",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28292",
+          "id": "29564",
+          "name": "London. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:43.252",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28294",
+          "id": "29566",
+          "name": "London. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:49.954",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28295",
+          "id": "29567",
+          "name": "London. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:43.006",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28296",
+          "id": "29568",
+          "name": "Somerset, England. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:41.434",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28297",
+          "id": "29569",
+          "name": "New York. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:34.6",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28298",
+          "id": "29570",
+          "name": "New York. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:50.674",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28299",
+          "id": "29571",
+          "name": "New York. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:50.299",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28300",
+          "id": "29572",
+          "name": "[Brooklyn], Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:50.084",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28301",
+          "id": "29573",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:49.782",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28302",
+          "id": "29574",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:42.869",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28303",
+          "id": "29575",
+          "name": "[Brooklyn], Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:37.341",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28304",
+          "id": "29576",
+          "name": "Dayton. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:50.808",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28305",
+          "id": "29577",
+          "name": "Dayton. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:50.935",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28306",
+          "id": "29578",
+          "name": "[Brooklyn], Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:51.243",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28307",
+          "id": "29579",
+          "name": "[Brooklyn], Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:50.185",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28308",
+          "id": "29580",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:41.831",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28309",
+          "id": "29581",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:50.461",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28310",
+          "id": "29582",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:51.117",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28311",
+          "id": "29583",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:51.364",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28312",
+          "id": "29584",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:52.499",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28313",
+          "id": "29585",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:52.622",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28316",
+          "id": "29586",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:52.862",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28317",
+          "id": "29587",
+          "name": "Brooklyn. Telegram",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:52.714",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28318",
+          "id": "29588",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:52.979",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28319",
+          "id": "29589",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:53.153",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28320",
+          "id": "29590",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:53.29",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28322",
+          "id": "29591",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:30:53.38",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28397",
+          "id": "29655",
+          "name": "[Washington, D.C.,] Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:30.446",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28398",
+          "id": "29656",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:29.975",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28399",
+          "id": "29657",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:29.568",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28400",
+          "id": "29658",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:29.429",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28401",
+          "id": "29659",
+          "name": "[Washington, D.C.,] Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:35.92",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28402",
+          "id": "29660",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:22.72",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28403",
+          "id": "29661",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:35.735",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28404",
+          "id": "29662",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:21.45",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28405",
+          "id": "29663",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:35.198",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28406",
+          "id": "29664",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:21.266",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28407",
+          "id": "29665",
+          "name": "[Washington, D.C.,] Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:21.122",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28408",
+          "id": "29666",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:34.809",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28409",
+          "id": "29667",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:23.745",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28410",
+          "id": "29668",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:23.638",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28411",
+          "id": "29669",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:34.669",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28431",
+          "id": "29683",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:31.02",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28432",
+          "id": "29684",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:30.304",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28433",
+          "id": "29685",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:29.246",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28434",
+          "id": "29686",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:37.895",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28435",
+          "id": "29687",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:37.615",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28436",
+          "id": "29688",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:37.162",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28437",
+          "id": "29689",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:36.027",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28438",
+          "id": "29690",
+          "name": "W. Medford, Mass. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:29.662",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28439",
+          "id": "29691",
+          "name": "Boston. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:43.949",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28440",
+          "id": "29692",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:33.581",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28441",
+          "id": "29693",
+          "name": "W. Medford, Mass. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:43.875",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28442",
+          "id": "29694",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:32.825",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28443",
+          "id": "29695",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:31.728",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28444",
+          "id": "29696",
+          "name": "W. Medford, Mass. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:43.666",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28445",
+          "id": "29697",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:43.357",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28446",
+          "id": "29698",
+          "name": "[Washington, D.C.] Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:43.012",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28447",
+          "id": "29699",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:41.715",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28448",
+          "id": "29700",
+          "name": "Brooklyn, Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:41.565",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28449",
+          "id": "29701",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:41.435",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28450",
+          "id": "29702",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:37.755",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28451",
+          "id": "29703",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:37.479",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28452",
+          "id": "29704",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:37.057",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28463",
+          "id": "29705",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:41.806",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28464",
+          "id": "29706",
+          "name": "Brooklyn, Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:40.694",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28465",
+          "id": "29707",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:38.01",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28466",
+          "id": "29708",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:37.317",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28467",
+          "id": "29709",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:36.686",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28468",
+          "id": "29710",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:36.887",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28475",
+          "id": "29713",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:51.1",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28476",
+          "id": "29714",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:49.145",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28477",
+          "id": "29715",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:49.04",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28478",
+          "id": "29716",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:48.726",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28479",
+          "id": "29717",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:44.084",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28480",
+          "id": "29718",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:44.376",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28486",
+          "id": "29719",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:51.459",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28487",
+          "id": "29720",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:51.235",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28488",
+          "id": "29721",
+          "name": "[s.l.[ Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:49.284",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28489",
+          "id": "29722",
+          "name": "New York. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:48.905",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28490",
+          "id": "29723",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:43.162",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28491",
+          "id": "29724",
+          "name": "[Brooklyn], Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:35.492",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28492",
+          "id": "29725",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:32.991",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28493",
+          "id": "29726",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:51.62",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28580",
+          "id": "29760",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:37.255",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28581",
+          "id": "29761",
+          "name": "[Brooklyn], Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:33.061",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28582",
+          "id": "29762",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:32.878",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28583",
+          "id": "29763",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:30.792",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28584",
+          "id": "29764",
+          "name": "[Brooklyn], Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:30.605",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28585",
+          "id": "29765",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:27.674",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28586",
+          "id": "29766",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:27.434",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28587",
+          "id": "29767",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:25.066",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28588",
+          "id": "29768",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:23.643",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28589",
+          "id": "29810",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:50.864",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28590",
+          "id": "29811",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:49.034",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28591",
+          "id": "29812",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:41.894",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28592",
+          "id": "29813",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:17.575",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28593",
+          "id": "29814",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:31:56.065",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28594",
+          "id": "29815",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:52.487",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28595",
+          "id": "29816",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:52.312",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28596",
+          "id": "29817",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:51.574",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28597",
+          "id": "29818",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:51.28",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28598",
+          "id": "29819",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:50.975",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28599",
+          "id": "29820",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:54.506",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28600",
+          "id": "29821",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:54.163",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28601",
+          "id": "29822",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:53.739",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28602",
+          "id": "29823",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:52.671",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28603",
+          "id": "29824",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:51.084",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28604",
+          "id": "29825",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:39.777",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28605",
+          "id": "29826",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:54.811",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28606",
+          "id": "29827",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:54.354",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28607",
+          "id": "29828",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:54.033",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28608",
+          "id": "29829",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:53.596",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28609",
+          "id": "29830",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:51.466",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28610",
+          "id": "29831",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:49.182",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28611",
+          "id": "29832",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:02.78",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28613",
+          "id": "29834",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:55.263",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28614",
+          "id": "29835",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:57.03",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28615",
+          "id": "29836",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:54.69",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28616",
+          "id": "29837",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:55.428",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28617",
+          "id": "29838",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:54.936",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28618",
+          "id": "29839",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:56.031",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28619",
+          "id": "29840",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:57.156",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28620",
+          "id": "29841",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:55.581",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28621",
+          "id": "29842",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:55.895",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28623",
+          "id": "29845",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:55.761",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28625",
+          "id": "29847",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:58.888",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28622",
+          "id": "29843",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:53.871",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28624",
+          "id": "29846",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:58.332",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28626",
+          "id": "29848",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:59.54",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28628",
+          "id": "29850",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:03.419",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28630",
+          "id": "29852",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:02.913",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28631",
+          "id": "29853",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:02.402",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28632",
+          "id": "29854",
+          "name": "[s.l.[ Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:02.196",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28633",
+          "id": "29855",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:59.205",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28634",
+          "id": "29856",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:01.923",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28636",
+          "id": "29858",
+          "name": "[s.l.[ Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:58.455",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28637",
+          "id": "29859",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:59.027",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28638",
+          "id": "29860",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:06.919",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28639",
+          "id": "29861",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:06.676",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28640",
+          "id": "29862",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:58.586",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28641",
+          "id": "29863",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:06.386",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28642",
+          "id": "29864",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:06.071",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28643",
+          "id": "29865",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:05.903",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28644",
+          "id": "29866",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:05.69",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28645",
+          "id": "29867",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:05.328",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28627",
+          "id": "29849",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:59.382",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28629",
+          "id": "29851",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:03.214",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28635",
+          "id": "29857",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:01.072",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28652",
+          "id": "29869",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:00.235",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28653",
+          "id": "29870",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:59.924",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28654",
+          "id": "29871",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:08.474",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28655",
+          "id": "29872",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:08.168",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28656",
+          "id": "29873",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:07.471",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28657",
+          "id": "29874",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:07.34",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28658",
+          "id": "29875",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:07.132",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28659",
+          "id": "29876",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:06.554",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28660",
+          "id": "29877",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:06.22",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28661",
+          "id": "29878",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:05.504",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28662",
+          "id": "29879",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:05.118",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28666",
+          "id": "29880",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:04.192",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28667",
+          "id": "29881",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:04.051",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28670",
+          "id": "29882",
+          "name": "[West Medford, Mass.] Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:03.017",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28671",
+          "id": "29883",
+          "name": "West Medford, Mass. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:02.578",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28672",
+          "id": "29884",
+          "name": "[West Medford, Mass.] Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:02.069",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28673",
+          "id": "29885",
+          "name": "[West Medford, Mass.] Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:00.752",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28674",
+          "id": "29886",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:00.379",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28675",
+          "id": "29887",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:00.088",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28676",
+          "id": "29888",
+          "name": "[Washington, D.C.] Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:09.72",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28677",
+          "id": "29889",
+          "name": "Newport, R.I. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:09.506",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28678",
+          "id": "29890",
+          "name": "[Washington, D.C.] Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:09.41",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28679",
+          "id": "29891",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:09.282",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28680",
+          "id": "29892",
+          "name": "Newport, R.I. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:09.117",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28681",
+          "id": "29893",
+          "name": "West Medford, Mass. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:08.635",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28682",
+          "id": "29894",
+          "name": "[West Medford, Mass.] Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:08.277",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28683",
+          "id": "29895",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:07.87",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28685",
+          "id": "29896",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:04.981",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28687",
+          "id": "29897",
+          "name": "West Medford, Mass. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:04.675",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28688",
+          "id": "29898",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:03.564",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28689",
+          "id": "29899",
+          "name": "[Washington, D.C.] Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:02.77",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28690",
+          "id": "29900",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:00.581",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28691",
+          "id": "29901",
+          "name": "West Medford, Mass. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:32:59.76",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28692",
+          "id": "29902",
+          "name": "Dayton. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:10.589",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28694",
+          "id": "29903",
+          "name": "[West Medford, Mass.] Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:10.269",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28695",
+          "id": "29904",
+          "name": "[West Medford, Mass.] Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:10.052",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28696",
+          "id": "29905",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:09.622",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28698",
+          "id": "29906",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:08.987",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28699",
+          "id": "29907",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:08.006",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28700",
+          "id": "29908",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:06.799",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28701",
+          "id": "29909",
+          "name": "Washington, D.C., Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:04.821",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28702",
+          "id": "29910",
+          "name": "West Medford, Mass. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:03.914",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28704",
+          "id": "29911",
+          "name": "West Medford, Mass. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:11.203",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28705",
+          "id": "29912",
+          "name": "Brooklyn. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:10.997",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28706",
+          "id": "29913",
+          "name": "New York. Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:12.132",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28708",
+          "id": "29915",
+          "name": "[Washington, D.C.] Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:12.451",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28709",
+          "id": "29916",
+          "name": "New York. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:11.533",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28710",
+          "id": "29917",
+          "name": "Albany, N.Y. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:12.584",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28711",
+          "id": "29918",
+          "name": "Toledo. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:12.025",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28712",
+          "id": "29919",
+          "name": "[s.l.] Alice to Paul. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:11.729",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28713",
+          "id": "29920",
+          "name": "Bowling Green, Ohio. Telegram",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:09.857",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28714",
+          "id": "29921",
+          "name": "Toledo. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:00.886",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28716",
+          "id": "29922",
+          "name": "Toledo. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:12.281",
+          "withdrawn": "false"
+       },
+       {
+          "expand": [
+             "metadata",
+             "parentCollection",
+             "parentCollectionList",
+             "parentCommunityList",
+             "bitstreams",
+             "all"
+          ],
+          "handle": "19716/28717",
+          "id": "29923",
+          "name": "Toledo. Autograph letter signed",
+          "type": "item",
+          "archived": "true",
+          "lastModified": "2021-08-05 08:33:11.901",
+          "withdrawn": "false"
+       }
+    ],
+    "numberItems": "244",
+    "shortDescription": "Unless indicated otherwise, letters are from Paul Laurence Dunbar and addressed to Alice Moore, and following their marriage to Alice Moore Dunbar. Letters from Alice Moore Dunbar to Paul Laurence Dunbar are identified as \"Alice to Paul.\" Note: original mailing envelopes are shelved separately at the end of the collection in Box 31. 380 items.",
+    "sidebarText": ""
+ }

@@ -1,0 +1,28 @@
+name: DLA CMS App Deploy
+on: 
+  push:
+    branches:
+      main
+  pull_request:
+    branches:
+      main
+jobs:
+    deploy:
+      # Deploy to newprd01 with SSH
+      runs-on: self-hosted
+      strategy: 
+        matrix:
+            node-version: [16]
+      steps:
+        - uses: actions/checkout@v3
+        - run: |
+            if [[ ! -e /opt/nodeapps/logs/dlacms.txt ]]; then
+                mkdir -p /opt/nodeapps/logs
+                touch /opt/nodeapps/logs/dlacms.txt
+            fi
+            cd /opt/nodeapps/dla-cms/
+            pm2 stop dla_cms
+            git stash
+            git pull
+            npm install
+            pm2 start -i max bin/dla_cms.js
