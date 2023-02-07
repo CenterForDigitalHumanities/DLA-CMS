@@ -9,6 +9,8 @@
  */
 const jest = require('jest')
 const runCLI = require('jest-cli')
+//const defaults = require('../jest.config.js')
+var app = require('../app')
 var http = require('http')
 
 
@@ -17,12 +19,13 @@ var http = require('http')
  */
 
 var port = normalizePort('3333')
+app.set('port', port)
 
 /**
  * Create HTTP server.
  */
 
-var server = http.createServer()
+var server = http.createServer(app)
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -112,3 +115,4 @@ async function onListening() {
       }
   })
 }
+

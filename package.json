@@ -8,10 +8,14 @@
     "runtest": "node ./bin/testApp.js"
   },
   "dependencies": {
+    "cookie-parser": "^1.4.6",
     "express": "^4.16.4",
     "express-urlrewrite": "^2.0.0",
+    "debug": "~2.6.9",
     "http-errors": "~1.6.3",
-    "jest-cli": "^27.5.1"
+    "jest-cli": "^27.5.1",
+    "morgan": "^1.10.0",
+    "node-fetch": "^2.6.1"
   },
   "devDependencies": {
     "@jest-mock/express": "^1.4.5",
