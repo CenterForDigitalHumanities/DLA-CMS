@@ -1,4 +1,4 @@
-name: RERUM v1 Tests
+name: DLA CMS Tests
 on: 
   push:
     branches:
