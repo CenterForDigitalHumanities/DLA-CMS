@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DLA Totals</title>
+    <style>
+        [data-name] {
+            font-weight: bold;
+            font-size: 1.2em;
+            list-style: none;
+        }
+
+        [data-name]::before {
+            content: attr(data-count);
+            font-weight: normal;
+            border: solid hsl(34deg 25% 35%) 2px;
+            background-color: hsl(34deg 60% 70%);
+            display: inline-block;
+            min-width: 1em;
+            padding: .3em;
+            border-radius: 50%;
+            font-size: .75em;
+            text-align: center;
+            margin-right: 1em;
+        }
+
+        #total {
+            text-align: center;
+            font-size: 8rem;
+            color: hsl(34deg 25% 35%);
+            position: relative;
+        }
+
+        #total::after {
+            content: "records total";
+            font-size: 50%;
+            position: absolute;
+            bottom: -0.5em;
+            color: hsl(34deg 25% 50%);
+            left: 50%;
+        }
+
+        img {
+            opacity: .3;
+            position: fixed;
+            bottom: 0;
+            z-index: -1;
+            filter: blur(0.25em);
+            width: max(100vw, 100%);
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', setupCollections)
+
+        const RERUM = `http://tiny.rerum.io`
+
+        const collections = new Set([
+            {
+                id: "http://store.rerum.io/v1/id/61ae693050c86821e60b5d13",
+                name: "Correspondence between Paul Laurence Dunbar and Alice Moore Dunbar",
+                itemsKey: "itemListElement"
+            },
+            {
+                id: "http://store.rerum.io/v1/id/6353016612678843589262b0",
+                name: "DLA Poems Collection",
+                itemsKey: "itemListElement"
+            },
+            {
+                id: "http://store.rerum.io/v1/id/62506f071d974d1311abd651",
+                name: "Dunbar at Ohio History Connection",
+                itemsKey: "items"
+            }
+        ])
+
+        function setupCollections() {
+            let collectionTemplates = ``
+            const lineTmpl = (name, count, id, key) => `<li data-count="${count}" data-name=" ${name}" ${id ? `data-id="${id}" data-key="${key}"` : ``}>${name} </li>`
+            collections.forEach(entry => {
+                collectionTemplates += (typeof entry === "string") ?
+                    lineTmpl(entry, 0) : lineTmpl(entry.name, 0, entry.id, entry.itemsKey)
+            })
+            numbers.innerHTML = collectionTemplates
+            setTimeout([...numbers.children].forEach(fetchNumbers), 0)
+        }
+
+        async function fetchNumbers(elem) {
+            if (elem.dataset.id) {
+                const list = await fetch(elem.dataset.id).then(response => response.json())
+                elem.dataset.count = list[elem.dataset.key]?.length
+            } else {
+                const historyWildcard = { "$exists": true, "$size": 0 }
+                const queryObj = {
+                    $or: [{
+                        "targetCollection": elem.dataset.name
+                    }, {
+                        "body.targetCollection": elem.dataset.name
+                    }, {
+                        "body.partOf": elem.dataset.name
+                    }],
+                    "__rerum.history.next": historyWildcard
+                }
+
+                const items = await fetch(`${RERUM}/query`, {
+                    method: "POST",
+                    mode: "cors",
+                    body: JSON.stringify(queryObj)
+                }).then(response => response.json())
+                elem.dataset.count = items?.length
+            }
+            let totals = 0
+                ;[...numbers.children].forEach(entry => {
+                    if (entry.dataset.count) {
+                        totals += parseInt(entry.dataset.count)
+                    }
+                })
+            total.innerHTML = totals
+
+        }
+    </script>
+</head>
+
+<body>
+    <article>
+        <h1>Current Collections in the DLA</h1>
+        <ul id="numbers">
+            Numbers
+        </ul>
+        <p id="total"></p>
+    </article>
+    <img src="https://cdm16007.contentdm.oclc.org/iiif/2/p267401coll32:4553/100,0,1100,1100/max/0/default.jpg"
+        alt="background">
+</body>
+
+</html>
