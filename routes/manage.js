@@ -1,5 +1,6 @@
-const router = require('express')
+const express = require('express')
+const router = express.Router()
 
-router.get('/',(req,res)=> res.send('/management/index.html'))
+router.get('*',(req,res)=> res.sendFile('/management/index.html'))
 
-module.exports(router)
+module.exports = router

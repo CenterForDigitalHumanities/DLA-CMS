@@ -1,6 +1,5 @@
 const createError = require('http-errors')
 const express = require('express')
-const path = require('path')
 // const dotenv = require('dotenv')
 // dotenv.config()
 
@@ -11,14 +10,10 @@ app.use(express.urlencoded({ extended: false }))
 // TODO: use auth0 for all exchanges
 
 // Routers
-// const someRoute = require('/route',someRouter.js)
-// app.use('/route', someRoute)
-app.get('/',(req,res)=>res.redirect('/index.html'))
+const indexRouter = require('./routes/index')
+app.use('/',indexRouter)
 
-const managementRouter = require('./')
-app.use('/manage',managementRouter)
-
-app.use(express.static(path.join(__dirname, '/public')))
+indexRouter.use(express.static('./public'))
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
