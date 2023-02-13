@@ -687,3 +687,44 @@ summary:hover:not(details[open]>summary:first-of-type) {
     }
 
 }
+
+gm-header{
+  display: block;
+  height:  10em !important;
+  overflow:  hidden;
+  margin-bottom:  2em;
+  border-bottom:  2px solid black;
+  margin-top:  1em;
+  overflow: hidden !important;
+}
+
+gm-header h1 {
+  text-shadow: .025em .075em .05em var(--shade);
+  color: var(--accent);
+  font-size: 4rem;
+  font-family: 'Homemade Apple', cursive;
+}
+
+gm-header.small {
+  margin: calc(var(--body-padding) * -1) 0 0px;
+  height: 75px;
+}
+
+gm-header.small h1 {
+  font-size: 2rem;
+}
+
+logoimg img {
+  position: relative;
+  width: 93%;
+  left: 7%;
+  z-index: -1;
+}
+
+paul{
+  position:  absolute;
+}
+
+paul img{
+  height: 10em;
+}
