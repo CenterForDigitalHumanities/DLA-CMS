@@ -13,8 +13,10 @@ app.use(express.urlencoded({ extended: false }))
 // TODO: use auth0 for all exchanges
 
 // Routers
+
+//FIXME /status and /status/ behave differently
 const reportsRouter = require('./reportsRouter')
-app.use('/reports', reportsRouter)
+app.use('/status', reportsRouter)
 
 app.use(express.static(path.join(__dirname, '/public')))
 

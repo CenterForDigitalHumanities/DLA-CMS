@@ -7,21 +7,18 @@ const express = require('express')
 const router = express.Router()
 const path = require('path')
 
-// HTML pages available in `/reports`
-//router.use(express.static(path.join(__dirname, './reports')))
-
-// router.get('/', function (req, res) {
-//     res.redirect(301, '/index.html') // Landing page for reports
-// })
-
-router.get('/', function (req, res) {
-    //res.sendFile('index.html', { root: path.join(__dirname, './reports') })
-    res.json({
-        message: 'Welcome',
-        endpoints: {
-            "/stuff": "Things"
-        }
-    })
+router.get('/', function (req, res, next) {
+    res.sendFile('index.html', { root: path.join(__dirname, './status') })
 })
+
+router.get('/tpen-projects', function (req, res, next) {
+    res.sendFile('tpen-projects-status.html', { root: path.join(__dirname, './status') })
+})
+
+router.get('/dla-records', function (req, res, next) {
+    res.sendFile('dla-records-status.html', { root: path.join(__dirname, './status') })
+})
+
+//router.use(express.static(path.join(__dirname+'/css', '/public')))
 
 module.exports = router
