@@ -13,6 +13,10 @@ app.use(express.urlencoded({ extended: false }))
 // Routers
 // const someRoute = require('/route',someRouter.js)
 // app.use('/route', someRoute)
+app.get('/',(req,res)=>res.redirect('/index.html'))
+
+const managementRouter = require('./')
+app.use('/manage',managementRouter)
 
 app.use(express.static(path.join(__dirname, '/public')))
 
