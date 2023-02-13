@@ -21,7 +21,7 @@ module.exports = {
   detectOpenHandles : false,
 
   displayName: {
-    name: 'DLA CMS App',
+    name: 'dla-cms-app',
     color: 'cyan',
   },
 

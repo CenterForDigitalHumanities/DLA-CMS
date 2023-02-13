@@ -1,4 +1,4 @@
-name: DLA CMS App Deploy
+name: dla-cms-app Deploy
 on: 
   push:
     branches:

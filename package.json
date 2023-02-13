@@ -1,6 +1,6 @@
 {
-  "name": "DLA CMS App",
-  "version": "0.0.0",
+  "name": "dla-cms-app",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node ./bin/dla_cms.js",
@@ -8,13 +8,11 @@
     "runtest": "node ./bin/testApp.js"
   },
   "dependencies": {
-    "cookie-parser": "^1.4.6",
-    "express": "^4.16.4",
-    "express-urlrewrite": "^2.0.0",
     "debug": "~2.6.9",
+    "dotenv": "^16.0.3",
+    "express": "^4.16.4",
     "http-errors": "~1.6.3",
     "jest-cli": "^27.5.1",
-    "morgan": "^1.10.0",
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
