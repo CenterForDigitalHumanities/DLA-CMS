@@ -5,6 +5,23 @@
     <title>Collection Control—Dunbar Library & Archive</title>
     <script src="https://centerfordigitalhumanities.github.io/DLA/auth.js" type="module"></script>
     <script src="/manage/script" type="module"></script>
+    <style>
+        #collections {
+            display: grid;
+            grid-template: 1,1 ;
+            gap: 1em;
+        }
+        #records {
+            width:100%;
+            text-align: center;
+            font-size: larger;
+            padding: 2em;
+            color: #530268;
+        }
+        #records::after{
+            content: " records"
+        }
+    </style>
 </head>
 
 <body>
@@ -15,7 +32,7 @@
         <!-- <button class="collections" data-uri="http:">collection</button> -->
     </div>
     <div id="records">
-
+        0
     </div>
 </body>
 
