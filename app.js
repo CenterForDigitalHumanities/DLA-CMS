@@ -1,8 +1,8 @@
 const createError = require('http-errors')
 const express = require('express')
 const path = require('path')
-// const dotenv = require('dotenv')
-// dotenv.config()
+const dotenv = require('dotenv')
+dotenv.config()
 const logger = require('morgan')
 
 const app = express()
@@ -10,6 +10,7 @@ const app = express()
 app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
+
 // TODO: use auth0 for all exchanges
 
 // Routers
@@ -22,7 +23,6 @@ app.use(express.static(path.join(__dirname, '/public')))
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  console.log("404 error on "+req.originalUrl)
   next(createError(404))
 })
 
