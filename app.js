@@ -2,11 +2,11 @@ const createError = require('http-errors')
 const express = require('express')
 // const dotenv = require('dotenv')
 // dotenv.config()
-const logger = require('morgan')
+// const logger = require('morgan')
 
 const app = express()
 
-app.use(logger('dev'))
+// app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 // TODO: use auth0 for all exchanges

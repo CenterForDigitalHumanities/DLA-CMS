@@ -16,7 +16,7 @@ router.get('/dla-records', function (req, res, next) {
     res.sendFile('dla-records-status.html', { root })
 })
 
-router.get('/', function (req, res, next) {
+router.get('/*', function (req, res, next) {
     res.sendFile('index.html', { root })
 })
 

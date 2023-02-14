@@ -5,7 +5,7 @@
  */
 
 const app = require('../app');
-const debug = require('debug')('dlacms:server');
+// const debug = require('debug')('dlacms:server');
 const http = require('http');
 const dotenv = require('dotenv')
 dotenv.config()
@@ -88,5 +88,5 @@ function onListening() {
   const bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+  console.log('Listening on ' + bind);
 }
