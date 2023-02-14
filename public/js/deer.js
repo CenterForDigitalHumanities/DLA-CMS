@@ -11,17 +11,17 @@
  */
 
 // Identify an alternate config location or only overwrite some items below.
-import { default as DEER } from './deer-config.js'
+import { default as DEER } from '/js/deer-config.js'
 
 // Overwrite or add certain values to the configuration to customize.
 
 // Render is probably needed by all items, but can be removed.
 // CDN at https://centerfordigitalhumanities.github.io/deer/releases/
-import { default as renderer, initializeDeerViews } from './deer-render.js'
+import { default as renderer, initializeDeerViews } from '/js/deer-render.js'
 
 // Record is only needed for saving or updating items.
 // CDN at https://centerfordigitalhumanities.github.io/deer/releases/
-import { default as record, initializeDeerForms } from './deer-record.js'
+import { default as record, initializeDeerForms } from '/js/deer-record.js'
 
 // fire up the element detection as needed
 try {

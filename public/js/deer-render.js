@@ -9,9 +9,8 @@
  * @see tiny.rerum.io
  */
 
-import { default as UTILS } from './deer-utils.js'
-import { default as config } from './deer-config.js'
-import { OpenSeadragon } from './openseadragon.js'
+import { default as UTILS } from '/js/deer-utils.js'
+import { default as config } from '/js/deer-config.js'
 
 const changeLoader = new MutationObserver(renderChange)
 var DEER = config
@@ -257,6 +256,7 @@ DEER.TEMPLATES.transcriptionStatus = function (obj, options = {}) {
                     return elem.innerHTML = `<p> ❌ Not yet reviewed (click to approve)</p>`
                 }).catch(err => {})
             })
+        }
     }
 }
 
@@ -314,24 +314,6 @@ DEER.TEMPLATES.folioTranscription = function (obj, options = {}) {
                 <h2>${ms.label}</h2>
                 ${pages}
         `})
-        }
-    }
-}
-
-DEER.TEMPLATES.osd = function (obj, options = {}) {
-    const imgURL = obj.sequences[0].canvases[options.index || 0].images[0].resource['@id']
-    return {
-        html: ``,
-        then: elem => {
-            OpenSeadragon({
-                id: elem.id,
-                tileSources: {
-                    type: 'image',
-                    url: imgURL,
-                    crossOriginPolicy: 'Anonymous',
-                    ajaxWithCredentials: false
-                }
-            })
         }
     }
 }

@@ -9,8 +9,8 @@
  * @see tiny.rerum.io
  */
 
-import { default as UTILS } from './deer-utils.js'
-import { default as config } from './deer-config.js'
+import { default as UTILS } from '/js/deer-utils.js'
+import { default as config } from '/js/deer-config.js'
 
 const changeLoader = new MutationObserver(renderChange)
 var DEER = config

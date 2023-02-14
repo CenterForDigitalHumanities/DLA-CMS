@@ -1,5 +1,5 @@
-import { default as UTILS } from '../public/js/deer-utils.js'
-import pLimit from '../public/js/plimit.js'
+import { default as UTILS } from '/js/deer-utils.js'
+import pLimit from '/js/plimit.js'
 const statlimiter = pLimit(20)
 let tpenProjects = []
 let dlaCollection = {
