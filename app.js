@@ -1,18 +1,23 @@
 const createError = require('http-errors')
 const express = require('express')
 const path = require('path')
-// const dotenv = require('dotenv')
-// dotenv.config()
+const dotenv = require('dotenv')
+dotenv.config()
+const logger = require('morgan')
 
 const app = express()
 
+app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
+
 // TODO: use auth0 for all exchanges
 
 // Routers
-// const someRoute = require('/route',someRouter.js)
-// app.use('/route', someRoute)
+
+//FIXME /status and /status/ behave differently
+const reportsRouter = require('./reportsRouter')
+app.use('/status', reportsRouter)
 
 app.use(express.static(path.join(__dirname, '/public')))
 

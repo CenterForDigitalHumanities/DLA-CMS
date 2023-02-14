@@ -303,6 +303,7 @@ async function generateProjectStatusElement(status, proj){
             `<dt class="statusLabel" title=""> ${statusString} </dt>
             `   
         break
+        
         default:
             el=""
             console.error("Uknown status "+status)
@@ -431,6 +432,21 @@ async function generateDLAStatusElement(status, item){
             `<dt class="statusLabel" title="It at least includes a label, notes, and a date.  There may be more!"> ${statusString} </dt>
             `   
         break
+        case "T-PEN Transcription Reviewed":
+            // Whether or not this has been reviewed/approved for public consumption
+            const query = {
+                target: item["@id"],
+                "body.transcriptionStatus": { $exists: true }
+            }
+            let data = await fetchQuery(query)
+            statusString = `<span class='statusString bad'>❌ Transcription Not Reviewed</span>`
+            if(data.length && data[0]?.body.transcriptionStatus !== "in progress"){
+                statusString = `<span class='statusString good'>Reviewed by <deer-view deer-id="${data[0].body.transcriptionStatus}" deer-template="label">${data[0].body.transcriptionStatus}</deer-view> </span>`
+            }
+            el =
+            `<dt class="statusLabel" title="Whether or not the transcription has been reviewed by a project admin."> ${statusString} </dt>
+            `
+        break 
         default:
             el=``
             console.error("Uknown status "+status)
@@ -584,6 +600,7 @@ async function loadInterfaceDLA() {
         "Delaware Record Linked",
         "T-PEN Projects Matched",
         "T-PEN Projects Linked",
+        "T-PEN Transcription Reviewed",
         "Envelope Linked",
         "Well Described",
         "Released"
