@@ -12,10 +12,8 @@ app.use(express.urlencoded({ extended: false }))
 // TODO: use auth0 for all exchanges
 
 // Routers
-const indexRouter = require('./routes/index')
+const indexRouter = require('./routes')
 app.use('/',indexRouter)
-
-indexRouter.use(express.static('./public'))
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
