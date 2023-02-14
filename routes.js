@@ -9,8 +9,8 @@ indexRouter.use('/manage', manageRoutes)
 const reportsRouter = require('./status/status.router')
 indexRouter.use('/status', reportsRouter)
 
-indexRouter.get('/',(req,res)=>res.redirect('/index.html'))
+indexRouter.get('/',(req,res)=>res.redirect('index.html'))
 
-indexRouter.use(express.static('../public'))
+indexRouter.use(express.static('public'))
 
 module.exports = indexRouter

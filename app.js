@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: false }))
 // TODO: use auth0 for all exchanges
 
 // Routers
-const indexRouter = require('./routes')
+const indexRouter = require('./routes.js')
 app.use('/',indexRouter)
 
 // catch 404 and forward to error handler
