@@ -10,8 +10,8 @@
  * @see tiny.rerum.io
  */
 
-import { default as DEER } from './deer-config.js'
-import pLimit from './plimit.js'
+import { default as DEER } from '/js/deer-config.js'
+import pLimit from '/js/plimit.js'
 const limiter = pLimit(4)
 
 export default {
