@@ -68,10 +68,10 @@ async function gatherBaseData(){
     if(dlaCollection.itemListElement.length && tpenProjects.length){
         e = new CustomEvent("all-info-success", { detail: { dla:dlaCollection, tpen:tpenProjects }, bubbles: true })
         document.dispatchEvent(e)
-        if(document.location.href.indexOf("dla-records")>-1){
+        if(document.location.href.indexOf("dlaRecords")>-1){
             loadInterfaceDLA()
         }
-        else if(document.location.href.indexOf("tpen-projects")>-1){
+        else if(document.location.href.indexOf("tpenProjects")>-1){
             loadInterfaceTPEN()
         }
     }
