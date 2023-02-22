@@ -26,8 +26,12 @@ const tpenManifestPrefix = "http://t-pen.org/TPEN/project/"
 const tpenProjectPrefix = "http://t-pen.org/TPEN/transcription.html?projectID="
 const TPproxy = "http://tinypaul.rerum.io/dla/proxy?url="
 let progress = undefined
-//Load it up on paage load!
-gatherBaseData()
+
+//Load it up on page load!
+if(window.location.pathname.includes("status")){
+    gatherDLARecordManagedList()
+}
+//gatherBaseData()
 
 function backgroundCSS(pct){
     let backgroundImageCSS = (function() {
@@ -62,6 +66,18 @@ function backgroundCSS(pct){
     }
     })()
     return backgroundImageCSS+""
+}
+
+async function gatherDLARecordManagedList(){
+    await getDLAManagedList()
+    let e
+    if(dlaCollection.itemListElement.length){
+        e = new CustomEvent("dla-list-success", { detail: { dla:dlaCollection}, bubbles: true })
+    }
+    else{
+        e = new CustomEvent("dla-list-error", { detail: { dla:[]}, bubbles: true })
+    }
+    document.dispatchEvent(e)
 }
 
 /**

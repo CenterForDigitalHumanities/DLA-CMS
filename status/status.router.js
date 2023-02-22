@@ -5,31 +5,6 @@
 const express = require('express')
 const router = express.Router()
 const controller = require('./status.controller.js')
-
-// router.route('/user/:_id')
-//     .get(controller.getUserContributions)
-//     .all((req, res, next) => {
-//         res.statusMessage = 'Improper request, please use GET.'
-//         res.status(405)
-//         next(res)
-//     })
-
-// router.route('/tpenProject/:_id')
-//     .get(controller.getProjectStatusInfo)
-//     .all((req, res, next) => {
-//         res.statusMessage = 'Improper request, please use GET.'
-//         res.status(405)
-//         next(res)
-//     })
-
-// router.route('/dlaRecord/:_id')
-//     .get(controller.getRecordStatusInfor)
-//     .all((req, res, next) => {
-//         res.statusMessage = 'Improper request, please use GET.'
-//         res.status(405)
-//         next(res)
-//     })
-
 const root = __dirname
 
 router.get('/css', (req, res) => res.sendFile('local.css', { root }))
@@ -41,6 +16,14 @@ router.get('/tpenProjects', function (req, res) {
 
 router.get('/dlaRecords', function (req, res) {
     res.sendFile('dla-records-status.html', { root })
+})
+
+router.get('/search', function (req, res) {
+    res.sendFile('search.html', { root })
+})
+
+router.get('/recent', function (req, res) {
+    res.sendFile('recent.html', { root })
 })
 
 router.get('/', function (req, res) {
