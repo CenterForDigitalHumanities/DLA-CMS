@@ -5,7 +5,59 @@ import pLimit from '/js/plimit.js'
 if(!DLA_USER?.["http://dunbar.rerum.io/user_roles"]?.roles.includes("dunbar_user_reviewer")){
     window.location.href = "/"
 }
-
+const DLA_COLLECTIONS = 
+{
+    "letters": {
+        "targetCollection": "Correspondence between Paul Laurence Dunbar and Alice Moore Dunbar",
+        "managedList" : "http://store.rerum.io/v1/id/61ae693050c86821e60b5d13",
+        "publicList" :  "http://store.rerum.io/v1/id/61ae694e50c86821e60b5d15"
+    },
+    "other_correspondence": {
+        "targetCollection": "Other Correspondence",
+        "managedList" : "",
+        "publicList" :  ""
+    },
+    "poems": {
+        "targetCollection": "DLA Poems Collection",
+        "managedList" : "http://store.rerum.io/v1/id/6353016612678843589262b0",
+        "publicList" :  ""
+    },
+    "performances": {
+        "targetCollection": "Performances linked in eCommons",
+        "managedList" : "",
+        "publicList" :  ""
+    },
+    "music": {
+        "targetCollection": "Music linked in eCommons",
+        "managedList" : "",
+        "publicList" :  ""
+    },
+    "dialect": {
+        "targetCollection": "Dialect records from eCommons",
+        "managedList" : "",
+        "publicList" :  ""
+    },
+    "namesake_schools": {
+        "targetCollection": "Dunbar namesake schools",
+        "managedList" : "",
+        "publicList" :  ""
+    },
+    "namesake_other": {
+        "targetCollection": "Dunbar namesake Monuments, parks, and landmarks",
+        "managedList" : "",
+        "publicList" :  ""
+    },
+    "ohc_linked_records": {
+        "targetCollection": "OHC Linked Records",
+        "managedList" : "",
+        "publicList" :  ""
+    },
+    "new_in_ecommons": {
+        "targetCollection": "New Digitization in eCommons",
+        "managedList" : "",
+        "publicList" :  ""
+    }
+}
 const statlimiter = pLimit(20)
 let tpenProjects = []
 let dlaCollection = {
@@ -137,9 +189,70 @@ async function getTranscriptionProjects(){
 }
 
 /**
+ * Get the DLA Record Dynamic Collection
+ * Look not only for direct objects, but also collection annotations
+ * Only the most recent, do not consider history parent or children history nodes
+ * DEER does this too by just providing the collection name in
+ */
+async function getLetterCollectionBaseData(){
+    
+    //You can get information from the Managed List and Public List just by resolving the URI and checking itemListElement.
+    //Note that things in itemListElement will not be expanded, but the URI and label are there.
+    
+    //Use this to grab the dynamic unmanaged RERUM records
+    let historyWildcard = { "$exists": true, "$size": 0 }
+    let queryObj = {
+        $or: [{
+            "targetCollection": this.collection
+        }, {
+            "body.targetCollection": this.collection
+        }, {
+            "body.targetCollection.value": this.collection
+        }, {
+            "body.partOf": this.collection
+        }],
+        "__rerum.history.next": historyWildcard
+    }
+    const listObj = {
+        name: this.collection,
+        itemListElement: []
+    }
+    getPagedQuery.bind(this)(100)
+        .then(() => RENDER.element(this.elem, listObj))
+        .catch(err => {
+            console.error("Broke with listObj at ", listObj)
+            RENDER.element(this.elem, listObj)
+        })
+    function getPagedQuery(lim, it = 0) {
+        return fetch(`${DEER.URLS.QUERY}?limit=${lim}&skip=${it}`, {
+            method: "POST",
+            mode: "cors",
+            body: JSON.stringify(queryObj)
+        }).then(response => response.json())
+            // .then(pointers => {
+            //     let list = []
+            //     pointers.map(tc => list.push(fetch(tc.target || tc["@id"] || tc.id).then(response => response.json().catch(err => { __deleted: console.log(err) }))))
+            //     return Promise.all(list).then(l => l.filter(i => !i.hasOwnProperty("__deleted")))
+            // })
+            .then(list => {
+                listObj.itemListElement = listObj.itemListElement.concat(list.map(anno => ({ '@id': anno.target ?? anno["@id"] ?? anno.id })))
+                this.elem.setAttribute(DEER.LIST, "itemListElement")
+                try {
+                    listObj["@type"] = list[0]["@type"] || list[0].type || "ItemList"
+                } catch (err) { }
+                // RENDER.element(this.elem, listObj)
+                if (list.length ?? (list.length % lim === 0)) {
+                    return getPagedQuery.bind(this)(lim, it + list.length)
+                }
+            })
+    }
+}
+
+/**
  * Get the DLA managed list from RERUM
  */
 async function getDLAManagedList(){
+    http://store.rerum.io/v1/id/61ae694e50c86821e60b5d15
     const managedList = "http://store.rerum.io/v1/id/61ae693050c86821e60b5d13"
     //const managedList = ".././media/recordsShort.json"
     if(dlaCollection.itemListElement.length === 0){

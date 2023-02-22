@@ -26,21 +26,43 @@
             </div>
         </gm-header>
         <p>Use the sections below to find information about a specifica DLA Record</p>
-        <div class="hide-until-list-loaded">
+        <div class="">
             <p> Do you know the RERUM URI for the DLA Record?  Provide it below to see contribution statuses. </p>
             <label> RERUM URI </label><input id="rerum_record_id" type="text" />
             <input type="button" value="Load Record" />
         </div>
+        <p> 
+            In the section below select the collection from the list below to narrow your search
+        </p>
+        <div class="">
+            <select>
+                <option value="Correspondence between Paul Laurence Dunbar and Alice Moore Dunbar"> Correspondence between Paul Laurence Dunbar and Alice Moore Dunbar </option>
+                <option value="Other Correspondence"> Other Correspondence </option>
+                <option value="DLA Poems Collection"> DLA Poems Collection </option>
+                <option value="Performances linked in eCommons"> Performances linked in eCommons </option>
+                <option value="Music linked in eCommons"> Music linked in eCommons </option>
+                <option value="Dialect records from eCommons"> Dialect records from eCommons </option>
+                <option value="Dunbar namesake schools"> Dunbar namesake schools </option>
+                <option value="Dunbar namesake Monuments, parks, and landmarks"> Dunbar namesake Monuments, parks, and landmarks </option>
+                <option value="OHC Linked Records"> OHC Linked Records </option>
+                <option value="New Digitization in eCommons"> New Digitization in eCommons</option>
+            </select>
+        </div>
+        <p> 
+            In the section below provide the label of you Record to narrow your search
+        </p>
+        <div class="">
+            <p> Do you know the RERUM URI for the DLA Record?  Provide it below to see contribution statuses. </p>
+            <label> Record Label </label><input id="rerum_record_id" type="text" />
+        </div>
     </body>
     <script>
+        /**
+         * What happens when a reviewer has a Record URI?  That record could be from any collection.
+         * For a given collection, it could be unmanaged, included, or released (3 different lists)
+         * How do I know which collection to search?  How can I tell if it is unmanaged, included, or released (status)
+         */
         //Mock a Dunbar User for now (Bry-Dun).  Administrator and Reviewer.
-        let DLA_RECORDS
-        document.addEventListener('dla-list-success', event => {
-            DLA_RECORDS = event.detail.dla 
-            document.querySelectorAll(".hide-until-list-loaded").forEach(elem => {
-                elem.classList.remove("hide-until-list-loaded");
-            })    
-        })
         window.DLA_USER = {
             "http://store.rerum.io/agent": "http://store.rerum.io/v1/id/62572ba71d974d1311abd673",
             "http://rerum.io/app_flag": [
@@ -84,8 +106,5 @@
             "nonce": "1AJsAOx-yEONXs9DFe7avviuAXMz8z5j",
             "authorization": "abcdefg"
         }
-
-        
-
     </script>
 </html>
