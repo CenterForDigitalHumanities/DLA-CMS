@@ -80,8 +80,11 @@ const TPproxy = "http://tinypaul.rerum.io/dla/proxy?url="
 let progress = undefined
 
 //Load it up on page load!
-if(window.location.pathname.includes("status")){
-    gatherDLARecordManagedList()
+if(window.location.pathname.includes("status/search")){
+    //Is there any base data worth grabbing and sticking into cache to make searching faster
+}
+else if(window.location.pathname.includes("status/recent")){
+    //Only show a certain number of DLA records that have recently recieved updated contributions
 }
 //gatherBaseData()
 
