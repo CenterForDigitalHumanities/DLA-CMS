@@ -1,5 +1,7 @@
 
-const statlimiter = pLimit(20)
+//const pLimit = require("js/plimit.js")
+const DEER = {}
+//const statlimiter = pLimit(20)
 let tpenProjects = []
 let dlaCollection = {
     name: "Correspondence between Paul Laurence Dunbar and Alice Moore Dunbar",
@@ -29,8 +31,8 @@ exports.getUserContributions = async function (req, res, next) {
     try {
         let queryObj = {
             "__rerum.generatedBy" : "One Of The DLA Apps",
-            "__rerum.history.next" : "exists and is length 0"
-            "creator" : "This Dunbar Apps User".
+            "__rerum.history.next" : "exists and is length 0",
+            "creator" : "This Dunbar Apps User"
         }
         let match = 
         await fetch("RERUM /query", {
@@ -97,7 +99,7 @@ exports.getRecordStatusInfo = async function (req, res, next) {
         if (match) {
             
         }
-        let err = new Error(`No User Contributions for user ${userID}`)
+        let err = new Error(`No record found at ${recordID}`)
         err.status = 404
         throw err
     } catch (error) {

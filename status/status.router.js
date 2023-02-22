@@ -6,29 +6,29 @@ const express = require('express')
 const router = express.Router()
 const controller = require('./status.controller.js')
 
-router.route('/user/:_id')
-    .get(controller.getUserContributions)
-    .all((req, res, next) => {
-        res.statusMessage = 'Improper request, please use GET.'
-        res.status(405)
-        next(res)
-    })
+// router.route('/user/:_id')
+//     .get(controller.getUserContributions)
+//     .all((req, res, next) => {
+//         res.statusMessage = 'Improper request, please use GET.'
+//         res.status(405)
+//         next(res)
+//     })
 
-router.route('/tpenProject/:_id')
-    .get(controller.getProjectStatusInfo)
-    .all((req, res, next) => {
-        res.statusMessage = 'Improper request, please use GET.'
-        res.status(405)
-        next(res)
-    })
+// router.route('/tpenProject/:_id')
+//     .get(controller.getProjectStatusInfo)
+//     .all((req, res, next) => {
+//         res.statusMessage = 'Improper request, please use GET.'
+//         res.status(405)
+//         next(res)
+//     })
 
-router.route('/dlaRecord/:_id')
-    .get(controller.getRecordStatusInfor)
-    .all((req, res, next) => {
-        res.statusMessage = 'Improper request, please use GET.'
-        res.status(405)
-        next(res)
-    })
+// router.route('/dlaRecord/:_id')
+//     .get(controller.getRecordStatusInfor)
+//     .all((req, res, next) => {
+//         res.statusMessage = 'Improper request, please use GET.'
+//         res.status(405)
+//         next(res)
+//     })
 
 const root = __dirname
 

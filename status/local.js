@@ -1,5 +1,11 @@
 import { default as UTILS } from '/js/deer-utils.js'
 import pLimit from '/js/plimit.js'
+
+//They must be a logged in user with the correct permission, or they get sent back to the public index page.
+if(!DLA_USER?.["http://dunbar.rerum.io/user_roles"]?.roles.includes("dunbar_user_reviewer")){
+    window.location.href = "/"
+}
+
 const statlimiter = pLimit(20)
 let tpenProjects = []
 let dlaCollection = {
@@ -964,3 +970,16 @@ function filterFacets(event) {
 }
 
 
+/**
+ * Checks array of stored roles for any of the roles provided.
+ * @param {Array} roles Strings of roles to check.
+ * @returns Boolean user has one of these roles.
+ */
+function userHasRole(roles){
+    if (!Array.isArray(roles)) { roles = [roles] }
+    try {
+        return Boolean(DLA_USER?.["http://dunbar.rerum.io/user_roles"]?.roles.filter(r=>roles.includes(r)).length)
+    } catch (err) {
+        return false
+    }
+}

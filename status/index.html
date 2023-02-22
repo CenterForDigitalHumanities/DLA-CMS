@@ -6,6 +6,7 @@
         <link rel="stylesheet" href="/status/css">
         <link href="../favicon.ico" rel="icon" type="image/x-icon" />
         <script src="https://centerfordigitalhumanities.github.io/DLA/auth.js" type="module"></script>
+        <script src="/status/js" type="module"></script>
     </head>
     <body class="container">
         <gm-header>
@@ -26,4 +27,53 @@
             <a href="/status/tpenProjects">View T-PEN Project Statuses</a>
         </div>
     </body>
+    <script>
+        //Mock a Dunbar User for now (Bry-Dun).  Administrator and Reviewer.
+        window.DLA_USER = {
+            "http://store.rerum.io/agent": "http://store.rerum.io/v1/id/62572ba71d974d1311abd673",
+            "http://rerum.io/app_flag": [
+                "rerum",
+                "dla",
+                "lrda",
+                "glossing"
+            ],
+            "http://dunbar.rerum.io/app_flag": [
+                "rerum",
+                "dla",
+                "lrda",
+                "glossing"
+            ],
+            "http://rerum.io/user_roles": {
+                "roles": [
+                    "dunbar_user_admin",
+                    "glossing_user_admin",
+                    "rerum_user_admin"
+                ]
+            },
+            "http://dunbar.rerum.io/user_roles": {
+                "roles": [
+                    "dunbar_user_admin",
+                    "dunbar_user_reviewer"
+                ]
+            },
+            "nickname": "Bry-Dun",
+            "name": "bry-dun-admin",
+            "picture": "https://s.gravatar.com/avatar/fc39f4f5b1c3381abe2ef2d25e79af3d?s=480&r=pg&d=https%3A%2F%2Fcenterfordigitalhumanities.github.io%2Frerum-consortium%2Flogo.png",
+            "updated_at": "2023-02-22T20:49:55.167Z",
+            "email": "bry-dun@dunbar.io",
+            "email_verified": false,
+            "iss": "https://cubap.auth0.com/",
+            "aud": "z1DuwzGPYKmF7POW9LiAipO5MvKSDERM",
+            "iat": 1677098997,
+            "exp": 1677134997,
+            "sub": "auth0|62572ba64325a2006a43ec69",
+            "at_hash": "cDsHsUhU7AIQ5B1-aSfVGA",
+            "sid": "YvXo9fmoCtMAp62OQiYQn0g-yycDD8VQ",
+            "nonce": "1AJsAOx-yEONXs9DFe7avviuAXMz8z5j",
+            "authorization": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik9FVTBORFk0T1RVNVJrRXlOREl5TTBFMU1FVXdNMFUyT0RGQk9UaEZSa1JDTXpnek1FSTRNdyJ9.eyJodHRwOi8vc3RvcmUucmVydW0uaW8vYWdlbnQiOiJodHRwOi8vc3RvcmUucmVydW0uaW8vdjEvaWQvNjI1NzJiYTcxZDk3NGQxMzExYWJkNjczIiwiaHR0cDovL3JlcnVtLmlvL2FwcF9mbGFnIjpbInJlcnVtIiwiZGxhIiwibHJkYSIsImdsb3NzaW5nIl0sImh0dHA6Ly9kdW5iYXIucmVydW0uaW8vYXBwX2ZsYWciOlsicmVydW0iLCJkbGEiLCJscmRhIiwiZ2xvc3NpbmciXSwiaHR0cDovL3JlcnVtLmlvL3VzZXJfcm9sZXMiOnsicm9sZXMiOlsiZHVuYmFyX3VzZXJfYWRtaW4iLCJnbG9zc2luZ191c2VyX2FkbWluIiwicmVydW1fdXNlcl9hZG1pbiJdfSwiaHR0cDovL2R1bmJhci5yZXJ1bS5pby91c2VyX3JvbGVzIjp7InJvbGVzIjpbImR1bmJhcl91c2VyX2FkbWluIiwiZ2xvc3NpbmdfdXNlcl9hZG1pbiIsInJlcnVtX3VzZXJfYWRtaW4iXX0sImlzcyI6Imh0dHBzOi8vY3ViYXAuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDYyNTcyYmE2NDMyNWEyMDA2YTQzZWM2OSIsImF1ZCI6WyJodHRwczovL2N1YmFwLmF1dGgwLmNvbS9hcGkvdjIvIiwiaHR0cHM6Ly9jdWJhcC5hdXRoMC5jb20vdXNlcmluZm8iXSwiaWF0IjoxNjc3MDk4OTk3LCJleHAiOjE2NzcxMDYxOTcsImF6cCI6InoxRHV3ekdQWUttRjdQT1c5TGlBaXBPNU12S1NERVJNIiwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCB1cGRhdGU6Y3VycmVudF91c2VyX21ldGFkYXRhIG9mZmxpbmVfYWNjZXNzIn0.WLmghX7XjgHMz3lrFLmSGiTEv_GfUbKxRE7J-yIoQIDA8NOJE3sfTpEGl8Po9QfyCXBeK7amnf-04uW3vmpUH9K7FyrX5rC2aB3tuc6EGQbEP8kHYeQt6O3JSnfe7FntGdb4Xu13xyTpQgb_15Re0VIdHttfjxhuwnjCDe3p4FCtk9avLAH2lwYc5mio0nUJjSOOsSm_kth3pd6suIWS_Babi-2QbbU3Y69sDNO7WdvVDnkQeo31tFx4gbv6ic2Ni-DKawdj1FElFmtyj5vZxCS8x8YTpxIVG1tW53FfuksLlaaFPHeo3xQfCF15zb0Dt91crRGHeWgTjo2EluKrQw"
+        }
+
+        
+
+    </script>
 </html>
