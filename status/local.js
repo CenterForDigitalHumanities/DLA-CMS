@@ -166,3 +166,12 @@ function userHasRole(roles){
         return false
     }
 }
+
+// fetch("/status/recordTranscriptionStatus", {
+//     method: "POST",
+//     mode: "cors",
+//     headers: {
+//         "Content-Type": "application/json; charset=utf-8"
+//     },
+//     body: JSON.stringify({"recordID":"http://store.rerum.io/v1/id/618d9b9a50c86821e60b2cbc"})
+// }).then(response => response.ok ? response.json() : Promise.reject(response))

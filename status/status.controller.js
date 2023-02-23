@@ -1,4 +1,4 @@
-
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args))
 const limiter = require("../public/js/plimit.js")
 const statlimiter = limiter.pLimit(20)
 let tpenProjects = []
@@ -138,12 +138,43 @@ exports.getRecordStatusInfo = async function (req, res, next) {
     }
 }
 
+// exports.getRecordTranscriptionStatus = async function (req, res, next) {
+//     console.log("Get transcription status")
+//     let received = req.body
+//     console.log(received)
+//     let recordID = received.recordID
+//     const query = {
+//         target: recordID,
+//         "body.transcriptionStatus": { $exists: true }
+//     }
+//     return await fetchQuery(query)
+// }
+
 exports.getRecordTranscriptionStatus = async function (req, res, next) {
-    const query = {
+    console.log("Get transcription status")
+    let received = req.body
+    console.log(received)
+    let recordID = received.recordID
+    const queryObj = {
         target: recordID,
         "body.transcriptionStatus": { $exists: true }
     }
-    return await fetchQuery(query)
+    console.log("match...")
+    let match = await fetch("http://tinypaul.rerum.io/dla/query", {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json; charset=utf-8"
+        },
+        //cache: "default",
+        mode: 'cors',
+        body: JSON.stringify(queryObj)
+    })
+    .then(TPresult => TPresult.json())
+    console.log("Matched!!")
+    console.log(match)
+    res.set("Content-Type", "application/json; charset=utf-8")
+    res.status(200)
+    res.json(match)
 }
 
 exports.getCollectionTranscriptionStatuses = async function (req, res, next) {
