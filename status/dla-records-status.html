@@ -92,6 +92,50 @@
         </div>
     </div>
     <script>
+        //Mock a Dunbar User for now (Bry-Dun).  Administrator and Reviewer.
+        window.DLA_USER = {
+            "http://store.rerum.io/agent": "http://store.rerum.io/v1/id/62572ba71d974d1311abd673",
+            "http://rerum.io/app_flag": [
+                "rerum",
+                "dla",
+                "lrda",
+                "glossing"
+            ],
+            "http://dunbar.rerum.io/app_flag": [
+                "rerum",
+                "dla",
+                "lrda",
+                "glossing"
+            ],
+            "http://rerum.io/user_roles": {
+                "roles": [
+                    "dunbar_user_admin",
+                    "glossing_user_admin",
+                    "rerum_user_admin"
+                ]
+            },
+            "http://dunbar.rerum.io/user_roles": {
+                "roles": [
+                    "dunbar_user_admin",
+                    "dunbar_user_reviewer"
+                ]
+            },
+            "nickname": "Bry-Dun",
+            "name": "bry-dun-admin",
+            "picture": "https://s.gravatar.com/avatar/fc39f4f5b1c3381abe2ef2d25e79af3d?s=480&r=pg&d=https%3A%2F%2Fcenterfordigitalhumanities.github.io%2Frerum-consortium%2Flogo.png",
+            "updated_at": "2023-02-22T20:49:55.167Z",
+            "email": "bry-dun@dunbar.io",
+            "email_verified": false,
+            "iss": "https://cubap.auth0.com/",
+            "aud": "z1DuwzGPYKmF7POW9LiAipO5MvKSDERM",
+            "iat": 1677098997,
+            "exp": 1677134997,
+            "sub": "auth0|62572ba64325a2006a43ec69",
+            "at_hash": "cDsHsUhU7AIQ5B1-aSfVGA",
+            "sid": "YvXo9fmoCtMAp62OQiYQn0g-yycDD8VQ",
+            "nonce": "1AJsAOx-yEONXs9DFe7avviuAXMz8z5j",
+            "authorization": "abcdefg"
+        }
         document.addEventListener('all-information-success', event => {
               
         })

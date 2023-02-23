@@ -5,7 +5,49 @@ import pLimit from '/js/plimit.js'
 if(!DLA_USER?.["http://dunbar.rerum.io/user_roles"]?.roles.includes("dunbar_user_reviewer")){
     window.location.href = "/"
 }
-
+const DLA_COLLECTIONS = 
+{
+    "Correspondence between Paul Laurence Dunbar and Alice Moore Dunbar": {
+        "managedList" : "http://store.rerum.io/v1/id/61ae693050c86821e60b5d13",
+        "publicList" :  "http://store.rerum.io/v1/id/61ae694e50c86821e60b5d15"
+    },
+    "Other Correspondence": {
+        "managedList" : "",
+        "publicList" :  ""
+    },
+    "DLA Poems Collection": {
+        "managedList" : "http://store.rerum.io/v1/id/6353016612678843589262b0",
+        "publicList" :  ""
+    },
+    "Performances linked in eCommons": {
+        "managedList" : "",
+        "publicList" :  ""
+    },
+    "Music linked in eCommons": {
+        "managedList" : "",
+        "publicList" :  ""
+    },
+    "Dialect records from eCommons": {
+        "managedList" : "",
+        "publicList" :  ""
+    },
+    "Dunbar namesake schools": {
+        "managedList" : "",
+        "publicList" :  ""
+    },
+    "Dunbar namesake Monuments, parks, and landmarks": {
+        "managedList" : "",
+        "publicList" :  ""
+    },
+    "OHC Linked Records": {
+        "managedList" : "",
+        "publicList" :  ""
+    },
+    "New Digitization in eCommons": {
+        "managedList" : "",
+        "publicList" :  ""
+    }
+}
 const statlimiter = pLimit(20)
 let tpenProjects = []
 let dlaCollection = {
