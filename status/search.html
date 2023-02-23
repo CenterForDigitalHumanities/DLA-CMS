@@ -6,7 +6,7 @@
         <link rel="stylesheet" href="/status/css">
         <link href="../favicon.ico" rel="icon" type="image/x-icon" />
         <script src="https://centerfordigitalhumanities.github.io/DLA/auth.js" type="module"></script>
-        <script src="/status/js" type="module"></script>
+        <script src="/status/js"></script>
         <style>
             .hide-until-list-loads{
                 display: none;
@@ -56,55 +56,4 @@
             <label> Record Label </label><input id="rerum_record_id" type="text" />
         </div>
     </body>
-    <script>
-        /**
-         * What happens when a reviewer has a Record URI?  That record could be from any collection.
-         * For a given collection, it could be unmanaged, included, or released (3 different lists)
-         * How do I know which collection to search?  How can I tell if it is unmanaged, included, or released (status)
-         */
-        //Mock a Dunbar User for now (Bry-Dun).  Administrator and Reviewer.
-        window.DLA_USER = {
-            "http://store.rerum.io/agent": "http://store.rerum.io/v1/id/62572ba71d974d1311abd673",
-            "http://rerum.io/app_flag": [
-                "rerum",
-                "dla",
-                "lrda",
-                "glossing"
-            ],
-            "http://dunbar.rerum.io/app_flag": [
-                "rerum",
-                "dla",
-                "lrda",
-                "glossing"
-            ],
-            "http://rerum.io/user_roles": {
-                "roles": [
-                    "dunbar_user_admin",
-                    "glossing_user_admin",
-                    "rerum_user_admin"
-                ]
-            },
-            "http://dunbar.rerum.io/user_roles": {
-                "roles": [
-                    "dunbar_user_admin",
-                    "dunbar_user_reviewer"
-                ]
-            },
-            "nickname": "Bry-Dun",
-            "name": "bry-dun-admin",
-            "picture": "https://s.gravatar.com/avatar/fc39f4f5b1c3381abe2ef2d25e79af3d?s=480&r=pg&d=https%3A%2F%2Fcenterfordigitalhumanities.github.io%2Frerum-consortium%2Flogo.png",
-            "updated_at": "2023-02-22T20:49:55.167Z",
-            "email": "bry-dun@dunbar.io",
-            "email_verified": false,
-            "iss": "https://cubap.auth0.com/",
-            "aud": "z1DuwzGPYKmF7POW9LiAipO5MvKSDERM",
-            "iat": 1677098997,
-            "exp": 1677134997,
-            "sub": "auth0|62572ba64325a2006a43ec69",
-            "at_hash": "cDsHsUhU7AIQ5B1-aSfVGA",
-            "sid": "YvXo9fmoCtMAp62OQiYQn0g-yycDD8VQ",
-            "nonce": "1AJsAOx-yEONXs9DFe7avviuAXMz8z5j",
-            "authorization": "abcdefg"
-        }
-    </script>
 </html>

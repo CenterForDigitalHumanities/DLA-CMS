@@ -30,6 +30,8 @@ router.get('/', function (req, res) {
     res.sendFile('index.html', { root })
 })
 
-router.post('/recordStatus', controller.getRecordStatusInfo)
+router.post('/recordFullStatus', controller.getRecordStatusInfo)
+
+router.post('/recordTranscriptionStatus', controller.getRecordTranscriptionStatus)
 
 module.exports = router

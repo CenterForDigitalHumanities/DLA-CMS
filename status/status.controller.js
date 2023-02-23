@@ -1,6 +1,6 @@
-//const UTILS = require ('../public/js/deer-utils.js')
-//const UTILS = require('../public/js/deer-utils.js')
 
+const limiter = require("../public/js/plimit.js")
+const statlimiter = limiter.pLimit(20)
 let tpenProjects = []
 let tpenRecords = []
 let dlaRecords = []
@@ -136,6 +136,31 @@ exports.getRecordStatusInfo = async function (req, res, next) {
         `
         return recordCard 
     }
+}
+
+exports.getRecordTranscriptionStatus = async function (req, res, next) {
+    const query = {
+        target: recordID,
+        "body.transcriptionStatus": { $exists: true }
+    }
+    return await fetchQuery(query)
+}
+
+exports.getCollectionTranscriptionStatuses = async function (req, res, next) {
+    let managedList = getManagedCollection(collectionName)
+    const collectionObj = fetch(managedList).then(resp => resp.json())
+    let statusesPerRecord = {}
+    //Gunna have to plimit this.
+    collectionObj.itemListElement.forEach(record => {
+        const query = {
+            target: record["@id"],
+            "body.transcriptionStatus": { $exists: true }
+        }    
+        //const recordStatus = await statlimiter(() => fetchQuery(query))
+        const recordStatus = {"test":"ok"}
+        statusesPerRecord[record["@id"]] = recordStatus
+    })
+    return statusesPerRecord
 }
 
 /**
@@ -368,4 +393,22 @@ async function getPublicCollection(collectionName){
     }
 }
 
+/**
+ * Perform a tiny query against the query parameter object passed in.
+ * */
+async function fetchQuery(params){
+    const historyWildcard = { $exists: true, $type: 'array', $eq: [] }
+    let history = {
+        "__rerum.history.next": historyWildcard
+    }
+    let queryObj = Object.assign(history, params)
 
+    //May have to page these in the future
+    return fetch("http://tinypaul.rerum.io/dla/query", {
+        method: 'POST',
+        //cache: "default",
+        mode: 'cors',
+        body: JSON.stringify(queryObj)
+    })
+    .then(res => res.ok ? res.json() : Promise.reject(res))
+}

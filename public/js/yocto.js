@@ -12,7 +12,7 @@ class Node {
 	}
 }
 
-export default class Queue {
+class Queue {
 	#head;
 	#tail;
 	#size;
@@ -65,3 +65,5 @@ export default class Queue {
 		}
 	}
 }
+
+module.exports = {Node, Queue}

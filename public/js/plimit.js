@@ -1,11 +1,11 @@
-import Queue from './yocto.js';
 
-export default function pLimit(concurrency) {
+const yoc = require('./yocto.js')
+exports.pLimit=function(concurrency) {
 	if (!((Number.isInteger(concurrency) || concurrency === Number.POSITIVE_INFINITY) && concurrency > 0)) {
 		throw new TypeError('Expected `concurrency` to be a number from 1 and up');
 	}
 
-	const queue = new Queue();
+	const queue = new yoc.Queue();
 	let activeCount = 0;
 
 	const next = () => {
