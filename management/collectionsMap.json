@@ -1,6 +1,10 @@
 {
-    "http://store.rerum.io/v1/id/61ae693050c86821e60b5d13":
-      "Correspondence between Paul Laurence Dunbar and Alice Moore Dunbar",
-    "http://store.rerum.io/v1/id/6353016612678843589262b0":
-      "Ere Sleep Comes Down To Soothe The Weary Eyes"
+  "Correspondence between Paul Laurence Dunbar and Alice Moore Dunbar": {
+    "public": "http://store.rerum.io/v1/id/61ae694e50c86821e60b5d15",
+    "managed": "http://store.rerum.io/v1/id/61ae693050c86821e60b5d13"
+  },
+  "Published Poems Collection": {
+    "public": "http://store.rerum.io/v1/id/6353016612678843589262b0",
+    "managed": "http://store.rerum.io/v1/id/6353016612678843589262b0"
+  }
 }

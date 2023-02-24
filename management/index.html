@@ -7,9 +7,14 @@
     <script src="/manage/script" type="module"></script>
     <style>
         #collections {
-            display: grid;
-            grid-template: 1,1 ;
-            gap: 1em;
+
+        }
+        #collections button {
+            padding: 1.68em;
+            height: 4em;
+            width: clamp(30vw, 6em, 50vw);
+            display: inline-block;
+            margin:0.32em;
         }
         #records {
             width:100%;
@@ -19,20 +24,27 @@
             color: #530268;
         }
         #records::after{
-            content: " records"
+            content: " public records"
         }
     </style>
 </head>
 
 <body>
     <auth-button class="container">
-        <button is="auth-button" disabled>login</button>
+        <button is="auth-button">login</button>
     </auth-button>
+    <div id="user"></div>
     <div id="collections">
+        <p>
+            Select a Collection below to see a queue of Records to review.
+        </p>
         <!-- <button class="collections" data-uri="http:">collection</button> -->
     </div>
     <div id="records">
         0
+    </div>
+    <div id="queue">
+
     </div>
 </body>
 
