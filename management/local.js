@@ -12,12 +12,13 @@ function fetchItems(event) {
             if (DLA_USER['http://dunbar.rerum.io/user_roles'].roles.includes('dunbar_user_curator')) {
                 getCuratorQueue(publicCollection, managedCollection)
             }
+            queue.querySelector('li').click()
         })
 }
 
 function showRecordPreview(event){
+    preview.setAttribute("deer-template","preview")
     preview.setAttribute("deer-id",event.target.dataset.id)
-    preview.setAttribute("deer-template","entity")
 }
 
 async function getReviewerQueue(publicCollection, managedCollection, limit = 10) {

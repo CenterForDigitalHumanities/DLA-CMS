@@ -18,7 +18,16 @@
 }
 
 #actions {
-    grid-area: actions;
+    grid-area : actions;
+    background: hsl(120deg 25% 40%);
+    padding   : 1em;
+}
+
+#actions button {
+    display: block;
+    width  : 15em;
+    padding: 0.68em;
+    margin : 0.32em;
 }
 
 #queue {
@@ -26,16 +35,16 @@
 }
 
 #queue li {
-    cursor: pointer;
+    cursor   : pointer;
     font-size: 1.1em;
-    border: solid thin ;
-    margin: .32em;
-    padding: .68em;
+    border   : solid thin;
+    margin   : .32em;
+    padding  : .68em;
 }
 
 #preview {
     grid-area: preview;
-    
+
 }
 
 #records::after {
@@ -49,6 +58,11 @@
     grid-template-areas  :
         "records  records  actions  actions"
         "queue  preview  preview  preview";
-    gap: 1%;
+    gap       : 1%;
     box-sizing: border-box;
+}
+
+#thumbroll img,
+.page img {
+    height: 12em;
 }

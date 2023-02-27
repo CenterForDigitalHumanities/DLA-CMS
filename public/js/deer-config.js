@@ -1,7 +1,7 @@
 const DEV = false // false or comment to turn off
 
-const baseV1 = DEV ? "http://devstore.rerum.io/":"http://store.rerum.io/"
-const tiny = DEV ? "http://tinydev.rerum.io/app/":"http://tinypaul.rerum.io/dla/"
+const baseV1 = DEV ? "http://devstore.rerum.io/" : "http://store.rerum.io/"
+const tiny = DEV ? "http://tinydev.rerum.io/app/" : "http://tinypaul.rerum.io/dla/"
 
 export default {
     ID: "deer-id", // attribute, URI for resource to render
@@ -30,11 +30,11 @@ export default {
 
     URLS: {
         BASE_ID: baseV1,
-        CREATE: tiny+"create",
-        UPDATE: tiny+"update",
-        OVERWRITE: tiny+"overwrite",
-        QUERY: tiny+"query",
-        SINCE: baseV1+"since"
+        CREATE: tiny + "create",
+        UPDATE: tiny + "update",
+        OVERWRITE: tiny + "overwrite",
+        QUERY: tiny + "query",
+        SINCE: baseV1 + "since"
     },
 
     EVENTS: {
@@ -43,8 +43,8 @@ export default {
         LOADED: "deer-loaded",
         NEW_VIEW: "deer-view",
         NEW_FORM: "deer-form",
-        VIEW_RENDERED : "deer-view-rendered",
-        FORM_RENDERED : "deer-form-rendered",
+        VIEW_RENDERED: "deer-view-rendered",
+        FORM_RENDERED: "deer-form-rendered",
         CLICKED: "deer-clicked"
     },
 
@@ -61,6 +61,108 @@ export default {
      */
     TEMPLATES: {
         cat: (obj) => `<h5>${obj.name}</h5><img src="http://placekitten.com/300/150" style="width:100%;">`,
+        preview: obj => `
+            <deer-view id="thumbroll" deer-template="thumbs" deer-id="${obj['@id']}"></deer-view>
+            <deer-view id="previewTranscription" deer-template="folioTranscription" deer-id="${obj['@id']}"></deer-view>
+        `,
+        /**
+ * Retreive the best label for object and return it formatted as HTML to be drawn.  
+ * @param {Object} obj some obj to be labeled
+ * @param {Object} options for lookup
+ */
+        label: function (obj, options = {}) {
+            let key = options.key || "@id"
+            let prop = obj[key] || "[ undefined ]"
+            let label = options.label || UTILS.getLabel(obj, prop)
+            try {
+                return `${label}`
+            } catch (err) {
+                return null
+            }
+        },
+
+        /**
+         * Retreive the best label for object and return it formatted as HTML to be drawn.  
+         * @param {Object} obj some obj to be labeled
+         * @param {Object} options for lookup
+         */
+        linky: function (obj, options = {}) {
+            try {
+                let link = obj[options.key]
+                return link ? `<a href="${UTILS.getValue(link)}" title="Open in a new window" target="_blank"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg=="></a>` : ``
+            } catch (err) {
+                return null
+            }
+        },
+
+        thumbs: function (obj, options = {}) {
+            return {
+                html: obj["tpen://base-project"] ? `<div class="is-full-width"> <h3> ... loading images ... </h3> </div>` : ``,
+                then: (elem) => {
+                    try {
+                        fetch("http://t-pen.org/TPEN/manifest/" + obj["tpen://base-project"].value)
+                            .then(response => response.json())
+                            .then(ms => elem.innerHTML = `
+                    ${ms.sequences[0].canvases.slice(0, 10).reduce((a, b) => a += `<img class="thumbnail" src="${b.images[0].resource['@id']}">`, ``)}
+            `)
+                    } catch {
+                        console.log(`No images loaded for transcription project: ${obj["tpen://base-project"]?.value}`)
+                    }
+                }
+            }
+        },
+
+        pageLinks: function (obj, options = {}) {
+            return obj.sequences[0].canvases.reduce((a, b, i) => a += `<a class="button" href="?page=${i + 1}#${obj["@id"]}">${b.label}</a>`, ``)
+        },
+
+        folioTranscription: function (obj, options = {}) {
+            return {
+                html: obj['tpen:project'] ? `<div class="is-full-width"> <h3> ... loading preview ... </h3> </div>` : ``,
+                then: (elem) => {
+                    fetch("http://t-pen.org/TPEN/manifest/" + obj['tpen:project'].value)
+                        .then(response => response.json())
+                        .then(ms => elem.innerHTML = `
+                <style>
+                    printed {
+                        font-family:serif;
+                    }
+                    note {
+                        font-family:monospace;
+                    }
+                    unclear {
+                        opacity:.4;
+                    }
+                    line.empty {
+                        line-height: 1.6;
+                        background-color: #CCC;
+                        height: 1em;
+                        margin: .4em 0;
+                        display:block;
+                        border-radius: 4px;
+                    }
+                </style>
+                ${ms.sequences[0].canvases.slice(0, 10).reduce((a, b) => a += `
+                <div class="page">
+                    <h3>${b.label}</h3> <a href="./layout.html#${ms['@id']}">(edit layout)</a>
+                    <div class="pull-right col-6">
+                        <img src="${b.images[0].resource['@id']}">
+                    </div>
+                    <div>
+                        ${b.otherContent[0].resources.reduce((aa, bb) => aa +=
+                            bb.resource["cnt:chars"].length
+                                ? bb.resource["cnt:chars"].slice(-1) == '-'
+                                    ? bb.resource["cnt:chars"].substring(0, bb.resource["cnt:chars"].length - 1)
+                                    : bb.resource["cnt:chars"] + ' '
+                                : " <line class='empty col-6'></line> ", '')
+                            }
+                    </div>
+                </div>
+                `, ``)}
+        `)
+                }
+            }
+        },
         msList: function (obj, options = {}) {
             let tmpl = `<h2>Correspondence between Paul Laurence Dunbar and Alice Moore Dunbar (${obj?.[options?.list].length ?? " empty "})</h2>`
             if (options.list) {
@@ -243,7 +345,7 @@ export default {
                 return null
             }
         }
-        
+
     },
     version: "alpha"
 }
