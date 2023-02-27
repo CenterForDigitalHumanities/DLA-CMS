@@ -15,6 +15,10 @@ function fetchItems(event) {
         })
 }
 
+function showRecordPreview(event){
+    preview.setAttribute("deer-id",event.target.dataset.id)
+}
+
 async function getReviewerQueue(publicCollection, managedCollection, limit = 10) {
     // items not on public list, but on managed list
 
@@ -61,10 +65,15 @@ async function getCuratorQueue(publicCollection, managedCollection, limit = 10) 
     }
 
     queue.innerHTML = `<ol>${tempQueue.reduce((a, b) => a += `<li data-id="${b['@id']}">${b.label}</li>`, ``)}</ol>`
+    queue.querySelectorAll('li').forEach(addRecordHandlers)
 }
 
 function attachCollectionHandlers(button) {
     button.addEventListener('click', fetchItems)
+}
+
+function addRecordHandlers(record){
+    record.addEventListener('click', showRecordPreview)
 }
 
 function countItems(collection) {

@@ -25,6 +25,14 @@
     grid-area: queue;
 }
 
+#queue li {
+    cursor: pointer;
+    font-size: 1.1em;
+    border: solid thin ;
+    margin: .32em;
+    padding: .68em;
+}
+
 #preview {
     grid-area: preview;
     
