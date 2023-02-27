@@ -21,6 +21,26 @@ function showRecordPreview(event){
     preview.setAttribute("deer-id",event.target.dataset.id)
 }
 
+function approveForPublication(id,comment){
+    const currentRole = user.dataset.role
+    if(currentRole === "curator") {
+        alert("add to public list: "+id)
+    }
+    if(currentRole === "reviewer") {
+        alert("check for annotation approving and update communication log: "+id)
+    }
+}
+
+function sendBack(id,comment){
+    const currentRole = user.dataset.role
+    if(currentRole === "curator") {
+        alert("remove from public list: "+id)
+    }
+    if(currentRole === "reviewer") {
+        alert("remove from mangedList and update communication log: "+id)
+    }
+}
+
 async function getReviewerQueue(publicCollection, managedCollection, limit = 10) {
     // items not on public list, but on managed list
 
@@ -98,6 +118,8 @@ if (window?.DLA_USER) drawUser()
 
 function drawUser() {
     const roles = DLA_USER['http://dunbar.rerum.io/user_roles']?.roles.filter(role => role.includes('dunbar_user'))
+    if(roles.includes("dunbar_user_curator")) user.dataset.role = "curator"
+    if(roles.includes("dunbar_user_reviewer")) user.dataset.role = "reviewer"
     user.innerHTML = `
     <p>▶ Logged in as ${DLA_USER.nickname ?? DLA_USER.name} with role${roles.length > 1 ? `s` : ``} ${roles.map(r => r.split('_').pop()).join(" | ")}.</p>
     `
