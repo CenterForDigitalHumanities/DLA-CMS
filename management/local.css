@@ -1,20 +1,44 @@
-#collections {
+#collections {}
 
-}
 #collections button {
     padding: 1.68em;
-    height: 4em;
-    width: clamp(30vw, 6em, 50vw);
+    height : 4em;
+    width  : clamp(30vw, 6em, 50vw);
     display: inline-block;
-    margin:0.32em;
+    margin : 0.32em;
 }
+
 #records {
-    width:100%;
+    width     : 100%;
     text-align: center;
-    font-size: larger;
-    padding: 2em;
-    color: #530268;
+    font-size : larger;
+    padding   : 2em;
+    color     : #530268;
+    grid-area : records;
 }
-#records::after{
+
+#actions {
+    grid-area: actions;
+}
+
+#queue {
+    grid-area: queue;
+}
+
+#preview {
+    grid-area: preview;
+    
+}
+
+#records::after {
     content: " public records"
+}
+
+#resultsGrid {
+    display              : grid;
+    grid-template-columns: 25% 25% 25% 25%;
+    grid-template-rows   : auto auto;
+    grid-template-areas  :
+        "records  records  actions  actions"
+        "queue  preview  preview  preview";
 }
