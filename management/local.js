@@ -17,6 +17,7 @@ function fetchItems(event) {
 
 function showRecordPreview(event){
     preview.setAttribute("deer-id",event.target.dataset.id)
+    preview.setAttribute("deer-template","entity")
 }
 
 async function getReviewerQueue(publicCollection, managedCollection, limit = 10) {
