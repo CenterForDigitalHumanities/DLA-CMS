@@ -29,16 +29,6 @@ function showRecordPreview(event) {
     event.target.classList.add('selected')
 }
 
-function approveForPublication(id, comment) {
-    const currentRole = user.dataset.role
-    if (currentRole === "curator") {
-        alert("add to public list: " + id)
-    }
-    if (currentRole === "reviewer") {
-        alert("check for annotation approving and update communication log: " + id)
-    }
-}
-
 async function reviewerApproval() {
     const headers = {
         'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
@@ -90,9 +80,80 @@ async function reviewerApproval() {
     .then(res => res.ok || Promise.reject(res))
     .then(success=>approveBtn.replaceWith("✔ published"))
 }
-function reviewerReturn() { }
-function curatorApproval() { }
-function curatorReturn() { }
+async function reviewerReturn() { 
+    const modalComment = document.createElement('div')
+    modalComment.classList.add('modal')
+    modalComment.innerHTML = `
+    <header>Return with comment</header>
+    <p> Explain why this Record is not ready for release or request changes. </p>
+    <textarea></textarea>
+    <button role="button">Commit message</button>
+    <a href="#" onclick="this.parentElement.remove">❌ Cancel</a>
+    `
+    document.body.append(modalComment)
+    document.querySelector('.modal button').addEventListener('click',async ev=>{
+        ev.preventDefault()
+        const text = document.querySelector('.modal textarea').value
+        saveComment(preview.getAttribute("deer-id"),text)
+    })
+}
+
+async function saveComment(target,text) {
+    const headers = {
+        'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
+        'Content-Type': "application/json; charset=utf-8"
+    }
+    const queryObj = {
+        "body.comment": { $exists: true },
+        "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] },
+        target
+    }
+    let commentFetch
+    let commented = await fetch("http://tinypaul.rerum.io/dla/query", {
+        method: 'POST',
+        body: JSON.stringify(queryObj)
+    })
+    .then(res => res.ok ? res.json() : Promise.reject(res))
+    
+    if(commented.length===0) {
+        commented = {
+            "@context": "http://www.w3.org/ns/anno.jsonld",
+            "@type": "Annotation",
+            target,
+            motivation: "moderating",
+            body: {
+                comment: {
+                    type: "Comment",
+                    author: DLA_USER['http://store.rerum.io/agent'],
+                    text
+                }
+            }
+        }
+        commentFetch = fetch("http://tinypaul.rerum.io/DLA/create", {
+            method: 'POST',
+            body: JSON.stringify(commented),
+            headers
+        })
+    } else {
+        commented = commented[0]
+        commented.body.comment.author = DLA_USER['http://store.rerum.io/agent']
+        commented.body.comment.text = text
+        commentFetch = fetch("http://tinypaul.rerum.io/DLA/update", {
+            method: 'PUT',
+            body: JSON.stringify(commented),
+            headers
+        })
+    }
+    return commentFetch    
+    .then(res => res.ok ? res.headers.get('location') : Promise.reject(res))
+}
+
+function curatorApproval() { 
+    const activeCollection = collectionMap.get(collections.querySelector('.collection.selected').innerText)
+}
+function curatorReturn() { 
+    const activeCollection = collectionMap.get(collections.querySelector('.collection.selected').innerText)
+}
 
 function sendBack(id, comment) {
     const currentRole = user.dataset.role
