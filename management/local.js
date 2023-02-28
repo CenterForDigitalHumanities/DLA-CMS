@@ -82,6 +82,29 @@ async function reviewerApproval() {
 }
 
 async function reviewerReturn() { 
+    const headers = {
+        'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
+        'Content-Type': "application/json; charset=utf-8"
+    }
+    const activeCollection = collectionMap.get(collections.querySelector('.collection.selected').innerText)
+    const managedlist = await fetch(activeCollection.managed)
+    .then(res => res.ok ? res.json() : Promise.reject(res))
+    .then(list=> {
+        list.itemListElement = list.itemListElement.filter(r=>r['@id']!==preview.getAttribute("deer-id"))
+        return list
+    })
+    const callback = fetch("http://tinypaul.rerum.io/DLA/overwrite", {
+        method: 'PUT',
+        body: JSON.stringify(managedlist),
+        headers
+    })
+    .then(res => res.ok ? res.json() : Promise.reject(res))
+    .then(success=>approveBtn.replaceWith(`❌ Removed`))
+
+    recordComment(callback)
+}
+
+async function recordComment(callback) {
     const modalComment = document.createElement('div')
     modalComment.classList.add('modal')
     modalComment.innerHTML = `
@@ -95,7 +118,8 @@ async function reviewerReturn() {
     document.querySelector('.modal button').addEventListener('click',async ev=>{
         ev.preventDefault()
         const text = document.querySelector('.modal textarea').value
-        saveComment(preview.getAttribute("deer-id"),text)
+        const commentID = await saveComment(preview.getAttribute("deer-id"),text)
+        callback(commentID)
     })
 }
 
@@ -172,16 +196,6 @@ async function curatorApproval() {
 function curatorReturn() { 
     const activeCollection = collectionMap.get(collections.querySelector('.collection.selected').innerText)
     const activeRecord = preview.getAttribute("deer-id")
-}
-
-function sendBack(id, comment) {
-    const currentRole = user.dataset.role
-    if (currentRole === "curator") {
-        alert("remove from public list: " + id)
-    }
-    if (currentRole === "reviewer") {
-        alert("remove from mangedList and update communication log: " + id)
-    }
 }
 
 async function getReviewerQueue(publicCollection, managedCollection, limit = 10) {
