@@ -8,13 +8,13 @@ function fetchItems(event) {
             countItems(publicCollection)
             if (DLA_USER['http://dunbar.rerum.io/user_roles'].roles.includes('dunbar_user_reviewer')) {
                 getReviewerQueue(publicCollection, managedCollection)
-                approveBtn.addEventListener('click',reviewerApproval)
-                returnBtn.addEventListener('click',reviewerReturn)
+                approveBtn.addEventListener('click', reviewerApproval)
+                returnBtn.addEventListener('click', reviewerReturn)
             }
             if (DLA_USER['http://dunbar.rerum.io/user_roles'].roles.includes('dunbar_user_curator')) {
                 getCuratorQueue(publicCollection, managedCollection)
-                approveBtn.addEventListener('click',curatorApproval)
-                returnBtn.addEventListener('click',curatorReturn)
+                approveBtn.addEventListener('click', curatorApproval)
+                returnBtn.addEventListener('click', curatorReturn)
             }
             queue.querySelector('li').click()
             collections.querySelector(".selected")?.classList.remove("selected")
@@ -22,35 +22,86 @@ function fetchItems(event) {
         })
 }
 
-function showRecordPreview(event){
-    preview.setAttribute("deer-template","preview")
-    preview.setAttribute("deer-id",event.target.dataset.id)
+function showRecordPreview(event) {
+    preview.setAttribute("deer-template", "preview")
+    preview.setAttribute("deer-id", event.target.dataset.id)
     queue.querySelector(".selected")?.classList.remove("selected")
     event.target.classList.add('selected')
 }
 
-function approveForPublication(id,comment){
+function approveForPublication(id, comment) {
     const currentRole = user.dataset.role
-    if(currentRole === "curator") {
-        alert("add to public list: "+id)
+    if (currentRole === "curator") {
+        alert("add to public list: " + id)
     }
-    if(currentRole === "reviewer") {
-        alert("check for annotation approving and update communication log: "+id)
+    if (currentRole === "reviewer") {
+        alert("check for annotation approving and update communication log: " + id)
     }
 }
 
-function reviewerApproval(){}
-function reviewerReturn(){}
-function curatorApproval(){}
-function curatorReturn(){}
-
-function sendBack(id,comment){
-    const currentRole = user.dataset.role
-    if(currentRole === "curator") {
-        alert("remove from public list: "+id)
+async function reviewerApproval() {
+    const headers = {
+        'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
+        'Content-Type': "application/json; charset=utf-8"
     }
-    if(currentRole === "reviewer") {
-        alert("remove from mangedList and update communication log: "+id)
+    const queryObj = {
+        "body.releaseTo": { $exists: true },
+        "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] },
+        target: preview.getAttribute("deer-id")
+    }
+    let reviewed = await fetch("http://tinypaul.rerum.io/dla/query", {
+        method: 'POST',
+        body: JSON.stringify(queryObj)
+    })
+    .then(res => res.ok ? res.json() : Promise.reject(res))
+    
+    if(reviewed.length === 0) {
+        const suggestPublication = {
+            "@context": "http://www.w3.org/ns/anno.jsonld",
+            "@type": "Annotation",
+            creator: DLA_USER['http://store.rerum.io/agent'],
+            target: preview.getAttribute("deer-id"),
+            motivation: "moderating",
+            body: {
+                releaseTo: collections.querySelector('.collection.selected').dataset.uri,
+                resultComment: null
+            }
+        }
+        fetch("http://tinypaul.rerum.io/DLA/create", {
+            method: 'POST',
+            body: JSON.stringify(suggestPublication),
+            headers
+        })
+        .then(res => res.ok || Promise.reject(res))
+        .then(success=>approveBtn.replaceWith("✔ published"))
+        return
+    }
+
+    reviewed = reviewed[0]
+    reviewed.creator = DLA_USER['http://store.rerum.io/agent']
+    reviewed.body = {
+        releaseTo: collections.querySelector('.collection.selected').dataset.uri,
+        resultComment: null
+    }
+    fetch("http://tinypaul.rerum.io/DLA/overwrite", {
+        method: 'PUT',
+        body: JSON.stringify(reviewed),
+        headers
+    })
+    .then(res => res.ok || Promise.reject(res))
+    .then(success=>approveBtn.replaceWith("✔ published"))
+}
+function reviewerReturn() { }
+function curatorApproval() { }
+function curatorReturn() { }
+
+function sendBack(id, comment) {
+    const currentRole = user.dataset.role
+    if (currentRole === "curator") {
+        alert("remove from public list: " + id)
+    }
+    if (currentRole === "reviewer") {
+        alert("remove from mangedList and update communication log: " + id)
     }
 }
 
@@ -107,7 +158,7 @@ function attachCollectionHandlers(button) {
     button.addEventListener('click', fetchItems)
 }
 
-function addRecordHandlers(record){
+function addRecordHandlers(record) {
     record.addEventListener('click', showRecordPreview)
 }
 
@@ -131,8 +182,8 @@ if (window?.DLA_USER) drawUser()
 
 function drawUser() {
     const roles = DLA_USER['http://dunbar.rerum.io/user_roles']?.roles.filter(role => role.includes('dunbar_user'))
-    if(roles.includes("dunbar_user_curator")) user.dataset.role = "curator"
-    if(roles.includes("dunbar_user_reviewer")) user.dataset.role = "reviewer"
+    if (roles.includes("dunbar_user_curator")) user.dataset.role = "curator"
+    if (roles.includes("dunbar_user_reviewer")) user.dataset.role = "reviewer"
     user.innerHTML = `
     <p>▶ Logged in as ${DLA_USER.nickname ?? DLA_USER.name} with role${roles.length > 1 ? `s` : ``} ${roles.map(r => r.split('_').pop()).join(" | ")}.</p>
     `
