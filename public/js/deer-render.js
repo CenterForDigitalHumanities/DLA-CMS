@@ -570,6 +570,7 @@ DEER.TEMPLATES.managedStatus = (obj, options = {}) => {
                         })
                         .then(response => response.json())
                         .then(anno => {
+                            statusComment.querySelector("span").innerHTML = "See your status comment"
                             statusComment.querySelector("pre").innerHTML = elem.querySelector("textarea").value
                             removeRecordFromManagedList(obj, elem, coll)
                         })
