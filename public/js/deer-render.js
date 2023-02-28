@@ -631,7 +631,7 @@ DEER.TEMPLATES.reviewedStatus = (obj, options = {}) => {
     // This Annotation is continually overwritten, so no history wildcard necessary.
     const query =
     {
-        "releasedTo" : "http://store.rerum.io/v1/id/61ae693050c86821e60b5d13",
+        "body.moderate.releasedTo" : "http://store.rerum.io/v1/id/61ae693050c86821e60b5d13",
         "target": obj["@id"]
     }
     //query for this, check it, maybe get the comment.
