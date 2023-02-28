@@ -1,3 +1,9 @@
+@import "https://unpkg.com/chota@latest";
+
+#managedStatus, #reviewedStatus, #publishedStatus, #statusComment, #transcribedStatus{
+  cursor: default;
+}
+
 .collection {
     padding: 1.68em;
     width  : clamp(30vw, 6em, 50vw);

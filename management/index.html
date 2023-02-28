@@ -32,7 +32,26 @@
             <button role="button" id="returnBtn">Return for Changes</button>
         </div>
         <deer-view id="preview"> [ preview ]</deer-view>
+        
     </div>
+    <div class="container">
+        <div class="row">
+            <!-- <deer-view id="reviewedStatus" class="col-12 tag text-center bg-error text-white" deer-template="reviewedStatus" deer-id=""></deer-view>
+            <deer-view id="publishedStatus" class="col-12 tag text-center bg-error text-white" deer-template="publishedStatus" deer-id=""></deer-view> -->
+            <deer-view id="managedStatus" class="col-12 tag text-center bg-light text-white" deer-template="managedStatus" deer-id=""></deer-view>
+            <deer-view id="statusComment" class="col-12 tag text-center bg-grey text-white is-hidden" deer-template="statusComment" deer-id=""> </deer-view>
+        </div>
+    </div>
+    <script>
+        window.onhashchange = onload = () => {
+            const msid = window.location.hash.substr(1)
+            managedStatus.setAttribute("deer-id", msid)
+            statusComment.setAttribute("deer-id", msid)
+            // reviewedStatus.setAttribute("deer-id", msid)
+            // publishedStatus.setAttribute("deer-id", msid)
+        }
+
+    </script>
 </body>
 
 </html>
