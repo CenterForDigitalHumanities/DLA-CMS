@@ -80,6 +80,7 @@ async function reviewerApproval() {
     .then(res => res.ok || Promise.reject(res))
     .then(success=>approveBtn.replaceWith("✔ published"))
 }
+
 async function reviewerReturn() { 
     const modalComment = document.createElement('div')
     modalComment.classList.add('modal')
@@ -148,11 +149,29 @@ async function saveComment(target,text) {
     .then(res => res.ok ? res.headers.get('location') : Promise.reject(res))
 }
 
-function curatorApproval() { 
+async function curatorApproval() { 
+    const headers = {
+        'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
+        'Content-Type': "application/json; charset=utf-8"
+    }
     const activeCollection = collectionMap.get(collections.querySelector('.collection.selected').innerText)
+    const activeRecord = await fetch(activeCollection.public)
+    .then(res => res.ok ? res.json() : Promise.reject(res))
+    .then(array=> array.itemListElement.find(r=>r['@id']===preview.getAttribute("deer-id")))
+    let list = await fetch(activeCollection.public)
+        .then(res => res.ok ? res.json() : Promise.reject(res))
+    list.itemListElement.push(activeRecord)
+    fetch("http://tinypaul.rerum.io/DLA/update", {
+        method: 'PUT',
+        body: JSON.stringify(list),
+        headers
+    })
+    .then(res => res.ok ? res.json() : Promise.reject(res))
+    .then(success=>approveBtn.replaceWith(`✔ Published`))
 }
 function curatorReturn() { 
     const activeCollection = collectionMap.get(collections.querySelector('.collection.selected').innerText)
+    const activeRecord = preview.getAttribute("deer-id")
 }
 
 function sendBack(id, comment) {
