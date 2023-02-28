@@ -55,8 +55,9 @@ async function reviewerApproval() {
     })
     .then(res => res.ok ? res.json() : Promise.reject(res))
     
+    let publishFetch
     if(reviewed.length === 0) {
-        const suggestPublication = {
+        reviewed = {
             "@context": "http://www.w3.org/ns/anno.jsonld",
             "@type": "Annotation",
             creator: DLA_USER['http://store.rerum.io/agent'],
@@ -67,27 +68,25 @@ async function reviewerApproval() {
                 resultComment: null
             }
         }
-        fetch("http://tinypaul.rerum.io/DLA/create", {
+        publishFetch = fetch("http://tinypaul.rerum.io/DLA/create", {
             method: 'POST',
             body: JSON.stringify(suggestPublication),
             headers
         })
-        .then(res => res.ok || Promise.reject(res))
-        .then(success=>approveBtn.replaceWith("✔ published"))
-        return
+    } else {
+        reviewed = reviewed[0]
+        reviewed.creator = DLA_USER['http://store.rerum.io/agent']
+        reviewed.body = {
+            releaseTo: collections.querySelector('.collection.selected').dataset.uri,
+            resultComment: null
+        }
+        fetch("http://tinypaul.rerum.io/DLA/overwrite", {
+            method: 'PUT',
+            body: JSON.stringify(reviewed),
+            headers
+        })
     }
-
-    reviewed = reviewed[0]
-    reviewed.creator = DLA_USER['http://store.rerum.io/agent']
-    reviewed.body = {
-        releaseTo: collections.querySelector('.collection.selected').dataset.uri,
-        resultComment: null
-    }
-    fetch("http://tinypaul.rerum.io/DLA/overwrite", {
-        method: 'PUT',
-        body: JSON.stringify(reviewed),
-        headers
-    })
+    publishFetch
     .then(res => res.ok || Promise.reject(res))
     .then(success=>approveBtn.replaceWith("✔ published"))
 }
