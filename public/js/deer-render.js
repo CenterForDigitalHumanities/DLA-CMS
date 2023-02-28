@@ -260,64 +260,6 @@ DEER.TEMPLATES.transcriptionStatus = function (obj, options = {}) {
     }
 }
 
-DEER.TEMPLATES.folioTranscription = function (obj, options = {}) {
-    return {
-        html: obj.tpenProject ? `<div class="is-full-width"> <h3> ... loading preview ... </h3> </div>` : ``,
-        then: (elem) => {
-            const proj = obj.tpenProject?.value ?? obj.tpenProject?.pop()?.value ?? obj.tpenProject?.pop() ?? obj.tpenProject
-            if (!proj) {
-                elem.innerHTML = `[ no project linked yet ]`
-                return
-            }
-            fetch("http://t-pen.org/TPEN/manifest/" + proj)
-            .then(response => response.json())
-            .then(ms => {
-                    const pages = ms.sequences[0].canvases.slice(0, 10).reduce((a, b) => a += `
-                    <div class="page">
-                        <h3>${b.label}</h3>
-                        <div class="pull-right col-6">
-                            <img src="${b.images[0].resource['@id']}">
-                        </div>
-                        <div>
-                            ${b.otherContent[0].resources.reduce((aa, bb) => aa +=
-                        bb.resource["cnt:chars"].length
-                            ? bb.resource["cnt:chars"].slice(-1) == '-'
-                                ? bb.resource["cnt:chars"].substring(0, bb.resource["cnt:chars"].length - 1)
-                                : bb.resource["cnt:chars"] + ' '
-                            : " <line class='empty col-6'></line> ", '')
-                        }
-                        </div>
-                    </div>
-                    `, ``)
-                    
-                    elem.innerHTML = `
-                <style>
-                    printed {
-                        font-family:serif;
-                    }
-                    note {
-                        font-family:monospace;
-                    }
-                    unclear {
-                        opacity:.4;
-                    }
-                    line.empty {
-                        line-height: 1.6;
-                        background-color: #CCC;
-                        height: 1em;
-                        margin: .4em 0;
-                        display:block;
-                        border-radius: 4px;
-                    }
-                </style>
-                <a href="http://t-pen.org/TPEN/transcription.html?projectID=${parseInt(ms['@id'].split("manifest/")?.[1])}" target="_blank">transcribe on TPEN</a>
-                <h2>${ms.label}</h2>
-                ${pages}
-        `})
-        }
-    }
-}
-
 DEER.TEMPLATES.lines = function (obj, options = {}) {
     let c = obj.sequences[0].canvases[options.index || 0]
     return {

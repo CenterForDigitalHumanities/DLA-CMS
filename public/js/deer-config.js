@@ -62,7 +62,7 @@ export default {
     TEMPLATES: {
         cat: (obj) => `<h5>${obj.name}</h5><img src="http://placekitten.com/300/150" style="width:100%;">`,
         preview: obj => `
-            <deer-view id="thumbroll" deer-template="thumbs" deer-id="${obj['@id']}"></deer-view>
+            <a href="http://dunbar-letters.rerum.io/ms.html#${obj['@id']}" target="_blank">Modify Description</a>
             <deer-view id="previewTranscription" deer-template="folioTranscription" deer-id="${obj['@id']}"></deer-view>
         `,
         /**
@@ -95,74 +95,71 @@ export default {
             }
         },
 
-        thumbs: function (obj, options = {}) {
+        folioTranscription : function (obj, options = {}) {
             return {
-                html: obj["tpen://base-project"] ? `<div class="is-full-width"> <h3> ... loading images ... </h3> </div>` : ``,
+                html: obj.tpenProject ? `<div class="is-full-width"> <h3> ... loading preview ... </h3> </div>` : ``,
                 then: (elem) => {
-                    try {
-                        fetch("http://t-pen.org/TPEN/manifest/" + obj["tpen://base-project"].value)
-                            .then(response => response.json())
-                            .then(ms => elem.innerHTML = `
-                    ${ms.sequences[0].canvases.slice(0, 10).reduce((a, b) => a += `<img class="thumbnail" src="${b.images[0].resource['@id']}">`, ``)}
-            `)
-                    } catch {
-                        console.log(`No images loaded for transcription project: ${obj["tpen://base-project"]?.value}`)
+                    const proj = obj.tpenProject?.value ?? obj.tpenProject?.pop()?.value ?? obj.tpenProject?.pop() ?? obj.tpenProject
+                    if (!proj) {
+                        elem.innerHTML = `[ no project linked yet ]`
+                        return
                     }
-                }
-            }
-        },
-
-        pageLinks: function (obj, options = {}) {
-            return obj.sequences[0].canvases.reduce((a, b, i) => a += `<a class="button" href="?page=${i + 1}#${obj["@id"]}">${b.label}</a>`, ``)
-        },
-
-        folioTranscription: function (obj, options = {}) {
-            return {
-                html: obj['tpen:project'] ? `<div class="is-full-width"> <h3> ... loading preview ... </h3> </div>` : ``,
-                then: (elem) => {
-                    fetch("http://t-pen.org/TPEN/manifest/" + obj['tpen:project'].value)
-                        .then(response => response.json())
-                        .then(ms => elem.innerHTML = `
-                <style>
-                    printed {
-                        font-family:serif;
-                    }
-                    note {
-                        font-family:monospace;
-                    }
-                    unclear {
-                        opacity:.4;
-                    }
-                    line.empty {
-                        line-height: 1.6;
-                        background-color: #CCC;
-                        height: 1em;
-                        margin: .4em 0;
-                        display:block;
-                        border-radius: 4px;
-                    }
-                </style>
-                ${ms.sequences[0].canvases.slice(0, 10).reduce((a, b) => a += `
-                <div class="page">
-                    <h3>${b.label}</h3> <a href="./layout.html#${ms['@id']}">(edit layout)</a>
-                    <div class="pull-right col-6">
-                        <img src="${b.images[0].resource['@id']}">
-                    </div>
-                    <div>
-                        ${b.otherContent[0].resources.reduce((aa, bb) => aa +=
-                            bb.resource["cnt:chars"].length
-                                ? bb.resource["cnt:chars"].slice(-1) == '-'
-                                    ? bb.resource["cnt:chars"].substring(0, bb.resource["cnt:chars"].length - 1)
-                                    : bb.resource["cnt:chars"] + ' '
-                                : " <line class='empty col-6'></line> ", '')
+                    fetch("http://t-pen.org/TPEN/manifest/" + proj)
+                    .then(response => response.json())
+                    .then(ms => {
+                            const pages = ms.sequences[0].canvases.slice(0, 10).reduce((a, b) => a += `
+                            <div class="page">
+                                <h3>${b.label}</h3>
+                                <div class="pull-right col-6">
+                                    <img src="${b.images[0].resource['@id']}">
+                                </div>
+                                <div>
+                                    ${b.otherContent[0].resources.reduce((aa, bb) => aa +=
+                                bb.resource["cnt:chars"].length
+                                    ? bb.resource["cnt:chars"].slice(-1) == '-'
+                                        ? bb.resource["cnt:chars"].substring(0, bb.resource["cnt:chars"].length - 1)
+                                        : bb.resource["cnt:chars"] + ' '
+                                    : " <line class='empty col-6'></line> ", '')
+                                }
+                                </div>
+                            </div>
+                            `, ``)
+                            
+                            elem.innerHTML = `
+                        <style>
+                            printed {
+                                font-family:serif;
                             }
-                    </div>
-                </div>
-                `, ``)}
-        `)
+                            note {
+                                font-family:monospace;
+                            }
+                            unclear {
+                                opacity:.4;
+                            }
+                            line.empty {
+                                line-height: 1.6;
+                                background-color: #CCC;
+                                height: 1em;
+                                margin: .4em 0;
+                                display:block;
+                                border-radius: 4px;
+                            }
+                            .page {
+                                clear:both;
+                            }
+                            .page img {
+                                margin: 0 1em 1em 0;
+                                float:left;
+                            }
+                        </style>
+                        <a href="http://t-pen.org/TPEN/transcription.html?projectID=${parseInt(ms['@id'].split("manifest/")?.[1])}" target="_blank">transcribe on TPEN</a>
+                        <h2>${ms.label}</h2>
+                        ${pages}
+                `})
                 }
             }
-        },
+        }
+        ,
         msList: function (obj, options = {}) {
             let tmpl = `<h2>Correspondence between Paul Laurence Dunbar and Alice Moore Dunbar (${obj?.[options?.list].length ?? " empty "})</h2>`
             if (options.list) {

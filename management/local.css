@@ -1,11 +1,13 @@
-#collections {}
-
-#collections button {
+.collection {
     padding: 1.68em;
-    height : 4em;
     width  : clamp(30vw, 6em, 50vw);
     display: inline-block;
     margin : 0.32em;
+    border: solid thin;
+    transition: all .25s;
+    box-shadow: 0 0 0 white;
+    background-color: white;
+    cursor: pointer;
 }
 
 #records {
@@ -40,6 +42,14 @@
     border   : solid thin;
     margin   : .32em;
     padding  : .68em;
+    transition: all .25s;
+    box-shadow: 0 0 0 white;
+    background-color: white;
+}
+
+#queue li.selected, .collection.selected {
+    background-color: hsl(0, 0%, 90%);
+    box-shadow: 0 0 .32em black;
 }
 
 #preview {
@@ -53,16 +63,15 @@
 
 #resultsGrid {
     display              : grid;
-    grid-template-columns: 25% 24% 24% 24%;
+    grid-template-columns: 25% 73%;
     grid-template-rows   : auto auto;
     grid-template-areas  :
-        "records  records  actions  actions"
-        "queue  preview  preview  preview";
-    gap       : 1%;
+        "records  actions"
+        "queue  preview";
+    gap       : 2%;
     box-sizing: border-box;
 }
 
-#thumbroll img,
 .page img {
     height: 12em;
 }

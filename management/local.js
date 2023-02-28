@@ -8,17 +8,25 @@ function fetchItems(event) {
             countItems(publicCollection)
             if (DLA_USER['http://dunbar.rerum.io/user_roles'].roles.includes('dunbar_user_reviewer')) {
                 getReviewerQueue(publicCollection, managedCollection)
+                approveBtn.addEventListener('click',reviewerApproval)
+                returnBtn.addEventListener('click',reviewerReturn)
             }
             if (DLA_USER['http://dunbar.rerum.io/user_roles'].roles.includes('dunbar_user_curator')) {
                 getCuratorQueue(publicCollection, managedCollection)
+                approveBtn.addEventListener('click',curatorApproval)
+                returnBtn.addEventListener('click',curatorReturn)
             }
             queue.querySelector('li').click()
+            collections.querySelector(".selected")?.classList.remove("selected")
+            event.target.classList.add('selected')
         })
 }
 
 function showRecordPreview(event){
     preview.setAttribute("deer-template","preview")
     preview.setAttribute("deer-id",event.target.dataset.id)
+    queue.querySelector(".selected")?.classList.remove("selected")
+    event.target.classList.add('selected')
 }
 
 function approveForPublication(id,comment){
@@ -30,6 +38,11 @@ function approveForPublication(id,comment){
         alert("check for annotation approving and update communication log: "+id)
     }
 }
+
+function reviewerApproval(){}
+function reviewerReturn(){}
+function curatorApproval(){}
+function curatorReturn(){}
 
 function sendBack(id,comment){
     const currentRole = user.dataset.role
@@ -103,8 +116,8 @@ function countItems(collection) {
 }
 
 collectionMap.forEach((v, k) => {
-    const btn = document.createElement('button')
-    btn.classList.add('collections')
+    const btn = document.createElement('a')
+    btn.classList.add('collection')
     btn.dataset.uri = v.public
     btn.dataset.managed = v.managed
     btn.innerText = k
@@ -123,5 +136,6 @@ function drawUser() {
     user.innerHTML = `
     <p>▶ Logged in as ${DLA_USER.nickname ?? DLA_USER.name} with role${roles.length > 1 ? `s` : ``} ${roles.map(r => r.split('_').pop()).join(" | ")}.</p>
     `
+    collections.querySelector('.collection').click()
 }
 export { collectionMap }
