@@ -23,6 +23,7 @@ function fetchItems(event) {
 }
 
 function showRecordPreview(event) {
+    preview.innerHTML = ``
     preview.setAttribute("deer-template", "preview")
     preview.setAttribute("deer-id", event.target.dataset.id)
     queue.querySelector(".selected")?.classList.remove("selected")
