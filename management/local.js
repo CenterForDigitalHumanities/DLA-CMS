@@ -184,7 +184,12 @@ async function curatorApproval() {
     .then(array=> array.itemListElement.find(r=>r['@id']===preview.getAttribute("deer-id")))
     let list = await fetch(activeCollection.public)
         .then(res => res.ok ? res.json() : Promise.reject(res))
+    if (list.itemListElement.includes(activeRecord)) {
+        approveBtn.replaceWith(`✔ Published`)
+        return // already published, somehow
+    }
     list.itemListElement.push(activeRecord)
+    list.numberOfItems = list.itemListElement.length
     fetch("http://tinypaul.rerum.io/DLA/update", {
         method: 'PUT',
         body: JSON.stringify(list),
