@@ -44,22 +44,22 @@ async function approveByReviewer() {
         method: 'POST',
         body: JSON.stringify(queryObj)
     })
-    .then(res => res.ok ? res.json() : Promise.reject(res))
-    
+        .then(res => res.ok ? res.json() : Promise.reject(res))
+
     const reviewComment = Object.assign(reviewed[0] ?? {
         "@context": "http://www.w3.org/ns/anno.jsonld",
         type: "Annotation",
         target: preview.getAttribute("deer-id"),
         motivation: "moderating"
-    },{
+    }, {
         creator: DLA_USER['http://store.rerum.io/agent'],
         body: {
             releaseTo: activeCollection.public,
             resultComment: null
         }
     })
-    
-    const publishFetch = (reviewed.length === 0) 
+
+    const publishFetch = (reviewed.length === 0)
         ? fetch("http://tinypaul.rerum.io/DLA/create", {
             method: 'POST',
             body: JSON.stringify(reviewComment),
@@ -71,30 +71,31 @@ async function approveByReviewer() {
             headers
         })
     publishFetch
-    .then(res => res.ok || Promise.reject(res))
-    .then(success=>approveBtn.replaceWith("✔ published"))
+        .then(res => res.ok || Promise.reject(res))
+        .then(success => approveBtn.replaceWith("✔ published"))
     // TODO: clear item from queue and refresh
 }
 
-async function returnByReviewer() { 
+async function returnByReviewer() {
     const headers = {
         'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
         'Content-Type': "application/json; charset=utf-8"
     }
     const activeCollection = collectionMap.get(collections.querySelector('.collection.selected').innerText)
     const managedlist = await fetch(activeCollection.managed)
-    .then(res => res.ok ? res.json() : Promise.reject(res))
-    .then(list=> {
-        list.itemListElement = list.itemListElement.filter(r=>r['@id']!==preview.getAttribute("deer-id"))
-        return list
-    })
+        .then(res => res.ok ? res.json() : Promise.reject(res))
+        .then(list => {
+            list.itemListElement = list.itemListElement.filter(r => r['@id'] !== preview.getAttribute("deer-id"))
+            list.numberOfItems = list.itemListElement.length
+            return list
+        })
     const callback = fetch("http://tinypaul.rerum.io/DLA/overwrite", {
         method: 'PUT',
         body: JSON.stringify(managedlist),
         headers
     })
-    .then(res => res.ok ? res.json() : Promise.reject(res))
-    .then(success=>approveBtn.replaceWith(`❌ Removed`))
+        .then(res => res.ok ? res.json() : Promise.reject(res))
+        .then(success => approveBtn.replaceWith(`❌ Removed`))
 
     recordComment(callback)
 }
@@ -110,15 +111,15 @@ async function recordComment(callback) {
     <a href="#" onclick="this.parentElement.remove">❌ Cancel</a>
     `
     document.body.append(modalComment)
-    document.querySelector('.modal button').addEventListener('click',async ev=>{
+    document.querySelector('.modal button').addEventListener('click', async ev => {
         ev.preventDefault()
         const text = document.querySelector('.modal textarea').value
-        const commentID = await saveComment(preview.getAttribute("deer-id"),text)
+        const commentID = await saveComment(preview.getAttribute("deer-id"), text)
         callback(commentID)
     })
 }
 
-async function saveComment(target,text) {
+async function saveComment(target, text) {
     const headers = {
         'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
         'Content-Type': "application/json; charset=utf-8"
@@ -128,55 +129,50 @@ async function saveComment(target,text) {
         "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] },
         target
     }
-    let commentFetch
+
+
     let commented = await fetch("http://tinypaul.rerum.io/dla/query", {
         method: 'POST',
         body: JSON.stringify(queryObj)
     })
-    .then(res => res.ok ? res.json() : Promise.reject(res))
-    
-    if(commented.length===0) {
-        commented = {
-            "@context": "http://www.w3.org/ns/anno.jsonld",
-            type: "Annotation",
-            target,
-            motivation: "moderating",
-            body: {
-                comment: {
-                    type: "Comment",
-                    author: DLA_USER['http://store.rerum.io/agent'],
-                    text
-                }
-            }
+        .then(res => res.ok ? res.json() : Promise.reject(res))
+
+    const dismissingComment = Object.assign(commented[0] ?? {
+        "@context": "http://www.w3.org/ns/anno.jsonld",
+        type: "Annotation",
+        target,
+        motivation: "moderating"
+    }, {
+        comment: {
+            type: "Comment",
+            author: DLA_USER['http://store.rerum.io/agent'],
+            text
         }
-        commentFetch = fetch("http://tinypaul.rerum.io/DLA/create", {
+    })
+    let commentFetch = (commented.length === 0)
+        ? fetch("http://tinypaul.rerum.io/DLA/create", {
             method: 'POST',
-            body: JSON.stringify(commented),
+            body: JSON.stringify(dismissingComment),
             headers
         })
-    } else {
-        commented = commented[0]
-        commented.body.comment.author = DLA_USER['http://store.rerum.io/agent']
-        commented.body.comment.text = text
-        commentFetch = fetch("http://tinypaul.rerum.io/DLA/update", {
+        : fetch("http://tinypaul.rerum.io/DLA/update", {
             method: 'PUT',
-            body: JSON.stringify(commented),
+            body: JSON.stringify(dismissingComment),
             headers
         })
-    }
-    return commentFetch    
-    .then(res => res.ok ? res.headers.get('location') : Promise.reject(res))
+    return commentFetch
+        .then(res => res.ok ? res.headers.get('location') : Promise.reject(res))
 }
 
-async function curatorApproval() { 
+async function curatorApproval() {
     const headers = {
         'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
         'Content-Type': "application/json; charset=utf-8"
     }
     const activeCollection = collectionMap.get(collections.querySelector('.collection.selected').innerText)
     const activeRecord = await fetch(activeCollection.managed)
-    .then(res => res.ok ? res.json() : Promise.reject(res))
-    .then(array=> array.itemListElement.find(r=>r['@id']===preview.getAttribute("deer-id")))
+        .then(res => res.ok ? res.json() : Promise.reject(res))
+        .then(array => array.itemListElement.find(r => r['@id'] === preview.getAttribute("deer-id")))
     let list = await fetch(activeCollection.public)
         .then(res => res.ok ? res.json() : Promise.reject(res))
     if (list.itemListElement.includes(activeRecord)) {
@@ -190,10 +186,10 @@ async function curatorApproval() {
         body: JSON.stringify(list),
         headers
     })
-    .then(res => res.ok ? res.json() : Promise.reject(res))
-    .then(success=>approveBtn.replaceWith(`✔ Published`))
+        .then(res => res.ok ? res.json() : Promise.reject(res))
+        .then(success => approveBtn.replaceWith(`✔ Published`))
 }
-function curatorReturn() { 
+function curatorReturn() {
     const activeCollection = collectionMap.get(collections.querySelector('.collection.selected').innerText)
     const activeRecord = preview.getAttribute("deer-id")
 }
