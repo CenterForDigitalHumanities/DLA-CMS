@@ -42,6 +42,7 @@ async function approveByReviewer() {
     const activeCollection = collectionMap.get(collections.querySelector('.collection.selected').innerText)
     let reviewed = await fetch("http://tinypaul.rerum.io/dla/query", {
         method: 'POST',
+        mode: 'cors',
         body: JSON.stringify(queryObj)
     })
         .then(res => res.ok ? res.json() : Promise.reject(res))
@@ -62,11 +63,13 @@ async function approveByReviewer() {
     const publishFetch = (reviewed.length === 0)
         ? fetch("http://tinypaul.rerum.io/DLA/create", {
             method: 'POST',
+            mode: 'cors',
             body: JSON.stringify(reviewComment),
             headers
         })
         : fetch("http://tinypaul.rerum.io/DLA/overwrite", {
             method: 'PUT',
+            mode: 'cors',
             body: JSON.stringify(reviewComment),
             headers
         })
@@ -91,6 +94,7 @@ async function returnByReviewer() {
         })
     const callback = fetch("http://tinypaul.rerum.io/DLA/overwrite", {
         method: 'PUT',
+        mode: 'cors',
         body: JSON.stringify(managedlist),
         headers
     })
@@ -133,6 +137,7 @@ async function saveComment(target, text) {
 
     let commented = await fetch("http://tinypaul.rerum.io/dla/query", {
         method: 'POST',
+        mode: 'cors',
         body: JSON.stringify(queryObj)
     })
         .then(res => res.ok ? res.json() : Promise.reject(res))
@@ -152,11 +157,13 @@ async function saveComment(target, text) {
     let commentFetch = (commented.length === 0)
         ? fetch("http://tinypaul.rerum.io/DLA/create", {
             method: 'POST',
+            mode: 'cors',
             body: JSON.stringify(dismissingComment),
             headers
         })
         : fetch("http://tinypaul.rerum.io/DLA/update", {
             method: 'PUT',
+            mode: 'cors',
             body: JSON.stringify(dismissingComment),
             headers
         })
@@ -183,15 +190,70 @@ async function curatorApproval() {
     list.numberOfItems = list.itemListElement.length
     fetch("http://tinypaul.rerum.io/DLA/update", {
         method: 'PUT',
+        mode: 'cors',
         body: JSON.stringify(list),
         headers
     })
         .then(res => res.ok ? res.json() : Promise.reject(res))
         .then(success => approveBtn.replaceWith(`✔ Published`))
 }
-function curatorReturn() {
+async function curatorReturn() {
     const activeCollection = collectionMap.get(collections.querySelector('.collection.selected').innerText)
     const activeRecord = preview.getAttribute("deer-id")
+    // TODO: This is nearly a straight C/P frpm above
+    const headers = {
+        'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
+        'Content-Type': "application/json; charset=utf-8"
+    }
+    const queryObj = {
+        "body.releasedTo": { $exists: true },
+        "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] },
+        target: preview.getAttribute("deer-id")
+    }
+    let reviewed = await fetch("http://tinypaul.rerum.io/dla/query", {
+        method: 'POST',
+        mode: 'cors',
+        body: JSON.stringify(queryObj)
+    })
+        .then(res => res.ok ? res.json() : Promise.reject(res))
+
+    const reviewComment = Object.assign(reviewed[0] ?? {
+        "@context": "http://www.w3.org/ns/anno.jsonld",
+        type: "Annotation",
+        target: preview.getAttribute("deer-id"),
+        motivation: "moderating"
+    }, {
+        creator: DLA_USER['http://store.rerum.io/agent'],
+        body: {
+            releaseTo: null,
+            resultComment: null
+        }
+    })
+
+    const publishFetch = (reviewed.length === 0)
+        ? fetch("http://tinypaul.rerum.io/DLA/create", {
+            method: 'POST',
+            mode: 'cors',
+            body: JSON.stringify(reviewComment),
+            headers
+        })
+        : fetch("http://tinypaul.rerum.io/DLA/overwrite", {
+            method: 'PUT',
+            mode: 'cors',
+            body: JSON.stringify(reviewComment),
+            headers
+        })
+
+    const callback = commentID => {
+        reviewComment.body.resultComment = commentID
+        publishFetch
+            .then(res => res.ok || Promise.reject(res))
+            .then(success => approveBtn.replaceWith("✔ published"))
+    }
+
+    recordComment(callback)
+    // TODO: clear item from queue and refresh
+
 }
 
 async function getReviewerQueue(publicCollection, managedCollection, limit = 10) {
