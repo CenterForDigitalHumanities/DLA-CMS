@@ -61,8 +61,26 @@ export default {
      */
     TEMPLATES: {
         cat: (obj) => `<h5>${obj.name}</h5><img src="http://placekitten.com/300/150" style="width:100%;">`,
+        metadataLetter: obj => `
+            <dl>
+                <dt> Label </dt>
+                <dd> ${ obj.label.value ?? obj.label }</dd>
+                <dt> URI </dt>
+                <dd> ${ obj['@id'] }</dd>
+                <dt> type </dt>
+                <dd> ${ obj['@type'] }</dd>
+                <dt> Collection </dt>
+                <dd> ${ obj.targetCollection.value }</dd>
+                <dt> Transcription project ID </dt>
+                <dd> ${ obj.tpenProject?.[0].value ?? obj.tpenProject.value ?? obj.tpenProject }</dd>
+                <dt> Record creator </dt>
+                <dd> <deer-view deer-id="${ obj.creator.value ?? obj.creator }" deer-template="label">${ obj.creator.value ?? obj.creator }</deer-view></dd>
+        `,
         preview: obj => `
-            <a href="http://dunbar-letters.rerum.io/ms.html#${obj['@id']}" target="_blank">Modify Description</a>
+            <div>
+                <deer-view deer-template="metadataLetter" deer-id="${obj['@id']}"></deer-view>
+                <a href="http://dunbar-letters.rerum.io/ms.html#${obj['@id']}" target="_blank">Modify Description</a>
+            </div>
             <deer-view id="previewTranscription" deer-template="folioTranscription" deer-id="${obj['@id']}"></deer-view>
         `,
         /**

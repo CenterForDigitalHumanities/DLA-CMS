@@ -8,8 +8,8 @@ function fetchItems(event) {
             countItems(publicCollection)
             if (DLA_USER['http://dunbar.rerum.io/user_roles'].roles.includes('dunbar_user_reviewer')) {
                 getReviewerQueue(publicCollection, managedCollection)
-                approveBtn.addEventListener('click', reviewerApproval)
-                returnBtn.addEventListener('click', reviewerReturn)
+                approveBtn.addEventListener('click', approveByReviewer)
+                returnBtn.addEventListener('click', returnByReviewer)
             }
             if (DLA_USER['http://dunbar.rerum.io/user_roles'].roles.includes('dunbar_user_curator')) {
                 getCuratorQueue(publicCollection, managedCollection)
@@ -29,59 +29,54 @@ function showRecordPreview(event) {
     event.target.classList.add('selected')
 }
 
-async function reviewerApproval() {
+async function approveByReviewer() {
     const headers = {
         'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
         'Content-Type': "application/json; charset=utf-8"
     }
     const queryObj = {
-        "body.releaseTo": { $exists: true },
+        "body.releasedTo": { $exists: true },
         "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] },
         target: preview.getAttribute("deer-id")
     }
+    const activeCollection = collectionMap.get(collections.querySelector('.collection.selected').innerText)
     let reviewed = await fetch("http://tinypaul.rerum.io/dla/query", {
         method: 'POST',
         body: JSON.stringify(queryObj)
     })
     .then(res => res.ok ? res.json() : Promise.reject(res))
     
-    let publishFetch
-    if(reviewed.length === 0) {
-        reviewed = {
-            "@context": "http://www.w3.org/ns/anno.jsonld",
-            "@type": "Annotation",
-            creator: DLA_USER['http://store.rerum.io/agent'],
-            target: preview.getAttribute("deer-id"),
-            motivation: "moderating",
-            body: {
-                releaseTo: collections.querySelector('.collection.selected').dataset.uri,
-                resultComment: null
-            }
-        }
-        publishFetch = fetch("http://tinypaul.rerum.io/DLA/create", {
-            method: 'POST',
-            body: JSON.stringify(suggestPublication),
-            headers
-        })
-    } else {
-        reviewed = reviewed[0]
-        reviewed.creator = DLA_USER['http://store.rerum.io/agent']
-        reviewed.body = {
-            releaseTo: collections.querySelector('.collection.selected').dataset.uri,
+    const reviewComment = Object.assign(reviewed[0] ?? {
+        "@context": "http://www.w3.org/ns/anno.jsonld",
+        type: "Annotation",
+        target: preview.getAttribute("deer-id"),
+        motivation: "moderating"
+    },{
+        creator: DLA_USER['http://store.rerum.io/agent'],
+        body: {
+            releaseTo: activeCollection.public,
             resultComment: null
         }
-        fetch("http://tinypaul.rerum.io/DLA/overwrite", {
-            method: 'PUT',
-            body: JSON.stringify(reviewed),
+    })
+    
+    const publishFetch = (reviewed.length === 0) 
+        ? fetch("http://tinypaul.rerum.io/DLA/create", {
+            method: 'POST',
+            body: JSON.stringify(reviewComment),
             headers
         })
-    }
+        : fetch("http://tinypaul.rerum.io/DLA/overwrite", {
+            method: 'PUT',
+            body: JSON.stringify(reviewComment),
+            headers
+        })
     publishFetch
     .then(res => res.ok || Promise.reject(res))
     .then(success=>approveBtn.replaceWith("✔ published"))
+    // TODO: clear item from queue and refresh
 }
 
-async function reviewerReturn() { 
+async function returnByReviewer() { 
     const headers = {
         'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
         'Content-Type': "application/json; charset=utf-8"
@@ -143,7 +138,7 @@ async function saveComment(target,text) {
     if(commented.length===0) {
         commented = {
             "@context": "http://www.w3.org/ns/anno.jsonld",
-            "@type": "Annotation",
+            type: "Annotation",
             target,
             motivation: "moderating",
             body: {
@@ -179,7 +174,7 @@ async function curatorApproval() {
         'Content-Type': "application/json; charset=utf-8"
     }
     const activeCollection = collectionMap.get(collections.querySelector('.collection.selected').innerText)
-    const activeRecord = await fetch(activeCollection.public)
+    const activeRecord = await fetch(activeCollection.managed)
     .then(res => res.ok ? res.json() : Promise.reject(res))
     .then(array=> array.itemListElement.find(r=>r['@id']===preview.getAttribute("deer-id")))
     let list = await fetch(activeCollection.public)
