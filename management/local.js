@@ -62,13 +62,13 @@ async function approveByReviewer() {
     })
 
     const publishFetch = (reviewed.length === 0)
-        ? fetch("http://tinypaul.rerum.io/DLA/create", {
+        ? fetch("http://tinypaul.rerum.io/dla/create", {
             method: 'POST',
             mode: 'cors',
             body: JSON.stringify(reviewComment),
             headers
         })
-        : fetch("http://tinypaul.rerum.io/DLA/overwrite", {
+        : fetch("http://tinypaul.rerum.io/dla/overwrite", {
             method: 'PUT',
             mode: 'cors',
             body: JSON.stringify(reviewComment),
@@ -93,7 +93,7 @@ async function returnByReviewer() {
             list.numberOfItems = list.itemListElement.length
             return list
         })
-    const callback = fetch("http://tinypaul.rerum.io/DLA/overwrite", {
+    const callback = fetch("http://tinypaul.rerum.io/dla/overwrite", {
         method: 'PUT',
         mode: 'cors',
         body: JSON.stringify(managedlist),
@@ -156,13 +156,13 @@ async function saveComment(target, text) {
         }
     })
     let commentFetch = (commented.length === 0)
-        ? fetch("http://tinypaul.rerum.io/DLA/create", {
+        ? fetch("http://tinypaul.rerum.io/dla/create", {
             method: 'POST',
             mode: 'cors',
             body: JSON.stringify(dismissingComment),
             headers
         })
-        : fetch("http://tinypaul.rerum.io/DLA/update", {
+        : fetch("http://tinypaul.rerum.io/dla/update", {
             method: 'PUT',
             mode: 'cors',
             body: JSON.stringify(dismissingComment),
@@ -189,7 +189,7 @@ async function curatorApproval() {
     }
     list.itemListElement.push(activeRecord)
     list.numberOfItems = list.itemListElement.length
-    fetch("http://tinypaul.rerum.io/DLA/update", {
+    fetch("http://tinypaul.rerum.io/dla/update", {
         method: 'PUT',
         mode: 'cors',
         body: JSON.stringify(list),
@@ -232,13 +232,13 @@ async function curatorReturn() {
     })
 
     const publishFetch = (reviewed.length === 0)
-        ? fetch("http://tinypaul.rerum.io/DLA/create", {
+        ? fetch("http://tinypaul.rerum.io/dla/create", {
             method: 'POST',
             mode: 'cors',
             body: JSON.stringify(reviewComment),
             headers
         })
-        : fetch("http://tinypaul.rerum.io/DLA/overwrite", {
+        : fetch("http://tinypaul.rerum.io/dla/overwrite", {
             method: 'PUT',
             mode: 'cors',
             body: JSON.stringify(reviewComment),
