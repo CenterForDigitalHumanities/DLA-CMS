@@ -75,3 +75,13 @@
 .page img {
     height: 12em;
 }
+
+.modal {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: skyblue;
+    position: fixed;
+    padding: 1em;
+    box-shadow: 0 0 200vw 200vw rgb(0 0 0 / 68%), 0 0 5em rgb(0 0 0);
+}
