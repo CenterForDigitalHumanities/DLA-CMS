@@ -120,6 +120,7 @@ async function recordComment(callback) {
         ev.preventDefault()
         const text = document.querySelector('.modal textarea').value
         const commentID = await saveComment(preview.getAttribute("deer-id"), text)
+        document.querySelector('.modal').remove()
         callback(commentID)
     })
 }
