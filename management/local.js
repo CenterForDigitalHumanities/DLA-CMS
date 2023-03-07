@@ -2,8 +2,9 @@ const collectionsFile = await fetch('/manage/collections').then(res => res.json(
 const collectionMap = new Map(Object.entries(collectionsFile))
 
 function fetchItems(event) {
-    return Promise.all([fetch(event.target.dataset.uri).then(res => res.json()),
-    fetch(event.target.dataset.managed).then(res => res.json())])
+    const selectedCollection = event.target.selectedOptions[0]
+    return Promise.all([fetch(selectedCollection.dataset.uri).then(res => res.json()),
+    fetch(selectedCollection.dataset.managed).then(res => res.json())])
         .then(([publicCollection, managedCollection]) => {
             countItems(publicCollection)
             if (DLA_USER['http://dunbar.rerum.io/user_roles'].roles.includes('dunbar_user_reviewer')) {
@@ -16,9 +17,7 @@ function fetchItems(event) {
                 approveBtn.addEventListener('click', curatorApproval)
                 returnBtn.addEventListener('click', curatorReturn)
             }
-            queue.querySelector('li').click()
-            collections.querySelector(".selected")?.classList.remove("selected")
-            event.target.classList.add('selected')
+            selectedCollection.options[0].selected = true
         })
 }
 
@@ -40,7 +39,7 @@ async function approveByReviewer() {
         "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] },
         target: preview.getAttribute("deer-id")
     }
-    const activeCollection = collectionMap.get(collections.querySelector('.collection.selected').innerText)
+    const activeCollection = collectionMap.get(collections.querySelector('[selected]').value)
     let reviewed = await fetch("http://tinypaul.rerum.io/dla/query", {
         method: 'POST',
         mode: 'cors',
@@ -88,7 +87,7 @@ async function returnByReviewer() {
         'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
         'Content-Type': "application/json; charset=utf-8"
     }
-    const activeCollection = collectionMap.get(collections.querySelector('.collection.selected').innerText)
+    const activeCollection = collectionMap.get(collections.querySelector('[selected]').value)
     const managedlist = await fetch(activeCollection.managed)
         .then(res => res.ok ? res.json() : Promise.reject(res))
         .then(list => {
@@ -185,7 +184,7 @@ async function curatorApproval() {
         'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
         'Content-Type': "application/json; charset=utf-8"
     }
-    const activeCollection = collectionMap.get(collections.querySelector('.collection.selected').innerText)
+    const activeCollection = collectionMap.get(collections.querySelector('[selected]').value)
     const activeRecord = await fetch(activeCollection.managed)
         .then(res => res.ok ? res.json() : Promise.reject(res))
         .then(array => array.itemListElement.find(r => r['@id'] === preview.getAttribute("deer-id")))
@@ -211,7 +210,7 @@ async function curatorApproval() {
         })
 }
 async function curatorReturn() {
-    const activeCollection = collectionMap.get(collections.querySelector('.collection.selected').innerText)
+    const activeCollection = collectionMap.get(collections.querySelector('[selected]').value)
     const activeRecord = preview.getAttribute("deer-id")
     // TODO: This is nearly a straight C/P frpm above
     const headers = {
@@ -323,8 +322,8 @@ async function getCuratorQueue(publicCollection, managedCollection, limit = 10) 
     queue.querySelectorAll('li').forEach(addRecordHandlers)
 }
 
-function attachCollectionHandlers(button) {
-    button.addEventListener('click', fetchItems)
+function attachCollectionHandler(selectElement) {
+    selectElement.addEventListener('input', fetchItems)
 }
 
 function addRecordHandlers(record) {
@@ -335,15 +334,17 @@ function countItems(collection) {
     records.innerText = collection.numberOfItems
 }
 
+const select = document.createElement('select')
 collectionMap.forEach((v, k) => {
-    const btn = document.createElement('a')
-    btn.classList.add('collection')
-    btn.dataset.uri = v.public
-    btn.dataset.managed = v.managed
-    btn.innerText = k
-    collections.append(btn)
-    attachCollectionHandlers(btn)
+    const opt = document.createElement('option')
+    opt.classList.add('collection')
+    opt.dataset.uri = v.public
+    opt.dataset.managed = v.managed
+    opt.innerText = opt.value = k
+    select.append(opt)
 })
+collections.append(select)
+attachCollectionHandler(select)
 
 document.querySelector('auth-button button').addEventListener('dla-authenticated', drawUser)
 
