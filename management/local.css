@@ -1,6 +1,7 @@
-.collection {
-    padding: 1.68em;
-    width  : clamp(30vw, 6em, 50vw);
+#collections select {
+    font-size: 1.32em;
+    padding: .68em;
+    width  : 100%;
     display: inline-block;
     margin : 0.32em;
     border: solid thin;

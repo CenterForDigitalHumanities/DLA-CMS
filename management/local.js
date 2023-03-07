@@ -8,17 +8,18 @@ function fetchItems(event) {
         .then(([publicCollection, managedCollection]) => {
             countItems(publicCollection)
             if (DLA_USER['http://dunbar.rerum.io/user_roles'].roles.includes('dunbar_user_reviewer')) {
-                getReviewerQueue(publicCollection, managedCollection)
                 approveBtn.addEventListener('click', approveByReviewer)
                 returnBtn.addEventListener('click', returnByReviewer)
+                return getReviewerQueue(publicCollection, managedCollection)
             }
             if (DLA_USER['http://dunbar.rerum.io/user_roles'].roles.includes('dunbar_user_curator')) {
-                getCuratorQueue(publicCollection, managedCollection)
                 approveBtn.addEventListener('click', curatorApproval)
                 returnBtn.addEventListener('click', curatorReturn)
+                return getCuratorQueue(publicCollection, managedCollection)
             }
-            selectedCollection.options[0].selected = true
         })
+        .then(ok=>queue.querySelector('li').click())
+        .catch(err=>console.error(err))
 }
 
 function showRecordPreview(event) {
@@ -304,6 +305,7 @@ async function getReviewerQueue(publicCollection, managedCollection, limit = 10)
 
     queue.innerHTML = `<h3>Queue for Review</h3>
     <ol>${tempQueue.reduce((a, b) => a += `<li data-id="${b['@id']}">${b.label}</li>`, ``)}</ol>`
+    queue.querySelectorAll('li').forEach(addRecordHandlers)
 }
 
 async function getCuratorQueue(publicCollection, managedCollection, limit = 10) {
@@ -357,6 +359,8 @@ function drawUser() {
     user.innerHTML = `
     <p>▶ Logged in as ${DLA_USER.nickname ?? DLA_USER.name} with role${roles.length > 1 ? `s` : ``} ${roles.map(r => r.split('_').pop()).join(" | ")}.</p>
     `
-    collections.querySelector('.collection').click()
+    const select = collections.querySelector('select')
+    select.options.selected = true
+    select.dispatchEvent(new Event('input'))
 }
 export { collectionMap }
