@@ -78,24 +78,30 @@ export default {
                 <dd> ${ obj.tpenProject?.[0].value ?? obj.tpenProject?.value ?? obj.tpenProject ?? '<span class="alert">⚠ No connected project</span>'}</dd>
                 <dt> Record creator </dt>
                 <dd> <deer-view deer-id="${ obj.creator?.value ?? obj.creator }" deer-template="label">${ obj.creator?.value ?? obj.creator }</deer-view></dd>
+            </dl>
+            <deer-view id="previewTranscription" deer-template="folioTranscription" deer-id="${obj['@id']}"></deer-view>
         `,
         metadataPoem: obj => this.TEMPLATES.entity,
         preview: obj => {
             let templateDetail = "json"
+            let templateLink = "#"
             switch (obj.targetCollection?.value) {
-                case "Correspondence between Paul Laurence Dunbar and Alice Moore Dunbar": "metadataLetter"
+                case "Correspondence between Paul Laurence Dunbar and Alice Moore Dunbar": 
+                    templateDetail = "metadataLetter"
+                    templateLink = `http://dunbar-letters.rerum.io/ms.html#${obj['@id']}`
                     break
-                case "Published Poems Collection": "metadataPoem"
+                case "DLA Poems Collection": 
+                    templateDetail = "metadataPoem"
+                    templateLink = `http://dunbar-poems.rerum.io/poem.html#${obj['@id']}`
                     break
                 default: "entity"
 
             }
             return `
             <div>
-                <deer-view deer-template="metadataLetter" deer-id="${obj['@id']}"></deer-view>
-                <a href="http://dunbar-letters.rerum.io/ms.html#${obj['@id']}" target="_blank">Modify Description</a>
+                <a href="${templateLink}" target="_blank">Modify Description</a>
+                <deer-view deer-template="${templateDetail}" deer-id="${obj['@id']}"></deer-view>
             </div>
-            <deer-view id="previewTranscription" deer-template="folioTranscription" deer-id="${obj['@id']}"></deer-view>
         `},
         /**
  * Retreive the best label for object and return it formatted as HTML to be drawn.  
