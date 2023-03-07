@@ -77,7 +77,10 @@ async function approveByReviewer() {
     publishFetch
         .then(res => res.ok || Promise.reject(res))
         .then(success => approveBtn.replaceWith("✔ published"))
-    // TODO: clear item from queue and refresh
+        .then(ok=>{
+            queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).remove()
+            queue.querySelector('li').click()
+        })
 }
 
 async function returnByReviewer() {
@@ -101,6 +104,10 @@ async function returnByReviewer() {
     })
         .then(res => res.ok ? res.json() : Promise.reject(res))
         .then(success => approveBtn.replaceWith(`❌ Removed`))
+        .then(ok=>{
+            queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).remove()
+            queue.querySelector('li').click()
+        })
 
     recordComment(callback)
 }
@@ -198,6 +205,10 @@ async function curatorApproval() {
     })
         .then(res => res.ok ? res.json() : Promise.reject(res))
         .then(success => approveBtn.replaceWith(`✔ Published`))
+        .then(ok=>{
+            queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).remove()
+            queue.querySelector('li').click()
+        })
 }
 async function curatorReturn() {
     const activeCollection = collectionMap.get(collections.querySelector('.collection.selected').innerText)
@@ -251,6 +262,10 @@ async function curatorReturn() {
         publishFetch
             .then(res => res.ok || Promise.reject(res))
             .then(success => approveBtn.replaceWith("✔ published"))
+            .then(ok=>{
+                queue.querySelector(`[data-id="${activeRecord}"]`).remove()
+                queue.querySelector('li').click()
+            })
     }
 
     recordComment(callback)
@@ -288,7 +303,8 @@ async function getReviewerQueue(publicCollection, managedCollection, limit = 10)
         default: tempQueue = disclusions.slice(0, limit)
     }
 
-    queue.innerHTML = `<ol>${tempQueue.reduce((a, b) => a += `<li data-id="${b['@id']}">${b.label}</li>`, ``)}</ol>`
+    queue.innerHTML = `<h3>Queue for Review</h3>
+    <ol>${tempQueue.reduce((a, b) => a += `<li data-id="${b['@id']}">${b.label}</li>`, ``)}</ol>`
 }
 
 async function getCuratorQueue(publicCollection, managedCollection, limit = 10) {
