@@ -62,27 +62,41 @@ export default {
     TEMPLATES: {
         cat: (obj) => `<h5>${obj.name}</h5><img src="http://placekitten.com/300/150" style="width:100%;">`,
         metadataLetter: obj => `
-            <dl>
-                <dt> Label </dt>
-                <dd> ${ obj.label.value ?? obj.label }</dd>
+            <p>Letter between Paul and Alice, sent ${obj.date?.value ?? obj.date ?? '<span class="alert">⚠ NO DATE SET ⚠</span>'}
+            from ${obj.fromLocation?.value ?? obj.fromLocation ?? '<span class="alert">⚠ NO CITY WHENCE ⚠</span>'} to 
+            ${obj.toLocation?.value ?? obj.toLocation ?? '<span class="alert">⚠ NO CITY WHITHER ⚠</span>'}.</p>
+            <dl class="metadata">
+                <dt> Record Label </dt>
+                <dd> ${ obj.label?.value ?? obj.label ?? '<span class="alert">⚠ Missing label</span>' }</dd>
                 <dt> URI </dt>
-                <dd> ${ obj['@id'] }</dd>
+                <dd> ${ obj['@id'] ?? obj.id }</dd>
                 <dt> type </dt>
-                <dd> ${ obj['@type'] }</dd>
+                <dd> ${ obj['@type'] ?? obj.type }</dd>
                 <dt> Collection </dt>
-                <dd> ${ obj.targetCollection.value }</dd>
+                <dd> ${ obj.targetCollection?.value }</dd>
                 <dt> Transcription project ID </dt>
-                <dd> ${ obj.tpenProject?.[0].value ?? obj.tpenProject.value ?? obj.tpenProject }</dd>
+                <dd> ${ obj.tpenProject?.[0].value ?? obj.tpenProject?.value ?? obj.tpenProject ?? '<span class="alert">⚠ No connected project</span>'}</dd>
                 <dt> Record creator </dt>
-                <dd> <deer-view deer-id="${ obj.creator.value ?? obj.creator }" deer-template="label">${ obj.creator.value ?? obj.creator }</deer-view></dd>
+                <dd> <deer-view deer-id="${ obj.creator?.value ?? obj.creator }" deer-template="label">${ obj.creator?.value ?? obj.creator }</deer-view></dd>
         `,
-        preview: obj => `
+        metadataPoem: obj => this.TEMPLATES.entity,
+        preview: obj => {
+            let templateDetail = "json"
+            switch (obj.targetCollection?.value) {
+                case "Correspondence between Paul Laurence Dunbar and Alice Moore Dunbar": "metadataLetter"
+                    break
+                case "Published Poems Collection": "metadataPoem"
+                    break
+                default: "entity"
+
+            }
+            return `
             <div>
                 <deer-view deer-template="metadataLetter" deer-id="${obj['@id']}"></deer-view>
                 <a href="http://dunbar-letters.rerum.io/ms.html#${obj['@id']}" target="_blank">Modify Description</a>
             </div>
             <deer-view id="previewTranscription" deer-template="folioTranscription" deer-id="${obj['@id']}"></deer-view>
-        `,
+        `},
         /**
  * Retreive the best label for object and return it formatted as HTML to be drawn.  
  * @param {Object} obj some obj to be labeled
