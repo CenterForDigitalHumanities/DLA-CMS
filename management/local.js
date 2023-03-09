@@ -88,7 +88,8 @@ async function returnByReviewer() {
         'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
         'Content-Type': "application/json; charset=utf-8"
     }
-    const activeCollection = collectionMap.get(collections.querySelector('[selected]').value)
+    const selectedCollection = collections.querySelector("select").selectedOptions[0]
+    const activeCollection = collectionMap.get(selectedCollection.value)
     const managedlist = await fetch(activeCollection.managed)
         .then(res => res.ok ? res.json() : Promise.reject(res))
         .then(list => {
@@ -96,23 +97,22 @@ async function returnByReviewer() {
             list.numberOfItems = list.itemListElement.length
             return list
         })
-    const callback = fetch("http://tinypaul.rerum.io/dla/overwrite", {
+    const callback = (commentID) => fetch("http://tinypaul.rerum.io/dla/overwrite", {
         method: 'PUT',
         mode: 'cors',
         body: JSON.stringify(managedlist),
         headers
     })
-        .then(res => res.ok ? res.json() : Promise.reject(res))
-        .then(success => approveBtn.replaceWith(`❌ Removed`))
-        .then(ok=>{
-            queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).remove()
-            queue.querySelector('li').click()
-        })
-
-    recordComment(callback)
+    .then(res => res.ok ? res.json() : Promise.reject(res))
+    .then(success => approveBtn.replaceWith(`❌ Removed`))
+    .then(ok=>{
+        queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).remove()
+        queue.querySelector('li').click()
+    })
+    recordComment(callback, "commenting")
 }
 
-async function recordComment(callback) {
+async function recordComment(callback, motiv) {
     const modalComment = document.createElement('div')
     modalComment.classList.add('modal')
     modalComment.innerHTML = `
@@ -120,42 +120,50 @@ async function recordComment(callback) {
     <p> Explain why this Record is not ready for release or request changes. </p>
     <textarea></textarea>
     <button role="button">Commit message</button>
-    <a href="#" onclick="this.parentElement.remove">❌ Cancel</a>
+    <a class="modal" href="#" onclick="this.parentElement.remove">❌ Cancel</a>
     `
     document.body.append(modalComment)
+    //Save the comment then do the callback for recording the rejection
     document.querySelector('.modal button').addEventListener('click', async ev => {
         ev.preventDefault()
         const text = document.querySelector('.modal textarea').value
-        const commentID = await saveComment(preview.getAttribute("deer-id"), text)
+        const commentID = await saveComment(preview.getAttribute("deer-id"), text, motiv)
         document.querySelector('.modal').remove()
         callback(commentID)
     })
+    //Do not save a comment and do the callback for recording the rejection
+    document.querySelector('.modal a').addEventListener('click', async ev => {
+        ev.preventDefault()
+        document.querySelector('.modal').remove()
+        callback()
+    })
 }
 
-async function saveComment(target, text) {
+async function saveComment(target, text, motiv) {
     const headers = {
         'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
         'Content-Type': "application/json; charset=utf-8"
     }
-    const queryObj = {
+
+    const queryComment = {
         "body.comment": { $exists: true },
+        "motivation" : motiv,
         "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] },
         target
     }
 
-
     let commented = await fetch("http://tinypaul.rerum.io/dla/query", {
         method: 'POST',
         mode: 'cors',
-        body: JSON.stringify(queryObj)
+        body: JSON.stringify(queryComment)
     })
-        .then(res => res.ok ? res.json() : Promise.reject(res))
+    .then(res => res.ok ? res.json() : Promise.reject(res))
 
-    const dismissingComment = Object.assign(commented[0] ?? {
+    const comment = Object.assign(commented[0] ?? {
         "@context": "http://www.w3.org/ns/anno.jsonld",
         type: "Annotation",
         target,
-        motivation: "moderating"
+        motivation: motiv
     }, {
         comment: {
             type: "Comment",
@@ -163,6 +171,7 @@ async function saveComment(target, text) {
             text
         }
     })
+
     let commentFetch = (commented.length === 0)
         ? fetch("http://tinypaul.rerum.io/dla/create", {
             method: 'POST',
@@ -257,8 +266,8 @@ async function curatorReturn() {
             headers
         })
 
-    const callback = commentID => {
-        reviewComment.body.resultComment = commentID
+    const callback = (commentID) => {
+        if(commentID){reviewComment.body.resultComment = commentID}
         publishFetch
             .then(res => res.ok || Promise.reject(res))
             .then(success => approveBtn.replaceWith("✔ published"))
@@ -267,10 +276,7 @@ async function curatorReturn() {
                 queue.querySelector('li').click()
             })
     }
-
-    recordComment(callback)
-    // TODO: clear item from queue and refresh
-
+    recordComment(callback, "moderating")
 }
 
 async function getReviewerQueue(publicCollection, managedCollection, limit = 10) {
