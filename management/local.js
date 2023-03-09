@@ -119,21 +119,26 @@ async function recordComment(callback, motiv) {
     <header>Return with comment</header>
     <p> Explain why this Record is not ready for release or request changes. </p>
     <textarea></textarea>
-    <button role="button">Commit message</button>
-    <a class="modal" href="#" onclick="this.parentElement.remove">❌ Cancel</a>
+    <button role="withmessage">Reject With Message</button>
+    <button role="nomessage">Reject Without Message</button>
+    <a href="#" onclick="this.parentElement.remove">❌ Cancel</a>
     `
     document.body.append(modalComment)
     //Save the comment then do the callback for recording the rejection
-    document.querySelector('.modal button').addEventListener('click', async ev => {
+    document.querySelector('.modal button[role="withmessage"]').addEventListener('click', async ev => {
         ev.preventDefault()
+        const conf = confirm("This record will be rejected.  Click OK to continue")
+        if(!conf){return}
         const text = document.querySelector('.modal textarea').value
         const commentID = await saveComment(preview.getAttribute("deer-id"), text, motiv)
         document.querySelector('.modal').remove()
         callback(commentID)
     })
     //Do not save a comment and do the callback for recording the rejection
-    document.querySelector('.modal a').addEventListener('click', async ev => {
+    document.querySelector('.modal button[role="nomessage"]').addEventListener('click', async ev => {
         ev.preventDefault()
+        const conf = confirm("This record will be rejected.  Click OK to continue")
+        if(!conf){return}
         document.querySelector('.modal').remove()
         callback()
     })
@@ -163,12 +168,13 @@ async function saveComment(target, text, motiv) {
         "@context": "http://www.w3.org/ns/anno.jsonld",
         type: "Annotation",
         target,
-        motivation: motiv
-    }, {
-        comment: {
-            type: "Comment",
-            author: DLA_USER['http://store.rerum.io/agent'],
-            text
+        motivation: motiv,
+        body:{
+            comment: {
+                type: "Comment",
+                author: DLA_USER['http://store.rerum.io/agent'],
+                text
+            }    
         }
     })
 
@@ -176,13 +182,13 @@ async function saveComment(target, text, motiv) {
         ? fetch("http://tinypaul.rerum.io/dla/create", {
             method: 'POST',
             mode: 'cors',
-            body: JSON.stringify(dismissingComment),
+            body: JSON.stringify(comment),
             headers
         })
         : fetch("http://tinypaul.rerum.io/dla/update", {
             method: 'PUT',
             mode: 'cors',
-            body: JSON.stringify(dismissingComment),
+            body: JSON.stringify(comment),
             headers
         })
     return commentFetch
