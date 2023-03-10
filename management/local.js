@@ -30,6 +30,9 @@ function showRecordPreview(event) {
     event.target.classList.add('selected')
 }
 
+/**
+ * Generate or update the moderating Annotation for this record to include the collection this record is released to.
+ */ 
 async function approveByReviewer() {
     const headers = {
         'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
@@ -40,7 +43,8 @@ async function approveByReviewer() {
         "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] },
         target: preview.getAttribute("deer-id")
     }
-    const activeCollection = collectionMap.get(collections.querySelector('[selected]').value)
+    const selectedCollection = collections.querySelector("select").selectedOptions[0]
+    const activeCollection = collectionMap.get(selectedCollection.value)
     let reviewed = await fetch("http://tinypaul.rerum.io/dla/query", {
         method: 'POST',
         mode: 'cors',
@@ -48,12 +52,12 @@ async function approveByReviewer() {
     })
         .then(res => res.ok ? res.json() : Promise.reject(res))
 
+    //CANNOT SAVE null INTO OUR MONGO -- objects become 404
     const reviewComment = Object.assign(reviewed[0] ?? {
         "@context": "http://www.w3.org/ns/anno.jsonld",
         type: "Annotation",
         target: preview.getAttribute("deer-id"),
-        motivation: "moderating"
-    }, {
+        motivation: "moderating",
         creator: DLA_USER['http://store.rerum.io/agent'],
         body: {
             releaseTo: activeCollection.public,
@@ -83,6 +87,10 @@ async function approveByReviewer() {
         })
 }
 
+/**
+ * Removed this record from the managed list.  Add the optional comment to flag it as rejected for contributors.
+ * Note once this commenting Annotation exists, this record will always appear to contributors as rejected when it is not in the managed list.
+ */ 
 async function returnByReviewer() {
     const headers = {
         'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
@@ -112,6 +120,12 @@ async function returnByReviewer() {
     recordComment(callback, "commenting")
 }
 
+/**
+ * Offer a UI for the comment from a reviewer or contributor
+ * reviewer comments are saved as a commenting Annotation
+ * curator comments as saved as an emdedded string in the moderating Annotation
+ * The callback() is handled in returnByReviewer() and returnByCurator()
+ */ 
 async function recordComment(callback, motiv) {
     const modalComment = document.createElement('div')
     modalComment.classList.add('modal')
@@ -124,15 +138,23 @@ async function recordComment(callback, motiv) {
     <a href="#" onclick="this.parentElement.remove">❌ Cancel</a>
     `
     document.body.append(modalComment)
-    //Save the comment then do the callback for recording the rejection
     document.querySelector('.modal button[role="withmessage"]').addEventListener('click', async ev => {
         ev.preventDefault()
         const conf = confirm("This record will be rejected.  Click OK to continue")
         if(!conf){return}
         const text = document.querySelector('.modal textarea').value
-        const commentID = await saveComment(preview.getAttribute("deer-id"), text, motiv)
+        let comment 
+        if(motiv === "commenting"){
+            //reviewer rejection, their note is tracked in a separate commenting Annotation handled here.
+            comment = await saveComment(preview.getAttribute("deer-id"), text)    
+        }
+        else{
+            //curator rejection, their note is tracked as a string embedded in the moderating Annotation.
+            //this is handled in the callback()
+            comment = text
+        }
         document.querySelector('.modal').remove()
-        callback(commentID)
+        callback(comment)
     })
     //Do not save a comment and do the callback for recording the rejection
     document.querySelector('.modal button[role="nomessage"]').addEventListener('click', async ev => {
@@ -140,23 +162,27 @@ async function recordComment(callback, motiv) {
         const conf = confirm("This record will be rejected.  Click OK to continue")
         if(!conf){return}
         document.querySelector('.modal').remove()
-        callback()
+        callback("")
     })
 }
 
+
+/**
+ * Save or overwrite the commenting Annotation if the user is a reviewer.  Supports returnByReviewer().
+ * Curator comments are not tracked by a separate Annotation.  They are embedded as resultComment in the moderating Annotation.
+ * That resultComment is handled directly in curatorReturn()
+ */ 
 async function saveComment(target, text, motiv) {
     const headers = {
         'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
         'Content-Type': "application/json; charset=utf-8"
     }
-
     const queryComment = {
         "body.comment": { $exists: true },
-        "motivation" : motiv,
+        "motivation" : "commenting",
         "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] },
         target
     }
-
     let commented = await fetch("http://tinypaul.rerum.io/dla/query", {
         method: 'POST',
         mode: 'cors',
@@ -164,11 +190,11 @@ async function saveComment(target, text, motiv) {
     })
     .then(res => res.ok ? res.json() : Promise.reject(res))
 
-    const comment = Object.assign(commented[0] ?? {
+    const comment = {
         "@context": "http://www.w3.org/ns/anno.jsonld",
         type: "Annotation",
         target,
-        motivation: motiv,
+        motivation: "commenting",
         body:{
             comment: {
                 type: "Comment",
@@ -176,7 +202,7 @@ async function saveComment(target, text, motiv) {
                 text
             }    
         }
-    })
+    }
 
     let commentFetch = (commented.length === 0)
         ? fetch("http://tinypaul.rerum.io/dla/create", {
@@ -185,7 +211,7 @@ async function saveComment(target, text, motiv) {
             body: JSON.stringify(comment),
             headers
         })
-        : fetch("http://tinypaul.rerum.io/dla/update", {
+        : fetch("http://tinypaul.rerum.io/dla/overwrite", {
             method: 'PUT',
             mode: 'cors',
             body: JSON.stringify(comment),
@@ -195,12 +221,16 @@ async function saveComment(target, text, motiv) {
         .then(res => res.ok ? res.headers.get('location') : Promise.reject(res))
 }
 
+/**
+ * Add this record to the published list
+ */ 
 async function curatorApproval() {
     const headers = {
         'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
         'Content-Type': "application/json; charset=utf-8"
     }
-    const activeCollection = collectionMap.get(collections.querySelector('[selected]').value)
+    const selectedCollection = collections.querySelector("select").selectedOptions[0]
+    const activeCollection = collectionMap.get(selectedCollection.value)
     const activeRecord = await fetch(activeCollection.managed)
         .then(res => res.ok ? res.json() : Promise.reject(res))
         .then(array => array.itemListElement.find(r => r['@id'] === preview.getAttribute("deer-id")))
@@ -212,23 +242,27 @@ async function curatorApproval() {
     }
     list.itemListElement.push(activeRecord)
     list.numberOfItems = list.itemListElement.length
-    fetch("http://tinypaul.rerum.io/dla/update", {
+    fetch("http://tinypaul.rerum.io/dla/overwrite", {
         method: 'PUT',
         mode: 'cors',
         body: JSON.stringify(list),
         headers
     })
-        .then(res => res.ok ? res.json() : Promise.reject(res))
-        .then(success => approveBtn.replaceWith(`✔ Published`))
-        .then(ok=>{
-            queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).remove()
-            queue.querySelector('li').click()
-        })
+    .then(res => res.ok ? res.json() : Promise.reject(res))
+    .then(success => approveBtn.replaceWith(`✔ Published`))
+    .then(ok=>{
+        queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).remove()
+        queue.querySelector('li').click()
+    })
 }
+
+/**
+ * Reject the moderation into the public list.  Update the moderating Annotation.
+ * Set an embedded resultMessage text (not tracked as a separate Annotation)
+ */ 
 async function curatorReturn() {
-    const activeCollection = collectionMap.get(collections.querySelector('[selected]').value)
-    const activeRecord = preview.getAttribute("deer-id")
-    // TODO: This is nearly a straight C/P frpm above
+    const selectedCollection = collections.querySelector("select").selectedOptions[0]
+    const activeCollection = collectionMap.get(selectedCollection.value)
     const headers = {
         'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
         'Content-Type': "application/json; charset=utf-8"
@@ -238,45 +272,44 @@ async function curatorReturn() {
         "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] },
         target: preview.getAttribute("deer-id")
     }
-    let reviewed = await fetch("http://tinypaul.rerum.io/dla/query", {
+    let moderated = await fetch("http://tinypaul.rerum.io/dla/query", {
         method: 'POST',
         mode: 'cors',
         body: JSON.stringify(queryObj)
     })
-        .then(res => res.ok ? res.json() : Promise.reject(res))
+    .then(res => res.ok ? res.json() : Promise.reject(res))
 
-    const reviewComment = Object.assign(reviewed[0] ?? {
+    let moderation = Object.assign(moderated[0] ?? {
         "@context": "http://www.w3.org/ns/anno.jsonld",
         type: "Annotation",
         target: preview.getAttribute("deer-id"),
-        motivation: "moderating"
-    }, {
-        creator: DLA_USER['http://store.rerum.io/agent'],
-        body: {
-            releaseTo: null,
-            resultComment: null
-        }
+        motivation: "moderating",
+        creator: DLA_USER['http://store.rerum.io/agent']
     })
+    moderation.body = {}
+    //CANNOT SAVE null INTO OUR MONGO -- objects become 404
+    moderation.body.releasedTo = null
+    moderation.body.resultComment = null
 
     const publishFetch = (reviewed.length === 0)
         ? fetch("http://tinypaul.rerum.io/dla/create", {
             method: 'POST',
             mode: 'cors',
-            body: JSON.stringify(reviewComment),
+            body: JSON.stringify(moderation),
             headers
         })
-        : fetch("http://tinypaul.rerum.io/dla/overwrite", {
+        : fetch("http://tinypaul.rerum.io/dla/update", {
             method: 'PUT',
             mode: 'cors',
-            body: JSON.stringify(reviewComment),
+            body: JSON.stringify(moderation),
             headers
         })
 
-    const callback = (commentID) => {
-        if(commentID){reviewComment.body.resultComment = commentID}
+    const callback = (commentText) => {
+        if(commentText){moderation.body.resultComment = commentText}
         publishFetch
             .then(res => res.ok || Promise.reject(res))
-            .then(success => approveBtn.replaceWith("✔ published"))
+            .then(success => approveBtn.replaceWith(`❌ Removed`))
             .then(ok=>{
                 queue.querySelector(`[data-id="${activeRecord}"]`).remove()
                 queue.querySelector('li').click()
