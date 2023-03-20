@@ -28,6 +28,22 @@ function showRecordPreview(event) {
     preview.setAttribute("deer-id", event.target.dataset.id)
     queue.querySelector(".selected")?.classList.remove("selected")
     event.target.classList.add('selected')
+    const headers = {
+        'Content-Type': "application/json; charset=utf-8"
+    }
+    const queryObj = {
+        "body.releasedTo": { $exists: true },
+        "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] },
+        target: event.target.dataset.id
+    }
+    fetch("http://tinypaul.rerum.io/dla/query", {
+        method: 'POST',
+        mode: 'cors',
+        body: JSON.stringify(queryObj)
+    })
+        .then(res => res.ok ? res.json() : Promise.reject(res))
+        .then(comment=>comment[0] && actions.append(`Comment from ${comment[0].body.author}: `))
+
 }
 
 async function approveByReviewer() {
@@ -157,7 +173,7 @@ async function saveComment(target, text) {
         target,
         motivation: "moderating"
     }, {
-        comment: {
+        body: {
             type: "Comment",
             author: DLA_USER['http://store.rerum.io/agent'],
             text
