@@ -40,7 +40,7 @@ async function approveByReviewer() {
         "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] },
         target: preview.getAttribute("deer-id")
     }
-    const activeCollection = collectionMap.get(collections.querySelector('[selected]').value)
+    const activeCollection = collectionMap.get(selectedCollectionElement.value)
     let reviewed = await fetch("http://tinypaul.rerum.io/dla/query", {
         method: 'POST',
         mode: 'cors',
@@ -88,7 +88,7 @@ async function returnByReviewer() {
         'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
         'Content-Type': "application/json; charset=utf-8"
     }
-    const activeCollection = collectionMap.get(collections.querySelector('[selected]').value)
+    const activeCollection = collectionMap.get(selectedCollectionElement.value)
     const managedlist = await fetch(activeCollection.managed)
         .then(res => res.ok ? res.json() : Promise.reject(res))
         .then(list => {
@@ -185,7 +185,7 @@ async function curatorApproval() {
         'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
         'Content-Type': "application/json; charset=utf-8"
     }
-    const activeCollection = collectionMap.get(collections.querySelector('[selected]').value)
+    const activeCollection = collectionMap.get(selectedCollectionElement.value)
     const activeRecord = await fetch(activeCollection.managed)
         .then(res => res.ok ? res.json() : Promise.reject(res))
         .then(array => array.itemListElement.find(r => r['@id'] === preview.getAttribute("deer-id")))
@@ -211,7 +211,7 @@ async function curatorApproval() {
         })
 }
 async function curatorReturn() {
-    const activeCollection = collectionMap.get(collections.querySelector('[selected]').value)
+    const activeCollection = collectionMap.get(selectedCollectionElement.value)
     const activeRecord = preview.getAttribute("deer-id")
     // TODO: This is nearly a straight C/P frpm above
     const headers = {
@@ -337,6 +337,7 @@ function countItems(collection) {
 }
 
 const select = document.createElement('select')
+select.id = "selectedCollectionElement"
 collectionMap.forEach((v, k) => {
     const opt = document.createElement('option')
     opt.classList.add('collection')
@@ -359,8 +360,7 @@ function drawUser() {
     user.innerHTML = `
     <p>▶ Logged in as ${DLA_USER.nickname ?? DLA_USER.name} with role${roles.length > 1 ? `s` : ``} ${roles.map(r => r.split('_').pop()).join(" | ")}.</p>
     `
-    const select = collections.querySelector('select')
-    select.options.selected = true
-    select.dispatchEvent(new Event('input'))
+    selectedCollectionElement.options[0].selected = true
+    selectedCollectionElement.dispatchEvent(new Event('input'))
 }
 export { collectionMap }
