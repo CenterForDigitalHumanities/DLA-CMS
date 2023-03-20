@@ -42,7 +42,7 @@ function showRecordPreview(event) {
         body: JSON.stringify(queryObj)
     })
         .then(res => res.ok ? res.json() : Promise.reject(res))
-        .then(comment=>comment [0] && actions.append(`Comment from ${comment[0].body.resultComment}: `))
+        .then(comment=> (comment[0]) ? actions.querySelector('span').innerHTML = `Comment from ${comment[0].body.resultComment}: ` : ``)
         // .then(comment=>comment[0] && actions.append(`Comment from ${comment[0].body.author}: `))
 
 }
@@ -93,7 +93,7 @@ async function approveByReviewer() {
         })
     publishFetch
         .then(res => res.ok || Promise.reject(res))
-        .then(success => actions.innerHTML=("✔ published"))
+        .then(success => actions.querySelector('span').innerHTML=("✔ published"))
         .then(ok=>{
             queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).remove()
             queue.querySelector('li').click()
@@ -120,7 +120,7 @@ async function returnByReviewer() {
         headers
     })
         .then(res => res.ok ? res.json() : Promise.reject(res))
-        .then(success => actions.innerHTML = (`❌ Removed`))
+        .then(success => actions.querySelector('span').innerHTML = (`❌ Removed`))
         .then(ok=>{
             queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).remove()
             queue.querySelector('li').click()
@@ -221,7 +221,7 @@ async function curatorApproval() {
         headers
     })
         .then(res => res.ok ? res.json() : Promise.reject(res))
-        .then(success => actions.innerHTML = (`✔ Published`))
+        .then(success => actions.querySelector('span').innerHTML = (`✔ Published`))
         .then(ok=>{
             queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).remove()
             queue.querySelector('li').click()
@@ -278,7 +278,7 @@ async function curatorReturn() {
         reviewComment.body.resultComment = commentID
         publishFetch
             .then(res => res.ok || Promise.reject(res))
-            .then(success => actions.innerHTML=("✔ published"))
+            .then(success => actions.querySelector('span').innerHTML=("✔ published"))
             .then(ok=>{
                 queue.querySelector(`[data-id="${activeRecord}"]`).remove()
                 queue.querySelector('li').click()
