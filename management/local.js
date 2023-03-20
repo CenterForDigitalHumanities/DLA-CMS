@@ -76,7 +76,7 @@ async function approveByReviewer() {
         })
     publishFetch
         .then(res => res.ok || Promise.reject(res))
-        .then(success => approveBtn.replaceWith("✔ published"))
+        .then(success => actions.innerHTML=("✔ published"))
         .then(ok=>{
             queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).remove()
             queue.querySelector('li').click()
@@ -96,14 +96,14 @@ async function returnByReviewer() {
             list.numberOfItems = list.itemListElement.length
             return list
         })
-    const callback = fetch("http://tinypaul.rerum.io/dla/overwrite", {
+    const callback = ()=>fetch("http://tinypaul.rerum.io/dla/overwrite", {
         method: 'PUT',
         mode: 'cors',
         body: JSON.stringify(managedlist),
         headers
     })
         .then(res => res.ok ? res.json() : Promise.reject(res))
-        .then(success => approveBtn.replaceWith(`❌ Removed`))
+        .then(success => actions.innerHTML = (`❌ Removed`))
         .then(ok=>{
             queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).remove()
             queue.querySelector('li').click()
@@ -192,7 +192,7 @@ async function curatorApproval() {
     let list = await fetch(activeCollection.public)
         .then(res => res.ok ? res.json() : Promise.reject(res))
     if (list.itemListElement.includes(activeRecord)) {
-        approveBtn.replaceWith(`✔ Published`)
+        actions.innerHTML = (`✔ Published`)
         return // already published, somehow
     }
     list.itemListElement.push(activeRecord)
@@ -204,7 +204,7 @@ async function curatorApproval() {
         headers
     })
         .then(res => res.ok ? res.json() : Promise.reject(res))
-        .then(success => approveBtn.replaceWith(`✔ Published`))
+        .then(success => actions.innerHTML = (`✔ Published`))
         .then(ok=>{
             queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).remove()
             queue.querySelector('li').click()
@@ -261,7 +261,7 @@ async function curatorReturn() {
         reviewComment.body.resultComment = commentID
         publishFetch
             .then(res => res.ok || Promise.reject(res))
-            .then(success => approveBtn.replaceWith("✔ published"))
+            .then(success => actions.innerHTML=("✔ published"))
             .then(ok=>{
                 queue.querySelector(`[data-id="${activeRecord}"]`).remove()
                 queue.querySelector('li').click()
