@@ -32,7 +32,7 @@ function showRecordPreview(event) {
         'Content-Type': "application/json; charset=utf-8"
     }
     const queryObj = {
-        "body.releasedTo": { $exists: true },
+        "body.resultComment": { $exists: true },
         "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] },
         target: event.target.dataset.id
     }
@@ -42,7 +42,8 @@ function showRecordPreview(event) {
         body: JSON.stringify(queryObj)
     })
         .then(res => res.ok ? res.json() : Promise.reject(res))
-        .then(comment=>comment[0] && actions.append(`Comment from ${comment[0].body.author}: `))
+        .then(comment=>comment [0] && actions.append(`Comment from ${comment[0].body.resultComment}: `))
+        // .then(comment=>comment[0] && actions.append(`Comment from ${comment[0].body.author}: `))
 
 }
 
@@ -171,7 +172,7 @@ async function saveComment(target, text) {
         "@context": "http://www.w3.org/ns/anno.jsonld",
         type: "Annotation",
         target,
-        motivation: "moderating"
+        motivation: "commenting"
     }, {
         body: {
             type: "Comment",
