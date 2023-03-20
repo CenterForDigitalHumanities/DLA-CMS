@@ -298,24 +298,24 @@ async function getReviewerQueue(publicCollection, managedCollection, limit = 10)
 
     switch (publicCollection.name) {
         case "Correspondence between Paul Laurence Dunbar and Alice Moore Dunbar":
-            const historyWildcard = { $exists: true, $type: 'array', $eq: [] }
-            const queryObj = {
-                "body.transcriptionStatus": { $exists: true },
-                "__rerum.history.next": historyWildcard
-            }
-            let transcribed = await fetch("http://tinypaul.rerum.io/dla/query", {
-                method: 'POST',
-                mode: 'cors',
-                body: JSON.stringify(queryObj)
-            })
-                .then(res => res.ok ? res.json() : Promise.reject(res))
-            while (tempQueue.length < limit) {
-                let record = transcribed.pop()
-                if (!record) break // used up the list
-                let test = disclusions.find(item => item['@id'] === record.target)
-                if (test) tempQueue.push(test) // candidate for promotion
-            }
-            break
+            // const historyWildcard = { $exists: true, $type: 'array', $eq: [] }
+            // const queryObj = {
+            //     "body.transcriptionStatus": { $exists: true },
+            //     "__rerum.history.next": historyWildcard
+            // }
+            // let transcribed = await fetch("http://tinypaul.rerum.io/dla/query", {
+            //     method: 'POST',
+            //     mode: 'cors',
+            //     body: JSON.stringify(queryObj)
+            // })
+            //     .then(res => res.ok ? res.json() : Promise.reject(res))
+            // while (tempQueue.length < limit) {
+            //     let record = transcribed.pop()
+            //     if (!record) break // used up the list
+            //     let test = disclusions.find(item => item['@id'] === record.target)
+            //     if (test) tempQueue.push(test) // candidate for promotion
+            // }
+            // break
         case "DLA Poems Collection":
         default: tempQueue = disclusions.slice(0, limit)
     }
