@@ -1,4 +1,6 @@
 import { default as UTILS } from '/js/deer-utils.js'
+import DEER from '/js/deer-config.js'
+
 import pLimit from '/js/plimit.js'
 const statlimiter = pLimit(20)
 let tpenProjects = []
@@ -18,7 +20,7 @@ const udelRestHandlePrefix = "https://udspace.udel.edu/rest/handle/"
 const udelIdPrefix = "https://udspace.udel.edu/rest/items/"
 const tpenManifestPrefix = "http://t-pen.org/TPEN/project/"
 const tpenProjectPrefix = "http://t-pen.org/TPEN/transcription.html?projectID="
-const TPproxy = "http://tinypaul.rerum.io/dla/proxy?url="
+const TPproxy = "https://tinypaul.rerum.io/dla/proxy?url="
 let progress = undefined
 //Load it up on paage load!
 gatherBaseData()
@@ -92,7 +94,7 @@ async function getTranscriptionProjects(){
     //     mode: "cors"
     // })
     
-    return fetch(`http://t-pen.org/TPEN/getDunbarProjects`, 
+    return fetch(`https://t-pen.org/TPEN/getDunbarProjects`, 
     {
         method: "GET",
         cache: "default",
@@ -118,7 +120,7 @@ async function getTranscriptionProjects(){
  * Get the DLA managed list from RERUM
  */
 async function getDLAManagedList(){
-    const managedList = "http://store.rerum.io/v1/id/61ae693050c86821e60b5d13"
+    const managedList = "https://store.rerum.io/v1/id/61ae693050c86821e60b5d13"
     //const managedList = ".././media/recordsShort.json"
     if(dlaCollection.itemListElement.length === 0){
         return fetch(managedList, {
@@ -145,7 +147,7 @@ async function getDLAManagedList(){
  * Get the DLA released list from RERUM
  */
 async function getDLAReleasedList(){
-    const releasedListURI = "http://store.rerum.io/v1/id/61ae694e50c86821e60b5d15"
+    const releasedListURI = "https://store.rerum.io/v1/id/61ae694e50c86821e60b5d15"
     if(dlaReleasedCollection.itemListElement.length === 0){
         return fetch(releasedListURI, {
             method: "GET",
@@ -201,7 +203,7 @@ async function getLetterCollectionFromRERUM(){
                 "$size": 0
             }
         }
-        return fetch(`http://tinypaul.rerum.io/dla/query?limit=${lim}&skip=${it}`, {
+        return fetch(`${DEER.URLS.QUERY}?limit=${lim}&skip=${it}`, {
             method: "POST",
             mode: "cors",
             //cache: "default",
@@ -466,7 +468,7 @@ async function fetchQuery(params){
     let queryObj = Object.assign(history, params)
 
     //May have to page these in the future
-    return statlimiter(() => fetch("http://tinypaul.rerum.io/dla/query", {
+    return statlimiter(() => fetch(DEER.URLS.QUERY, {
             method: 'POST',
             //cache: "default",
             mode: 'cors',
