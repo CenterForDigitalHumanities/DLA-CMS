@@ -1,7 +1,7 @@
 const DEV = false // false or comment to turn off
 
-const baseV1 = DEV ? "http://devstore.rerum.io/" : "http://store.rerum.io/"
-const tiny = DEV ? "http://tinydev.rerum.io/app/" : "http://tinypaul.rerum.io/dla/"
+const baseV1 = DEV ? "https://devstore.rerum.io/" : "https://store.rerum.io/"
+const tiny = DEV ? "https://tinydev.rerum.io/app/" : "https://tinypaul.rerum.io/dla/"
 
 export default {
     ID: "deer-id", // attribute, URI for resource to render
@@ -60,7 +60,7 @@ export default {
      * or an HTML String.
      */
     TEMPLATES: {
-        cat: (obj) => `<h5>${obj.name}</h5><img src="http://placekitten.com/300/150" style="width:100%;">`,
+        cat: (obj) => `<h5>${obj.name}</h5><img src="https://placekitten.com/300/150" style="width:100%;">`,
         metadataLetter: obj => `
             <p>Letter between Paul and Alice, sent ${obj.date?.value ?? obj.date ?? '<span class="alert">⚠ NO DATE SET ⚠</span>'}
             from ${obj.fromLocation?.value ?? obj.fromLocation ?? '<span class="alert">⚠ NO CITY WHENCE ⚠</span>'} to 
@@ -88,11 +88,11 @@ export default {
             switch (obj.targetCollection?.value) {
                 case "Correspondence between Paul Laurence Dunbar and Alice Moore Dunbar": 
                     templateDetail = "metadataLetter"
-                    templateLink = `http://dunbar-letters.rerum.io/ms.html#${obj['@id']}`
+                    templateLink = `https://dunbar-letters.rerum.io/ms.html#${obj['@id']}`
                     break
                 case "DLA Poems Collection": 
                     templateDetail = "metadataPoem"
-                    templateLink = `http://dunbar-poems.rerum.io/poem.html#${obj['@id']}`
+                    templateLink = `https://dunbar-poems.rerum.io/poem.html#${obj['@id']}`
                     break
                 default: "entity"
 
