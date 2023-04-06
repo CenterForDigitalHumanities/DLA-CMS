@@ -84,7 +84,7 @@ export default class DeerReport {
 
         if (this.id) {
             //Do we want to expand for all types?
-            UTILS.expand({ "@id": this.id })
+            UTILS.expand({ "@id": this.id.replace('http:','https:') })
                 .then((function (obj) {
                     try {
                         let inputElems = this.inputs

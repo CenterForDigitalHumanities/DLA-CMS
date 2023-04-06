@@ -119,6 +119,7 @@ export default {
             UTILS.warning("Unable to find URI in object:", entity)
             return entity
         }
+        
         let getVal = UTILS.getValue
         return limiter(() => {
             return fetch(findId).then(response => response.json())
