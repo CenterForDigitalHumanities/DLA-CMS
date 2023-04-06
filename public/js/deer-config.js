@@ -85,7 +85,8 @@ export default {
         preview: obj => {
             let templateDetail = "json"
             let templateLink = "#"
-            switch (obj.targetCollection?.value) {
+            const targetCollection = obj.targetCollection?.value ?? obj.targetCollection?.pop().value
+            switch (targetCollection) {
                 case "Correspondence between Paul Laurence Dunbar and Alice Moore Dunbar": 
                     templateDetail = "metadataLetter"
                     templateLink = `https://dunbar-letters.rerum.io/ms.html#${obj['@id']}`
