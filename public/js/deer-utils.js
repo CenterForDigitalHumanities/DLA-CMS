@@ -287,13 +287,14 @@ export default {
         targetStyle = targetStyle.concat(["target", "target.@id", "target.id"]) //target.source?
         let historyWildcard = { "$exists": true, "$size": 0 }
         let obj = { "$or": [], "__rerum.history.next": historyWildcard }
+        const uris = httpsIdArray(id,true)
         for (let target of targetStyle) {
             //Entries that are not strings are not supported.  Ignore those entries.  
             //TODO: should we we let the user know we had to ignore something here?
             if (typeof target === "string") {
-                let o = {}
-                o[target] = id
-                obj["$or"].push(o)
+                uris.forEach(uri=>{
+                    obj.$or.push({target:uri})
+                })
             }
         }
         let matches = await fetch(DEER.URLS.QUERY, {
@@ -305,7 +306,7 @@ export default {
         })
             .then(response => response.json())
             .catch((err) => console.error(err))
-        let local_matches = everything.filter(o => o.target === id)
+        let local_matches = everything.filter(o => httpsIdArray(id,true).includes(o?.target))
         matches = local_matches.concat(matches)
         return matches
     },
@@ -348,6 +349,13 @@ export default {
      * Broadcast a message about DEER
      */
     broadcast: function (event = {}, type, element, obj = {}) {
+        obj = obj ?? {} // null does not trigger default assignment like `obj={}`
+        ;[ 'id', '@id', 'target', 'on' ].forEach( prop=> {
+            try {
+                if (obj.hasOwnProperty(prop)) obj[prop] = obj[prop].replace(/^https?:/,location.protocol)
+            } catch(err) { }
+        })
+
         let e = new CustomEvent(type, { detail: Object.assign(obj, { target: event.target }), bubbles: true })
         element.dispatchEvent(e)
     },
@@ -529,4 +537,10 @@ export default {
             return ""
         }
     }
+}
+
+function httpsIdArray(id,justArray) {
+    if (!id.startsWith("http")) return justArray ? [ id ] : id
+    if (id.startsWith("https://")) return justArray ? [ id, id.replace('https','http') ] : { $or: [ id, id.replace('https','http') ] }
+    return justArray ? [ id, id.replace('http','https') ] : { $or: [ id, id.replace('http','https') ] }
 }

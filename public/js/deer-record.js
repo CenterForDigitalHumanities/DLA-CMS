@@ -31,7 +31,7 @@ async function renderChange(mutationsList) {
                     obj = JSON.parse(localStorage.getItem(id))
                 } catch (err) { }
                 if (!obj || !obj["@id"]) {
-                    obj = await fetch(id).then(response => response.json()).catch(error => error)
+                    obj = await fetch(id.replace('http:','https:')).then(response => response.json()).catch(error => error)
                     if (obj) {
                         localStorage.setItem(obj["@id"] || obj.id, JSON.stringify(obj))
                     } else {
@@ -45,7 +45,7 @@ async function renderChange(mutationsList) {
                 let listensTo = mutation.target.getAttribute(DEER.LISTENING)
                 if (listensTo) {
                     mutation.target.addEventListener(DEER.EVENTS.CLICKED, e => {
-                        let loadId = e.detail["@id"]
+                        let loadId = e.detail["@id"].replace('http:','https:')
                         if (loadId === listensTo) { mutation.target.setAttribute("deer-id", loadId) }
                     })
                 }

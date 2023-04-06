@@ -479,7 +479,8 @@ export default class DeerRender {
             attributes: true
         })
         this.$dirty = false
-        this.id = elem.getAttribute(DEER.ID)
+        this.id = elem.getAttribute(DEER.ID)?.replace('http:','https:')
+
         this.collection = elem.getAttribute(DEER.COLLECTION)
         this.elem = elem
 
