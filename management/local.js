@@ -1,5 +1,12 @@
 const collectionsFile = await fetch('/manage/collections').then(res => res.json())
 const collectionMap = new Map(Object.entries(collectionsFile))
+import DEER from '/js/deer-config.js'
+
+function httpsIdArray(id,justArray) {
+    if (!id.startsWith("http")) return justArray ? [ id ] : id
+    if (id.startsWith("https://")) return justArray ? [ id, id.replace('https','http') ] : { $or: [ id, id.replace('https','http') ] }
+    return justArray ? [ id, id.replace('http','https') ] : { $or: [ id, id.replace('http','https') ] }
+}
 
 function fetchItems(event) {
     const selectedCollection = event.target.selectedOptions[0]
@@ -34,9 +41,9 @@ function showRecordPreview(event) {
     const queryObj = {
         "body.resultComment": { $exists: true },
         "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] },
-        target: event.target.dataset.id
+        target: httpsIdArray(event.target.dataset.id)
     }
-    fetch("http://tinypaul.rerum.io/dla/query", {
+    fetch(DEER.URLS.QUERY, {
         method: 'POST',
         mode: 'cors',
         body: JSON.stringify(queryObj)
@@ -55,10 +62,10 @@ async function approveByReviewer() {
     const queryObj = {
         "body.releasedTo": { $exists: true },
         "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] },
-        target: preview.getAttribute("deer-id")
+        target: httpsIdArray(preview.getAttribute("deer-id"))
     }
     const activeCollection = collectionMap.get(selectedCollectionElement.value)
-    let reviewed = await fetch("http://tinypaul.rerum.io/dla/query", {
+    let reviewed = await fetch(DEER.URLS.QUERY, {
         method: 'POST',
         mode: 'cors',
         body: JSON.stringify(queryObj)
@@ -79,13 +86,13 @@ async function approveByReviewer() {
     })
 
     const publishFetch = (reviewed.length === 0)
-        ? fetch("http://tinypaul.rerum.io/dla/create", {
+        ? fetch(DEER.URLS.CREATE, {
             method: 'POST',
             mode: 'cors',
             body: JSON.stringify(reviewComment),
             headers
         })
-        : fetch("http://tinypaul.rerum.io/dla/overwrite", {
+        : fetch(DEER.URLS.OVERWRITE, {
             method: 'PUT',
             mode: 'cors',
             body: JSON.stringify(reviewComment),
@@ -113,7 +120,7 @@ async function returnByReviewer() {
             list.numberOfItems = list.itemListElement.length
             return list
         })
-    const callback = ()=>fetch("http://tinypaul.rerum.io/dla/overwrite", {
+    const callback = ()=>fetch(DEER.URLS.OVERWRITE, {
         method: 'PUT',
         mode: 'cors',
         body: JSON.stringify(managedlist),
@@ -137,13 +144,13 @@ async function recordComment(callback) {
     <p> Explain why this Record is not ready for release or request changes. </p>
     <textarea></textarea>
     <button role="button">Commit message</button>
-    <a href="#" onclick="this.parentElement.remove">❌ Cancel</a>
+    <a href="#" onclick="this.parentElement.remove()">❌ Cancel</a>
     `
     document.body.append(modalComment)
     document.querySelector('.modal button').addEventListener('click', async ev => {
         ev.preventDefault()
         const text = document.querySelector('.modal textarea').value
-        const commentID = await saveComment(preview.getAttribute("deer-id"), text)
+        const commentID = await saveComment(httpsIdArray(preview.getAttribute("deer-id")), text)
         document.querySelector('.modal').remove()
         callback(commentID)
     })
@@ -161,7 +168,7 @@ async function saveComment(target, text) {
     }
 
 
-    let commented = await fetch("http://tinypaul.rerum.io/dla/query", {
+    let commented = await fetch(DEER.URLS.QUERY, {
         method: 'POST',
         mode: 'cors',
         body: JSON.stringify(queryObj)
@@ -181,13 +188,13 @@ async function saveComment(target, text) {
         }
     })
     let commentFetch = (commented.length === 0)
-        ? fetch("http://tinypaul.rerum.io/dla/create", {
+        ? fetch(DEER.URLS.CREATE, {
             method: 'POST',
             mode: 'cors',
             body: JSON.stringify(dismissingComment),
             headers
         })
-        : fetch("http://tinypaul.rerum.io/dla/update", {
+        : fetch(DEER.URLS.UPDATE, {
             method: 'PUT',
             mode: 'cors',
             body: JSON.stringify(dismissingComment),
@@ -214,7 +221,7 @@ async function curatorApproval() {
     }
     list.itemListElement.push(activeRecord)
     list.numberOfItems = list.itemListElement.length
-    fetch("http://tinypaul.rerum.io/dla/update", {
+    fetch(DEER.URLS.UPDATE, {
         method: 'PUT',
         mode: 'cors',
         body: JSON.stringify(list),
@@ -238,9 +245,9 @@ async function curatorReturn() {
     const queryObj = {
         "body.releasedTo": { $exists: true },
         "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] },
-        target: preview.getAttribute("deer-id")
+        target: httpsIdArray(preview.getAttribute("deer-id"))
     }
-    let reviewed = await fetch("http://tinypaul.rerum.io/dla/query", {
+    let reviewed = await fetch(DEER.URLS.QUERY, {
         method: 'POST',
         mode: 'cors',
         body: JSON.stringify(queryObj)
@@ -261,13 +268,13 @@ async function curatorReturn() {
     })
 
     const publishFetch = (reviewed.length === 0)
-        ? fetch("http://tinypaul.rerum.io/dla/create", {
+        ? fetch(DEER.URLS.CREATE, {
             method: 'POST',
             mode: 'cors',
             body: JSON.stringify(reviewComment),
             headers
         })
-        : fetch("http://tinypaul.rerum.io/dla/overwrite", {
+        : fetch(DEER.URLS.OVERWRITE, {
             method: 'PUT',
             mode: 'cors',
             body: JSON.stringify(reviewComment),
@@ -303,7 +310,7 @@ async function getReviewerQueue(publicCollection, managedCollection, limit = 10)
             //     "body.transcriptionStatus": { $exists: true },
             //     "__rerum.history.next": historyWildcard
             // }
-            // let transcribed = await fetch("http://tinypaul.rerum.io/dla/query", {
+            // let transcribed = await fetch("https://tinypaul.rerum.io/dla/query", {
             //     method: 'POST',
             //     mode: 'cors',
             //     body: JSON.stringify(queryObj)
