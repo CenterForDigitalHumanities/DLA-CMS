@@ -328,7 +328,7 @@ async function getReviewerQueue(publicCollection, managedCollection, limit = 10)
     }
 
     queue.innerHTML = `<h3>Queue for Review</h3>
-    <ol>${tempQueue.reduce((a, b) => a += `<li data-id="${b['@id']}">${b.label}</li>`, ``)}</ol>`
+    <ol>${tempQueue.reduce((a, b) => a += `<li data-id="${b['@id'].replace('http:','https:')}">${b.label}</li>`, ``)}</ol>`
     queue.querySelectorAll('li').forEach(addRecordHandlers)
 }
 
