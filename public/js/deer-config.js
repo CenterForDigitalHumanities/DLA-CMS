@@ -142,14 +142,14 @@ export default {
                         elem.innerHTML = `[ no project linked yet ]`
                         return
                     }
-                    fetch("http://t-pen.org/TPEN/manifest/" + proj)
+                    fetch("https://t-pen.org/TPEN/manifest/" + proj)
                     .then(response => response.json())
                     .then(ms => {
                             const pages = ms.sequences[0].canvases.slice(0, 10).reduce((a, b) => a += `
                             <div class="page">
                                 <h3>${b.label}</h3>
                                 <div class="pull-right col-6">
-                                    <img src="${b.images[0].resource['@id']}">
+                                    <img src="${b.images[0].resource['@id'].replace(/^https?:/,'')}">
                                 </div>
                                 <div>
                                     ${b.otherContent[0].resources.reduce((aa, bb) => aa +=
@@ -190,7 +190,7 @@ export default {
                                 float:left;
                             }
                         </style>
-                        <a href="http://t-pen.org/TPEN/transcription.html?projectID=${parseInt(ms['@id'].split("manifest/")?.[1])}" target="_blank">transcribe on TPEN</a>
+                        <a href="https://t-pen.org/TPEN/transcription.html?projectID=${parseInt(ms['@id'].split("manifest/")?.[1])}" target="_blank">transcribe on TPEN</a>
                         <h2>${ms.label}</h2>
                         ${pages}
                 `})
@@ -347,7 +347,7 @@ export default {
                                     }, {
                                         "body.targetCollection": collection
                                     }],
-                                    target: id,
+                                    target: httpsIdArray(id),
                                     "__rerum.history.next": historyWildcard
                                 }
                                 fetch(`${tiny}query`, {
@@ -383,4 +383,10 @@ export default {
 
     },
     version: "alpha"
+}
+
+function httpsIdArray(id,justArray) {
+    if (!id.startsWith("http")) return justArray ? [ id ] : id
+    if (id.startsWith("https://")) return justArray ? [ id, id.replace('https','http') ] : { $or: [ id, id.replace('https','http') ] }
+    return justArray ? [ id, id.replace('http','https') ] : { $or: [ id, id.replace('http','https') ] }
 }

@@ -169,10 +169,10 @@ DEER.TEMPLATES.thumbs = function (obj, options = {}) {
             try {
                 const proj = obj.tpenProject?.value ?? obj.tpenProject?.pop()?.value ?? obj.tpenProject?.pop() ?? obj.tpenProject
                 if (!proj) { return }    
-                fetch("http://t-pen.org/TPEN/manifest/" + proj)
+                fetch("https://t-pen.org/TPEN/manifest/" + proj)
                     .then(response => response.json())
                     .then(ms => elem.innerHTML = `
-                    ${ms.sequences[0].canvases.slice(0, 10).reduce((a, b) => a += `<img class="thumbnail" src="${b.images[0].resource['@id']}">`, ``)}
+                    ${ms.sequences[0].canvases.slice(0, 10).reduce((a, b) => a += `<img class="thumbnail" src="${b.images[0].resource['@id'].replace(/^https?:/,'')}">`, ``)}
             `)
             } catch {
                 console.log(`No images loaded for transcription project: ${obj.tpenProject?.value}`)

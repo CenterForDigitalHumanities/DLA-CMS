@@ -18,8 +18,8 @@ let assigneeSet = new Set()
 const udelHandlePrefix = "https://udspace.udel.edu/handle/"
 const udelRestHandlePrefix = "https://udspace.udel.edu/rest/handle/"
 const udelIdPrefix = "https://udspace.udel.edu/rest/items/"
-const tpenManifestPrefix = "http://t-pen.org/TPEN/project/"
-const tpenProjectPrefix = "http://t-pen.org/TPEN/transcription.html?projectID="
+const tpenManifestPrefix = "https://t-pen.org/TPEN/project/"
+const tpenProjectPrefix = "https://t-pen.org/TPEN/transcription.html?projectID="
 const TPproxy = "https://tinypaul.rerum.io/dla/proxy?url="
 let progress = undefined
 //Load it up on paage load!
@@ -774,7 +774,7 @@ async function loadInterfaceTPEN() {
             </div>
             -->
             <div class="row">
-                <img class="thumbnail" src="${proj.thumbnail}" >
+                <img class="thumbnail" src="${proj.thumbnail.replace(/^https?:/,'')}" >
                 <dl>
                     ${statusListElements}
                 </dl>
@@ -806,7 +806,7 @@ async function loadInterfaceTPEN() {
     Array.from(tpenRecords).forEach(r => {
         const url = r.getAttribute("data-id")
         let dl = ``
-        tpen_loading.push(statlimiter(() => fetch(url, 
+        tpen_loading.push(statlimiter(() => fetch(url.replace(/^https?:/,''), 
                 {
                     method: "GET",
                     cache: "default",
