@@ -1,7 +1,7 @@
 const DEV = false // false or comment to turn off
 
-const baseV1 = DEV ? "http://devstore.rerum.io/" : "http://store.rerum.io/"
-const tiny = DEV ? "http://tinydev.rerum.io/app/" : "http://tinypaul.rerum.io/dla/"
+const baseV1 = DEV ? "https://devstore.rerum.io/" : "https://store.rerum.io/"
+const tiny = DEV ? "https://tinydev.rerum.io/app/" : "https://tinypaul.rerum.io/dla/"
 
 export default {
     ID: "deer-id", // attribute, URI for resource to render
@@ -60,7 +60,7 @@ export default {
      * or an HTML String.
      */
     TEMPLATES: {
-        cat: (obj) => `<h5>${obj.name}</h5><img src="http://placekitten.com/300/150" style="width:100%;">`,
+        cat: (obj) => `<h5>${obj.name}</h5><img src="https://placekitten.com/300/150" style="width:100%;">`,
         metadataLetter: obj => `
             <p>Letter between Paul and Alice, sent ${obj.date?.value ?? obj.date ?? '<span class="alert">⚠ NO DATE SET ⚠</span>'}
             from ${obj.fromLocation?.value ?? obj.fromLocation ?? '<span class="alert">⚠ NO CITY WHENCE ⚠</span>'} to 
@@ -88,11 +88,11 @@ export default {
             switch (obj.targetCollection?.value) {
                 case "Correspondence between Paul Laurence Dunbar and Alice Moore Dunbar": 
                     templateDetail = "metadataLetter"
-                    templateLink = `http://dunbar-letters.rerum.io/ms.html#${obj['@id']}`
+                    templateLink = `https://dunbar-letters.rerum.io/ms.html#${obj['@id']}`
                     break
                 case "DLA Poems Collection": 
                     templateDetail = "metadataPoem"
-                    templateLink = `http://dunbar-poems.rerum.io/poem.html#${obj['@id']}`
+                    templateLink = `https://dunbar-poems.rerum.io/poem.html#${obj['@id']}`
                     break
                 default: "entity"
 
@@ -142,14 +142,14 @@ export default {
                         elem.innerHTML = `[ no project linked yet ]`
                         return
                     }
-                    fetch("http://t-pen.org/TPEN/manifest/" + proj)
+                    fetch("https://t-pen.org/TPEN/manifest/" + proj)
                     .then(response => response.json())
                     .then(ms => {
                             const pages = ms.sequences[0].canvases.slice(0, 10).reduce((a, b) => a += `
                             <div class="page">
                                 <h3>${b.label}</h3>
                                 <div class="pull-right col-6">
-                                    <img src="${b.images[0].resource['@id']}">
+                                    <img src="${b.images[0].resource['@id'].replace(/^https?:/,'')}">
                                 </div>
                                 <div>
                                     ${b.otherContent[0].resources.reduce((aa, bb) => aa +=
@@ -190,7 +190,7 @@ export default {
                                 float:left;
                             }
                         </style>
-                        <a href="http://t-pen.org/TPEN/transcription.html?projectID=${parseInt(ms['@id'].split("manifest/")?.[1])}" target="_blank">transcribe on TPEN</a>
+                        <a href="https://t-pen.org/TPEN/transcription.html?projectID=${parseInt(ms['@id'].split("manifest/")?.[1])}" target="_blank">transcribe on TPEN</a>
                         <h2>${ms.label}</h2>
                         ${pages}
                 `})
@@ -347,7 +347,7 @@ export default {
                                     }, {
                                         "body.targetCollection": collection
                                     }],
-                                    target: id,
+                                    target: httpsIdArray(id),
                                     "__rerum.history.next": historyWildcard
                                 }
                                 fetch(`${tiny}query`, {
@@ -383,4 +383,10 @@ export default {
 
     },
     version: "alpha"
+}
+
+function httpsIdArray(id,justArray) {
+    if (!id.startsWith("http")) return justArray ? [ id ] : id
+    if (id.startsWith("https://")) return justArray ? [ id, id.replace('https','http') ] : { $or: [ id, id.replace('https','http') ] }
+    return justArray ? [ id, id.replace('http','https') ] : { $or: [ id, id.replace('http','https') ] }
 }
