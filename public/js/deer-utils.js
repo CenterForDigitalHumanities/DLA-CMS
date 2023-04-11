@@ -295,6 +295,9 @@ export default {
             if (typeof target === "string") {
                 uris.forEach(uri=>{
                     obj.$or.push({target:uri})
+                    const altQuery = {}
+                    altQuery[target] = uri
+                    obj.$or.push(altQuery)
                 })
             }
         }
