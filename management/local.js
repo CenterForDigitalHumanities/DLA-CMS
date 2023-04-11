@@ -4,8 +4,8 @@ import DEER from '/js/deer-config.js'
 
 function httpsIdArray(id,justArray) {
     if (!id.startsWith("http")) return justArray ? [ id ] : id
-    if (id.startsWith("https://")) return justArray ? [ id, id.replace('https','http') ] : { $or: [ id, id.replace('https','http') ] }
-    return justArray ? [ id, id.replace('http','https') ] : { $or: [ id, id.replace('http','https') ] }
+    if (id.startsWith("https://")) return justArray ? [ id, id.replace('https','http') ] : { $in: [ id, id.replace('https','http') ] }
+    return justArray ? [ id, id.replace('http','https') ] : { $in: [ id, id.replace('http','https') ] }
 }
 
 function fetchItems(event) {
