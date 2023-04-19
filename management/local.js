@@ -40,18 +40,19 @@ function showRecordPreview(event) {
         'Content-Type': "application/json; charset=utf-8"
     }
     const queryObj = {
-        "body.resultComment": { $exists: true },
+        "body.type" : "Comment",
+        "motivation" : "commenting",
         "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] },
-        target: httpsIdArray(event.target.dataset.id)
+        "target": httpsIdArray(event.target.dataset.id)
     }
     fetch(DEER.URLS.QUERY, {
         method: 'POST',
         mode: 'cors',
         body: JSON.stringify(queryObj)
     })
-        .then(res => res.ok ? res.json() : Promise.reject(res))
-        .then(comment=> (comment[0]) ? actions.querySelector('span').innerHTML = `Comment from ${comment[0].body.resultComment}: ` : ``)
-        // .then(comment=>comment[0] && actions.append(`Comment from ${comment[0].body.author}: `))
+    .then(res => res.ok ? res.json() : Promise.reject(res))
+    .then(comment=> (comment[0]) ? actions.querySelector('span').innerHTML = `Comment from ${comment[0].body.author}: ` : ``)
+    // .then(comment=>comment[0] && actions.append(`Comment from ${comment[0].body.author}: `))
 
 }
 
@@ -151,7 +152,7 @@ async function recordComment(callback) {
     document.querySelector('.modal button').addEventListener('click', async ev => {
         ev.preventDefault()
         const text = document.querySelector('.modal textarea').value
-        const commentID = await saveComment(httpsIdArray(preview.getAttribute("deer-id")), text)
+        const commentID = await saveComment(preview.getAttribute("deer-id"), text)
         document.querySelector('.modal').remove()
         callback(commentID)
     })
@@ -163,7 +164,8 @@ async function saveComment(target, text) {
         'Content-Type': "application/json; charset=utf-8"
     }
     const queryObj = {
-        "body.comment": { $exists: true },
+        "body.type": "Comment",
+        "motivation": "commenting",
         "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] },
         target
     }
@@ -174,13 +176,14 @@ async function saveComment(target, text) {
         mode: 'cors',
         body: JSON.stringify(queryObj)
     })
-        .then(res => res.ok ? res.json() : Promise.reject(res))
+    .then(res => res.ok ? res.json() : Promise.reject(res))
 
     const dismissingComment = Object.assign(commented[0] ?? {
         "@context": "http://www.w3.org/ns/anno.jsonld",
         type: "Annotation",
         target,
-        motivation: "commenting"
+        motivation: "commenting",
+        creator: DLA_USER['http://store.rerum.io/agent']
     }, {
         body: {
             type: "Comment",
@@ -290,7 +293,12 @@ async function curatorReturn() {
             .then(success => actions.querySelector('span').innerHTML=("✔ published"))
             .then(ok=>{
                 queue.querySelector(`[data-id="${activeRecord}"]`).remove()
-                queue.querySelector('li').click()
+                if(queue.querySelector(`li`)){
+                    queue.querySelector(`li`).click()
+                }
+                else{
+                    selectedCollectionElements.dispatchEvent(new Event('input'))
+                }
             })
     }
     recordComment(callback)
@@ -317,10 +325,10 @@ async function getReviewerQueue(publicCollection, managedCollection, limit = 10)
 async function getCuratorQueue(publicCollection, managedCollection, limit = 10) {
     const disclusions = managedCollection.itemListElement.filter(record => !publicCollection.itemListElement.includes(record))
     let tempQueue = disclusions.slice(0, limit)
-
+    const activeCollection = collectionMap.get(selectedCollectionElement.value)
     //Check for any records waiting to be released.  If there are some, show them by default
     const queryObj = {
-        "body.releasedTo": httpsIdArray("https://store.rerum.io/v1/id/6439970f3c28e3793e96735b"),
+        "body.releasedTo": httpsIdArray(activeCollection.public),
         "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] }
     }
     let reviewed = await fetch(DEER.URLS.QUERY, {
@@ -375,12 +383,11 @@ function drawInterface() {
         sanity = sanity.replace("Managed", "")
         if (roles.includes("dunbar_user_curator")){
             sanity = `Published ${sanity}`
-            approveBtn.innerHTML = "Make Record Public"
-            returnBtn.innerHTML = "Reject and Comment"
+            approveBtn.innerText = "Make Record Public"
+            returnBtn.innerText = "Reject and Comment"
         }
         if (roles.includes("dunbar_user_reviewer")){
             sanity = `Managed ${sanity}`
-
         }
         opt.innerText = sanity
         opt.value = k
