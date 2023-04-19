@@ -1,6 +1,7 @@
 const collectionsFile = await fetch('/manage/collections').then(res => res.json())
 const collectionMap = new Map(Object.entries(collectionsFile))
 import DEER from '/js/deer-config.js'
+import UTILS from '/js/deer-utils.js'
 
 function httpsIdArray(id,justArray) {
     if (!id.startsWith("http")) return justArray ? [ id ] : id
@@ -80,7 +81,7 @@ async function approveByReviewer() {
     }, {
         creator: DLA_USER['http://store.rerum.io/agent'],
         body: {
-            releaseTo: activeCollection.public,
+            releasedTo: activeCollection.public,
             resultComment: null
         }
     })
@@ -263,7 +264,7 @@ async function curatorReturn() {
     }, {
         creator: DLA_USER['http://store.rerum.io/agent'],
         body: {
-            releaseTo: null,
+            releasedTo: null,
             resultComment: null
         }
     })
@@ -331,7 +332,11 @@ async function getCuratorQueue(publicCollection, managedCollection, limit = 10) 
     queue.innerHTML = (reviewed.length) 
         ? queue.innerHTML = `<ol>${reviewed.reduce((a, b) => a += `<li data-id="${b.target}"><deer-view deer-template="label" deer-id="${b.target}"></deer-view></li>`, ``)}</ol>`
         : queue.innerHTML = `<ol>${tempQueue.reduce((a, b) => a += `<li data-id="${b['@id']}">${b.label}</li>`, ``)}</ol>`
+    // The preview was already on the page and is recognized by DEER.
     queue.querySelectorAll('li').forEach(addRecordHandlers)
+    // The queue is full of new deer-template="label" elems.  Broadcast those new views to DEER so they render.
+    const newViews = (queue.querySelectorAll(DEER.VIEW).length) ? queue.querySelectorAll(DEER.VIEW) : []
+    UTILS.broadcast(undefined, DEER.EVENTS.NEW_VIEW, queue, { set: newViews })
 }
 
 function attachCollectionHandler(selectElement) {

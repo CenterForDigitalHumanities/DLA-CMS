@@ -3,6 +3,8 @@ const DEV = false // false or comment to turn off
 const baseV1 = DEV ? "https://devstore.rerum.io/" : "https://store.rerum.io/"
 const tiny = DEV ? "https://tinydev.rerum.io/app/" : "https://tinypaul.rerum.io/dla/"
 
+import { default as UTILS } from '/js/deer-utils.js'
+
 export default {
     ID: "deer-id", // attribute, URI for resource to render
     TYPE: "deer-type", // attribute, JSON-LD @type
@@ -81,7 +83,21 @@ export default {
             </dl>
             <deer-view id="previewTranscription" deer-template="folioTranscription" deer-id="${obj['@id']}"></deer-view>
         `,
-        metadataPoem: obj => this.TEMPLATES.entity,
+        metadataPoem: obj => `
+            <p> Paul Dunbar Poem </p>
+            <dl class="metadata">
+                <dt> Record Label </dt>
+                <dd> ${ UTILS.getLabel(obj) ?? '<span class="alert">⚠ Missing label</span>' }</dd>
+                <dt> URI </dt>
+                <dd> ${ obj['@id'] ?? obj.id }</dd>
+                <dt> Type </dt>
+                <dd> ${ obj['@type'] ?? obj.type }</dd>
+                <dt> Collection </dt>
+                <dd> ${ obj.targetCollection?.value }</dd>
+                <dt> Record creator </dt>
+                <dd> <deer-view deer-id="${ obj.creator?.value ?? obj.creator }" deer-template="label">${ obj.creator?.value ?? obj.creator ?? "⚠ Creator Unknown" }</deer-view></dd>
+            </dl>
+        `,
         preview: obj => {
             let templateDetail = "json"
             let templateLink = "#"
