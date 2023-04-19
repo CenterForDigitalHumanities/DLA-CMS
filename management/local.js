@@ -234,6 +234,7 @@ async function curatorApproval() {
             queue.querySelector('li').click()
         })
 }
+
 async function curatorReturn() {
     const activeCollection = collectionMap.get(selectedCollectionElement.value)
     const activeRecord = preview.getAttribute("deer-id")
@@ -252,9 +253,9 @@ async function curatorReturn() {
         mode: 'cors',
         body: JSON.stringify(queryObj)
     })
-        .then(res => res.ok ? res.json() : Promise.reject(res))
+    .then(res => res.ok ? res.json() : Promise.reject(res))
 
-    const reviewComment = Object.assign(reviewed[0] ?? {
+    const moderatingAnno = Object.assign(reviewed[0] ?? {
         "@context": "http://www.w3.org/ns/anno.jsonld",
         type: "Annotation",
         target: preview.getAttribute("deer-id"),
@@ -271,18 +272,18 @@ async function curatorReturn() {
         ? fetch(DEER.URLS.CREATE, {
             method: 'POST',
             mode: 'cors',
-            body: JSON.stringify(reviewComment),
+            body: JSON.stringify(moderatingAnno),
             headers
         })
         : fetch(DEER.URLS.OVERWRITE, {
             method: 'PUT',
             mode: 'cors',
-            body: JSON.stringify(reviewComment),
+            body: JSON.stringify(moderatingAnno),
             headers
         })
 
     const callback = commentID => {
-        reviewComment.body.resultComment = commentID
+        moderatingAnno.body.resultComment = commentID
         publishFetch
             .then(res => res.ok || Promise.reject(res))
             .then(success => actions.querySelector('span').innerHTML=("✔ published"))
@@ -291,60 +292,45 @@ async function curatorReturn() {
                 queue.querySelector('li').click()
             })
     }
-
     recordComment(callback)
-    // TODO: clear item from queue and refresh
-
 }
 
+/**
+ * A reviewer should see items on the managed list which are not in the public list.
+ * Items promoted to the managed list by a contributor should take precedent
+ * Not sure how to detect a new/promoted record vs. one that has been there b/c of the script.
+ */ 
 async function getReviewerQueue(publicCollection, managedCollection, limit = 10) {
-    // items not on public list, but on managed list
-
     const disclusions = managedCollection.itemListElement.filter(record => !publicCollection.itemListElement.includes(record))
-    let tempQueue = []
-
-    switch (publicCollection.name) {
-        case "Correspondence between Paul Laurence Dunbar and Alice Moore Dunbar":
-            // const historyWildcard = { $exists: true, $type: 'array', $eq: [] }
-            // const queryObj = {
-            //     "body.transcriptionStatus": { $exists: true },
-            //     "__rerum.history.next": historyWildcard
-            // }
-            // let transcribed = await fetch("https://tinypaul.rerum.io/dla/query", {
-            //     method: 'POST',
-            //     mode: 'cors',
-            //     body: JSON.stringify(queryObj)
-            // })
-            //     .then(res => res.ok ? res.json() : Promise.reject(res))
-            // while (tempQueue.length < limit) {
-            //     let record = transcribed.pop()
-            //     if (!record) break // used up the list
-            //     let test = disclusions.find(item => item['@id'] === record.target)
-            //     if (test) tempQueue.push(test) // candidate for promotion
-            // }
-            // break
-        case "DLA Poems Collection":
-        default: tempQueue = disclusions.slice(0, limit)
-    }
-
+    let tempQueue = disclusions.slice(0, limit)
     queue.innerHTML = `<h3>Queue for Review</h3>
     <ol>${tempQueue.reduce((a, b) => a += `<li data-id="${b['@id'].replace('http:','https:')}">${b.label}</li>`, ``)}</ol>`
     queue.querySelectorAll('li').forEach(addRecordHandlers)
 }
 
+/**
+ * A reviewer should see items on the managed list which are not in the public list.
+ * They also need a way to access the public list upon request to remove from it.
+ * Items which have a moderating Annotation requesting to be public should take precedent and be seen by default.
+ */ 
 async function getCuratorQueue(publicCollection, managedCollection, limit = 10) {
-    // items not on public list, but marked for review
-
     const disclusions = managedCollection.itemListElement.filter(record => !publicCollection.itemListElement.includes(record))
-    let tempQueue = []
+    let tempQueue = disclusions.slice(0, limit)
 
-    switch (publicCollection.name) {
-        case "Correspondence between Paul Laurence Dunbar and Alice Moore Dunbar":
-        case "DLA Poems Collection":
-        default: tempQueue = disclusions.slice(0, limit)
+    //Check for any records waiting to be released.  If there are some, show them by default
+    const queryObj = {
+        "body.releasedTo": httpsIdArray("https://store.rerum.io/v1/id/6439970f3c28e3793e96735b"),
+        "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] }
     }
-
-    queue.innerHTML = `<ol>${tempQueue.reduce((a, b) => a += `<li data-id="${b['@id']}">${b.label}</li>`, ``)}</ol>`
+    let reviewed = await fetch(DEER.URLS.QUERY, {
+        method: 'POST',
+        mode: 'cors',
+        body: JSON.stringify(queryObj)
+    })
+    .then(res => res.ok ? res.json() : Promise.reject(res))
+    queue.innerHTML = (reviewed.length) 
+        ? queue.innerHTML = `<ol>${reviewed.reduce((a, b) => a += `<li data-id="${b.target}"><deer-view deer-template="label" deer-id="${b.target}"></deer-view></li>`, ``)}</ol>`
+        : queue.innerHTML = `<ol>${tempQueue.reduce((a, b) => a += `<li data-id="${b['@id']}">${b.label}</li>`, ``)}</ol>`
     queue.querySelectorAll('li').forEach(addRecordHandlers)
 }
 
@@ -360,31 +346,45 @@ function countItems(collection) {
     records.innerText = collection.numberOfItems
 }
 
-const select = document.createElement('select')
-select.id = "selectedCollectionElement"
-collectionMap.forEach((v, k) => {
-    const opt = document.createElement('option')
-    opt.classList.add('collection')
-    opt.dataset.uri = v.public
-    opt.dataset.managed = v.managed
-    opt.innerText = opt.value = k
-    select.append(opt)
-})
-collections.append(select)
-attachCollectionHandler(select)
+document.querySelector('auth-button button').addEventListener('dla-authenticated', drawInterface)
 
-document.querySelector('auth-button button').addEventListener('dla-authenticated', drawUser)
+if (window?.DLA_USER) drawInterface()
 
-if (window?.DLA_USER) drawUser()
-
-function drawUser() {
+function drawInterface() {
     const roles = DLA_USER['http://dunbar.rerum.io/user_roles']?.roles.filter(role => role.includes('dunbar_user'))
     if (roles.includes("dunbar_user_curator")) user.dataset.role = "curator"
     if (roles.includes("dunbar_user_reviewer")) user.dataset.role = "reviewer"
     user.innerHTML = `
     <p>▶ Logged in as ${DLA_USER.nickname ?? DLA_USER.name} with role${roles.length > 1 ? `s` : ``} ${roles.map(r => r.split('_').pop()).join(" | ")}.</p>
     `
-    selectedCollectionElement.options[0].selected = true
-    selectedCollectionElement.dispatchEvent(new Event('input'))
+    const select = document.createElement('select')
+    select.id = "selectedCollectionElement"
+    collectionMap.forEach((v, k) => {
+        const opt = document.createElement('option')
+        opt.classList.add('collection')
+        opt.dataset.uri = v.public
+        opt.dataset.managed = v.managed
+        const roles = DLA_USER['http://dunbar.rerum.io/user_roles']?.roles.filter(role => role.includes('dunbar_user'))
+        let sanity = k
+        sanity = sanity.replace("Published", "")
+        sanity = sanity.replace("Managed", "")
+        if (roles.includes("dunbar_user_curator")){
+            sanity = `Published ${sanity}`
+            approveBtn.innerHTML = "Make Record Public"
+            returnBtn.innerHTML = "Reject and Comment"
+        }
+        if (roles.includes("dunbar_user_reviewer")){
+            sanity = `Managed ${sanity}`
+
+        }
+        opt.innerText = sanity
+        opt.value = k
+        select.append(opt)
+    })
+    collections.append(select)
+    attachCollectionHandler(select)
+    select.options[0].selected = true
+    select.dispatchEvent(new Event('input'))
+
 }
 export { collectionMap }
