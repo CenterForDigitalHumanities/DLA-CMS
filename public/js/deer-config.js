@@ -309,7 +309,10 @@ export default {
                         function overwriteList() {
                             let mss_project = []
                             let mss_public = []
-
+                            const headers = {
+                                'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
+                                'Content-Type': "application/json; charset=utf-8"
+                            }
                             elem.projectCache.forEach(uri => {
                                 mss_project.push({
                                     label: document.querySelector(`deer-view[deer-id='${uri}']`).textContent.trim(),
@@ -344,19 +347,25 @@ export default {
                             fetch(`${tiny}overwrite`, {
                                 method: "PUT",
                                 mode: 'cors',
-                                body: JSON.stringify(list_project)
+                                body: JSON.stringify(list_project),
+                                headers
                             }).then(r => r.ok ? r.json() : Promise.reject(Error(r.text)))
                                 .catch(err => alert(`Failed to save: ${err}`))
 
                             fetch(`${tiny}overwrite`, {
                                 method: "PUT",
                                 mode: 'cors',
-                                body: JSON.stringify(list_public)
+                                body: JSON.stringify(list_public),
+                                headers
                             }).then(r => r.ok ? r.json() : Promise.reject(Error(r.text)))
                                 .catch(err => alert(`Failed to save: ${err}`))
                         }
 
                         function deleteThis(id, collection) {
+                            const headers = {
+                                'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
+                                'Content-Type': "application/json; charset=utf-8"
+                            }
                             if (confirm("Really remove this record?\n(Cannot be undone)")) {
                                 const historyWildcard = { "$exists": true, "$eq": [] }
                                 const queryObj = {
@@ -370,14 +379,16 @@ export default {
                                 }
                                 fetch(`${tiny}query`, {
                                     method: "POST",
-                                    body: JSON.stringify(queryObj)
+                                    body: JSON.stringify(queryObj),
+                                    headers
                                 })
                                     .then(r => r.ok ? r.json() : Promise.reject(new Error(r?.text)))
                                     .then(annos => {
                                         let all = annos.map(anno => {
                                             return fetch(`${tiny}delete`, {
                                                 method: "DELETE",
-                                                body: anno["@id"]
+                                                body: anno["@id"],
+                                                headers
                                             })
                                                 .then(r => r.ok ? r.json() : Promise.reject(Error(r.text)))
                                                 .catch(err => { throw err })

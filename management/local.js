@@ -40,19 +40,24 @@ function showRecordPreview(event) {
         'Content-Type': "application/json; charset=utf-8"
     }
     const queryObj = {
-        "body.type" : "Comment",
-        "motivation" : "commenting",
+        "type" : "Comment",
         "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] },
-        "target": httpsIdArray(event.target.dataset.id)
+        "about": httpsIdArray(event.target.dataset.id)
     }
     fetch(DEER.URLS.QUERY, {
         method: 'POST',
         mode: 'cors',
-        body: JSON.stringify(queryObj)
+        body: JSON.stringify(queryObj),
+        headers
     })
     .then(res => res.ok ? res.json() : Promise.reject(res))
-    .then(comment=> (comment[0]) ? actions.querySelector('span').innerHTML = `Comment from ${comment[0].body.author}: ` : ``)
-    // .then(comment=>comment[0] && actions.append(`Comment from ${comment[0].body.author}: `))
+    .then(comment=> {
+        (comment[0]) ? actions.querySelector('span').innerHTML = `Comment from ${comment[0].author}: <p>${comment[0].text}</p> ` : ``
+    })
+    .catch(err => {
+        console.log("Trouble loading preview")
+        console.error(err)
+    })
 
 }
 
@@ -61,43 +66,42 @@ async function approveByReviewer() {
         'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
         'Content-Type': "application/json; charset=utf-8"
     }
+    const activeCollection = collectionMap.get(selectedCollectionElement.value)
     const queryObj = {
-        "body.releasedTo": { $exists: true },
+        "releasedTo": activeCollection.public,
         "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] },
         target: httpsIdArray(preview.getAttribute("deer-id"))
     }
-    const activeCollection = collectionMap.get(selectedCollectionElement.value)
     let reviewed = await fetch(DEER.URLS.QUERY, {
         method: 'POST',
         mode: 'cors',
-        body: JSON.stringify(queryObj)
+        body: JSON.stringify(queryObj),
+        headers
     })
-        .then(res => res.ok ? res.json() : Promise.reject(res))
+    .then(res => res.ok ? res.json() : Promise.reject(res))
+    .catch(err => console.error(err))
 
-    const reviewComment = Object.assign(reviewed[0] ?? {
-        "@context": "http://www.w3.org/ns/anno.jsonld",
-        type: "Annotation",
+    const moderation = Object.assign(reviewed[0] ?? {
+        "@context": {"@vocab":"https://made.up/"},
+        type: "Moderation",
         target: preview.getAttribute("deer-id"),
-        motivation: "moderating"
     }, {
         creator: DLA_USER['http://store.rerum.io/agent'],
-        body: {
-            releasedTo: activeCollection.public,
-            resultComment: null
-        }
+        releasedTo: activeCollection.public,
+        resultComment: null
     })
 
     const publishFetch = (reviewed.length === 0)
         ? fetch(DEER.URLS.CREATE, {
             method: 'POST',
             mode: 'cors',
-            body: JSON.stringify(reviewComment),
+            body: JSON.stringify(moderation),
             headers
         })
         : fetch(DEER.URLS.OVERWRITE, {
             method: 'PUT',
             mode: 'cors',
-            body: JSON.stringify(reviewComment),
+            body: JSON.stringify(moderation),
             headers
         })
     publishFetch
@@ -107,6 +111,11 @@ async function approveByReviewer() {
             queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).remove()
             queue.querySelector('li').click()
         })
+        .catch(err => {
+            alert("There was an issue approving this item.")
+            console.error(err)
+        })
+
 }
 
 async function returnByReviewer() {
@@ -133,6 +142,10 @@ async function returnByReviewer() {
         .then(ok=>{
             queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).remove()
             queue.querySelector('li').click()
+        })
+        .catch(err => {
+            alert("There was an issue removing this item.")
+            console.log(err)
         })
 
     recordComment(callback)
@@ -164,32 +177,25 @@ async function saveComment(target, text) {
         'Content-Type': "application/json; charset=utf-8"
     }
     const queryObj = {
-        "body.type": "Comment",
-        "motivation": "commenting",
+        "type": "Comment",
         "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] },
-        target
+        "about": target
     }
-
-
     let commented = await fetch(DEER.URLS.QUERY, {
         method: 'POST',
         mode: 'cors',
-        body: JSON.stringify(queryObj)
+        body: JSON.stringify(queryObj),
+        headers
     })
     .then(res => res.ok ? res.json() : Promise.reject(res))
+    .catch(err => console.error(err))
 
     const dismissingComment = Object.assign(commented[0] ?? {
-        "@context": "http://www.w3.org/ns/anno.jsonld",
-        type: "Annotation",
-        target,
-        motivation: "commenting",
-        creator: DLA_USER['http://store.rerum.io/agent']
-    }, {
-        body: {
-            type: "Comment",
-            author: DLA_USER['http://store.rerum.io/agent'],
-            text
-        }
+        "@context": {"@vocab":"https://schema.org/"},
+        "type": "Comment",
+        text,
+        "about": target,
+        author: DLA_USER['http://store.rerum.io/agent']
     })
     let commentFetch = (commented.length === 0)
         ? fetch(DEER.URLS.CREATE, {
@@ -206,6 +212,7 @@ async function saveComment(target, text) {
         })
     return commentFetch
         .then(res => res.ok ? res.headers.get('location') : Promise.reject(res))
+        .catch(err => Promise.reject(err))
 }
 
 async function curatorApproval() {
@@ -231,12 +238,16 @@ async function curatorApproval() {
         body: JSON.stringify(list),
         headers
     })
-        .then(res => res.ok ? res.json() : Promise.reject(res))
-        .then(success => actions.querySelector('span').innerHTML = (`✔ Published`))
-        .then(ok=>{
-            queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).remove()
-            queue.querySelector('li').click()
-        })
+    .then(res => res.ok ? res.json() : Promise.reject(res))
+    .then(success => actions.querySelector('span').innerHTML = (`✔ Published`))
+    .then(ok=>{
+        queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).remove()
+        queue.querySelector('li').click()
+    })
+    .catch(err => {
+        alert("Issue publishing item")
+        console.error(err)
+    })
 }
 
 async function curatorReturn() {
@@ -248,46 +259,44 @@ async function curatorReturn() {
         'Content-Type': "application/json; charset=utf-8"
     }
     const queryObj = {
-        "body.releasedTo": { $exists: true },
+        "releasedTo": activeCollection.public,
         "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] },
         target: httpsIdArray(preview.getAttribute("deer-id"))
     }
     let reviewed = await fetch(DEER.URLS.QUERY, {
         method: 'POST',
         mode: 'cors',
-        body: JSON.stringify(queryObj)
+        body: JSON.stringify(queryObj),
+        headers
     })
     .then(res => res.ok ? res.json() : Promise.reject(res))
+    .catch(err => {console.error(err)})
 
-    const moderatingAnno = Object.assign(reviewed[0] ?? {
-        "@context": "http://www.w3.org/ns/anno.jsonld",
-        type: "Annotation",
+    let moderation = Object.assign(reviewed[0] ?? {
+        "@context": {"@vocab":"https://made.up/"},
+        type: "Moderation",
         target: preview.getAttribute("deer-id"),
-        motivation: "moderating"
     }, {
         creator: DLA_USER['http://store.rerum.io/agent'],
-        body: {
-            releasedTo: null,
-            resultComment: null
-        }
+        releasedTo: null,
+        resultComment: null
     })
 
-    const publishFetch = (reviewed.length === 0)
+    const callback = commentID => {
+        moderation.resultComment = commentID
+        const publishFetch = (reviewed.length === 0)
         ? fetch(DEER.URLS.CREATE, {
             method: 'POST',
             mode: 'cors',
-            body: JSON.stringify(moderatingAnno),
+            body: JSON.stringify(moderation),
             headers
         })
         : fetch(DEER.URLS.OVERWRITE, {
             method: 'PUT',
             mode: 'cors',
-            body: JSON.stringify(moderatingAnno),
+            body: JSON.stringify(moderation),
             headers
         })
-
-    const callback = commentID => {
-        moderatingAnno.body.resultComment = commentID
         publishFetch
             .then(res => res.ok || Promise.reject(res))
             .then(success => actions.querySelector('span').innerHTML=("✔ published"))
@@ -297,8 +306,12 @@ async function curatorReturn() {
                     queue.querySelector(`li`).click()
                 }
                 else{
-                    selectedCollectionElements.dispatchEvent(new Event('input'))
+                    selectedCollectionElement.dispatchEvent(new Event('input'))
                 }
+            })
+            .catch(err => {
+                alert("There was an issue rejecting this item")
+                console.error(err)
             })
     }
     recordComment(callback)
@@ -328,13 +341,16 @@ async function getCuratorQueue(publicCollection, managedCollection, limit = 10) 
     const activeCollection = collectionMap.get(selectedCollectionElement.value)
     //Check for any records waiting to be released.  If there are some, show them by default
     const queryObj = {
-        "body.releasedTo": httpsIdArray(activeCollection.public),
+        "releasedTo": httpsIdArray(activeCollection.public),
         "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] }
     }
     let reviewed = await fetch(DEER.URLS.QUERY, {
         method: 'POST',
         mode: 'cors',
-        body: JSON.stringify(queryObj)
+        body: JSON.stringify(queryObj),
+        headers:{
+            "Content-Type":"application/json; charset=urf-8"
+        }
     })
     .then(res => res.ok ? res.json() : Promise.reject(res))
     queue.innerHTML = (reviewed.length) 
