@@ -32,6 +32,7 @@ function fetchItems(event) {
 
 function showRecordPreview(event) {
     preview.innerHTML = ``
+    actions.querySelector('span').innerHTML = ``
     preview.setAttribute("deer-template", "preview")
     preview.setAttribute("deer-id", event.target.dataset.id)
     queue.querySelector(".selected")?.classList.remove("selected")
@@ -52,7 +53,11 @@ function showRecordPreview(event) {
     })
     .then(res => res.ok ? res.json() : Promise.reject(res))
     .then(comment=> {
-        (comment[0]) ? actions.querySelector('span').innerHTML = `Comment from ${comment[0].author}: <p>${comment[0].text}</p> ` : ``
+        (comment[0]) ? actions.querySelector('span').innerHTML = 
+         `Comment from <deer-view deer-template="label" deer-id="${comment[0].author}"></deer-view>: <p>${comment[0].text}</p> ` : ``
+         //We will need need to broadcast the view
+        setTimeout(() => UTILS.broadcast(undefined, DEER.EVENTS.NEW_VIEW, actions.querySelector('span'), { set: actions.querySelector('span').querySelectorAll(DEER.VIEW) }))    
+            
     })
     .catch(err => {
         console.log("Trouble loading preview")
@@ -110,7 +115,7 @@ async function approveByReviewer() {
         .then(ok=>{
             queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).remove()
             queue.querySelector('li').click()
-            setTimeout(function () {actions.querySelector('span').innerHTML=""}, 2000)
+            setTimeout(function () {actions.querySelector('span').innerHTML=""}, 4000)
         })
         .catch(err => {
             alert("There was an issue approving this item.")
@@ -173,8 +178,8 @@ async function returnByReviewer() {
             headers
         })
 
-    // Ensure moderation flow so the Comment can be connected
-    moderateFetch
+        // Ensure moderation flow so the Comment can be connected
+        moderateFetch
         .then(res => res.ok || Promise.reject(res))
         .then(success => {
             // Now we have ensured the moderation flow, overwrite the managed list so this item is removed.  
@@ -185,12 +190,11 @@ async function returnByReviewer() {
                 headers
             })
             .then(res => res.ok ? res.json() : Promise.reject(res))
-
             .then(success => actions.querySelector('span').innerHTML= `❌ '${queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).innerText}' was returned to contributors.`)
             .then(ok=>{
                 queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).remove()
                 queue.querySelector('li').click()
-                setTimeout(function () {actions.querySelector('span').innerHTML=""}, 2000)
+                setTimeout(function () {actions.querySelector('span').innerHTML=""}, 4000)
             })
             .catch(err => {
                 alert("There was an issue removing this item.")
@@ -247,7 +251,8 @@ async function saveComment(target, text) {
 
     const dismissingComment = Object.assign(commented[0] ?? {
         "@context": {"@vocab":"https://schema.org/"},
-        "type": "Comment",
+        "type": "Comment"
+    },{
         text,
         "about": target,
         author: DLA_USER['http://store.rerum.io/agent']
@@ -298,7 +303,7 @@ async function curatorApproval() {
     .then(ok=>{
         queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).remove()
         queue.querySelector('li').click()
-        setTimeout(function () {actions.querySelector('span').innerHTML=""}, 2000)
+        setTimeout(function () {actions.querySelector('span').innerHTML=""}, 4000)
     })
     .catch(err => {
         alert("Issue publishing item")
@@ -309,7 +314,7 @@ async function curatorApproval() {
 async function curatorReturn() {
     const activeCollection = collectionMap.get(selectedCollectionElement.value)
     const activeRecord = preview.getAttribute("deer-id")
-    // TODO: This is nearly a straight C/P frpm above
+
     const headers = {
         'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
         'Content-Type': "application/json; charset=utf-8"
@@ -333,12 +338,12 @@ async function curatorReturn() {
         type: "Moderation",
         about: preview.getAttribute("deer-id"),
     }, {
-        creator: DLA_USER['http://store.rerum.io/agent'],
+        author: DLA_USER['http://store.rerum.io/agent'],
         releasedTo: null,
         resultComment: null
     })
 
-    const callback = commentID => {
+    const callback = (commentID) => {
         moderation.resultComment = commentID
         const publishFetch = (reviewed.length === 0)
         ? fetch(DEER.URLS.CREATE, {
@@ -364,7 +369,7 @@ async function curatorReturn() {
                 else{
                     selectedCollectionElement.dispatchEvent(new Event('input'))
                 }
-                setTimeout(function () {actions.querySelector('span').innerHTML=""}, 2000)
+                setTimeout(function () {actions.querySelector('span').innerHTML=""}, 4000)
             })
             .catch(err => {
                 alert("There was an issue rejecting this item")
