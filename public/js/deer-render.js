@@ -34,7 +34,7 @@ async function renderChange(mutationsList) {
                     obj = JSON.parse(localStorage.getItem(id))
                 } catch (err) { }
                 if (!obj || !obj["@id"]) {
-                    obj = await fetch(id).then(response => response.json()).catch(error => error)
+                    obj = await fetch(id.replace('http:','https:')).then(response => response.json()).catch(error => error)
                     if (obj) {
                         localStorage.setItem(obj["@id"] || obj.id, JSON.stringify(obj))
                     } else {
@@ -490,7 +490,7 @@ export default class DeerRender {
                 throw err
             } else {
                 if (this.id) {
-                    fetch(this.id).then(response => response.json()).then(obj => RENDER.element(this.elem, obj)).catch(err => err)
+                    fetch(this.id.replace('http:','https:')).then(response => response.json()).then(obj => RENDER.element(this.elem, obj)).catch(err => err)
                 } else if (this.collection) {
                     // Look not only for direct objects, but also collection annotations
                     // Only the most recent, do not consider history parent or children history nodes

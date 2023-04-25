@@ -11,8 +11,8 @@ function httpsIdArray(id,justArray) {
 
 function fetchItems(event) {
     const selectedCollection = event.target.selectedOptions[0]
-    return Promise.all([fetch(selectedCollection.dataset.uri).then(res => res.json()),
-    fetch(selectedCollection.dataset.managed).then(res => res.json())])
+    return Promise.all([fetch(selectedCollection.dataset.uri, {cache: "no-cache"}).then(res => res.json()),
+    fetch(selectedCollection.dataset.managed, {cache: "no-cache"}).then(res => res.json())])
         .then(([publicCollection, managedCollection]) => {
             countItems(publicCollection)
             if (DLA_USER['http://dunbar.rerum.io/user_roles'].roles.includes('dunbar_user_reviewer')) {
@@ -67,12 +67,12 @@ async function approveByReviewer() {
         'Content-Type': "application/json; charset=utf-8"
     }
     const activeCollection = collectionMap.get(selectedCollectionElement.value)
+    // Handle this positive moderation assertion
     const queryObj = {
-        "releasedTo": activeCollection.public,
-        "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] },
-        target: httpsIdArray(preview.getAttribute("deer-id"))
+        "type" : "Moderation",
+        "about": httpsIdArray(preview.getAttribute("deer-id"))
     }
-    let reviewed = await fetch(DEER.URLS.QUERY, {
+    let moderated = await fetch(DEER.URLS.QUERY, {
         method: 'POST',
         mode: 'cors',
         body: JSON.stringify(queryObj),
@@ -81,17 +81,17 @@ async function approveByReviewer() {
     .then(res => res.ok ? res.json() : Promise.reject(res))
     .catch(err => console.error(err))
 
-    const moderation = Object.assign(reviewed[0] ?? {
+    const moderation = Object.assign(moderated[0] ?? {
         "@context": {"@vocab":"https://made.up/"},
         type: "Moderation",
-        target: preview.getAttribute("deer-id"),
+        about: preview.getAttribute("deer-id"),
     }, {
-        creator: DLA_USER['http://store.rerum.io/agent'],
+        author: DLA_USER['http://store.rerum.io/agent'],
         releasedTo: activeCollection.public,
         resultComment: null
     })
-
-    const publishFetch = (reviewed.length === 0)
+    // You will need to create or overwrite this moderation action for the moderation flow.
+    const publishFetch = (moderated.length === 0)
         ? fetch(DEER.URLS.CREATE, {
             method: 'POST',
             mode: 'cors',
@@ -106,10 +106,11 @@ async function approveByReviewer() {
         })
     publishFetch
         .then(res => res.ok || Promise.reject(res))
-        .then(success => actions.querySelector('span').innerHTML=("✔ published"))
+        .then(success => actions.querySelector('span').innerHTML= `✔ publication suggested for '${queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).innerText}'`)
         .then(ok=>{
             queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).remove()
             queue.querySelector('li').click()
+            setTimeout(function () {actions.querySelector('span').innerHTML=""}, 2000)
         })
         .catch(err => {
             alert("There was an issue approving this item.")
@@ -124,30 +125,84 @@ async function returnByReviewer() {
         'Content-Type': "application/json; charset=utf-8"
     }
     const activeCollection = collectionMap.get(selectedCollectionElement.value)
-    const managedlist = await fetch(activeCollection.managed)
+    const managedlist = await fetch(activeCollection.managed, {cache: "no-cache"})
         .then(res => res.ok ? res.json() : Promise.reject(res))
         .then(list => {
-            list.itemListElement = list.itemListElement.filter(r => r['@id'] !== preview.getAttribute("deer-id"))
+            list.itemListElement = list.itemListElement.filter(r => r['@id'].split("/").pop() !== preview.getAttribute("deer-id").split("/").pop())
             list.numberOfItems = list.itemListElement.length
             return list
         })
-    const callback = ()=>fetch(DEER.URLS.OVERWRITE, {
-        method: 'PUT',
-        mode: 'cors',
-        body: JSON.stringify(managedlist),
-        headers
-    })
+
+    const callback = async (commentID) =>{
+        // Handle the negative moderation assertion.
+        const moderationQuery = {
+            "type" : "Moderation",
+            "about": httpsIdArray(preview.getAttribute("deer-id"))
+        }
+        let moderated = await fetch(DEER.URLS.QUERY, {
+            method: 'POST',
+            mode: 'cors',
+            body: JSON.stringify(moderationQuery),
+            headers
+        })
         .then(res => res.ok ? res.json() : Promise.reject(res))
-        .then(success => actions.querySelector('span').innerHTML = (`❌ Removed`))
-        .then(ok=>{
-            queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).remove()
-            queue.querySelector('li').click()
+        .catch(err => console.error(err))
+
+        const moderation = Object.assign(moderated[0] ?? {
+            "@context": {"@vocab":"https://made.up/"},
+            type: "Moderation",
+            about: preview.getAttribute("deer-id"),
+        }, {
+            author: DLA_USER['http://store.rerum.io/agent'],
+            releasedTo: null,
+            resultComment: commentID
+        })
+
+        // You will need to create or overwrite this moderation action for the moderation flow.
+        const moderateFetch = (moderated.length === 0)
+        ? fetch(DEER.URLS.CREATE, {
+            method: 'POST',
+            mode: 'cors',
+            body: JSON.stringify(moderation),
+            headers
+        })
+        : fetch(DEER.URLS.OVERWRITE, {
+            method: 'PUT',
+            mode: 'cors',
+            body: JSON.stringify(moderation),
+            headers
+        })
+
+    // Ensure moderation flow so the Comment can be connected
+    moderateFetch
+        .then(res => res.ok || Promise.reject(res))
+        .then(success => {
+            // Now we have ensured the moderation flow, overwrite the managed list so this item is removed.  
+            fetch(DEER.URLS.OVERWRITE, {
+                method: 'PUT',
+                mode: 'cors',
+                body: JSON.stringify(managedlist),
+                headers
+            })
+            .then(res => res.ok ? res.json() : Promise.reject(res))
+
+            .then(success => actions.querySelector('span').innerHTML= `❌ '${queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).innerText}' was returned to contributors.`)
+            .then(ok=>{
+                queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).remove()
+                queue.querySelector('li').click()
+                setTimeout(function () {actions.querySelector('span').innerHTML=""}, 2000)
+            })
+            .catch(err => {
+                alert("There was an issue removing this item.")
+                console.log(err)
+            })
         })
         .catch(err => {
             alert("There was an issue removing this item.")
-            console.log(err)
+            console.error(err)
         })
-
+    }
+    // Record the comment for this moderation action
     recordComment(callback)
 }
 
@@ -221,13 +276,13 @@ async function curatorApproval() {
         'Content-Type': "application/json; charset=utf-8"
     }
     const activeCollection = collectionMap.get(selectedCollectionElement.value)
-    const activeRecord = await fetch(activeCollection.managed)
+    const activeRecord = await fetch(activeCollection.managed, {cache: "no-cache"})
         .then(res => res.ok ? res.json() : Promise.reject(res))
         .then(array => array.itemListElement.find(r => r['@id'] === preview.getAttribute("deer-id")))
-    let list = await fetch(activeCollection.public)
+    let list = await fetch(activeCollection.public, {cache: "no-cache"})
         .then(res => res.ok ? res.json() : Promise.reject(res))
     if (list.itemListElement.includes(activeRecord)) {
-        actions.innerHTML = (`✔ Published`)
+        actions.querySelector('span').innerHTML= `✔ '${queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).innerText}' is now public.`
         return // already published, somehow
     }
     list.itemListElement.push(activeRecord)
@@ -239,10 +294,11 @@ async function curatorApproval() {
         headers
     })
     .then(res => res.ok ? res.json() : Promise.reject(res))
-    .then(success => actions.querySelector('span').innerHTML = (`✔ Published`))
+    .then(success => actions.querySelector('span').innerHTML= `✔ '${queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).innerText}' is now public.`)
     .then(ok=>{
         queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).remove()
         queue.querySelector('li').click()
+        setTimeout(function () {actions.querySelector('span').innerHTML=""}, 2000)
     })
     .catch(err => {
         alert("Issue publishing item")
@@ -261,7 +317,7 @@ async function curatorReturn() {
     const queryObj = {
         "releasedTo": activeCollection.public,
         "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] },
-        target: httpsIdArray(preview.getAttribute("deer-id"))
+        "about": httpsIdArray(preview.getAttribute("deer-id"))
     }
     let reviewed = await fetch(DEER.URLS.QUERY, {
         method: 'POST',
@@ -275,7 +331,7 @@ async function curatorReturn() {
     let moderation = Object.assign(reviewed[0] ?? {
         "@context": {"@vocab":"https://made.up/"},
         type: "Moderation",
-        target: preview.getAttribute("deer-id"),
+        about: preview.getAttribute("deer-id"),
     }, {
         creator: DLA_USER['http://store.rerum.io/agent'],
         releasedTo: null,
@@ -299,7 +355,7 @@ async function curatorReturn() {
         })
         publishFetch
             .then(res => res.ok || Promise.reject(res))
-            .then(success => actions.querySelector('span').innerHTML=("✔ published"))
+            .then(success => actions.querySelector('span').innerHTML=`❌ Public visibility denied for '${queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).innerText}'`)
             .then(ok=>{
                 queue.querySelector(`[data-id="${activeRecord}"]`).remove()
                 if(queue.querySelector(`li`)){
@@ -308,6 +364,7 @@ async function curatorReturn() {
                 else{
                     selectedCollectionElement.dispatchEvent(new Event('input'))
                 }
+                setTimeout(function () {actions.querySelector('span').innerHTML=""}, 2000)
             })
             .catch(err => {
                 alert("There was an issue rejecting this item")
@@ -349,12 +406,12 @@ async function getCuratorQueue(publicCollection, managedCollection, limit = 10) 
         mode: 'cors',
         body: JSON.stringify(queryObj),
         headers:{
-            "Content-Type":"application/json; charset=urf-8"
+            "Content-Type":"application/json; charset=utf-8"
         }
     })
     .then(res => res.ok ? res.json() : Promise.reject(res))
     queue.innerHTML = (reviewed.length) 
-        ? queue.innerHTML = `<ol>${reviewed.reduce((a, b) => a += `<li data-id="${b.target}"><deer-view deer-template="label" deer-id="${b.target}"></deer-view></li>`, ``)}</ol>`
+        ? queue.innerHTML = `<ol>${reviewed.reduce((a, b) => a += `<li data-id="${b.about}"><deer-view deer-template="label" deer-id="${b.about}"></deer-view></li>`, ``)}</ol>`
         : queue.innerHTML = `<ol>${tempQueue.reduce((a, b) => a += `<li data-id="${b['@id']}">${b.label}</li>`, ``)}</ol>`
     // The preview was already on the page and is recognized by DEER.
     queue.querySelectorAll('li').forEach(addRecordHandlers)
@@ -397,13 +454,16 @@ function drawInterface() {
         let sanity = k
         sanity = sanity.replace("Published", "")
         sanity = sanity.replace("Managed", "")
+        //It would be idea to do the buttons in the preview template.
         if (roles.includes("dunbar_user_curator")){
             sanity = `Published ${sanity}`
-            approveBtn.innerText = "Make Record Public"
-            returnBtn.innerText = "Reject and Comment"
+            approveBtn.innerText = "Approve for Publication"
+            returnBtn.innerText = "Ask for Changes"
         }
         if (roles.includes("dunbar_user_reviewer")){
             sanity = `Managed ${sanity}`
+            approveBtn.innerText = "Suggest Publication"
+            returnBtn.innerText = "Return for Contributions"
         }
         opt.innerText = sanity
         opt.value = k

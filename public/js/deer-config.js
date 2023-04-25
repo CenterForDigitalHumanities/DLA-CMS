@@ -63,7 +63,29 @@ export default {
      */
     TEMPLATES: {
         cat: (obj) => `<h5>${obj.name}</h5><img src="https://placekitten.com/300/150" style="width:100%;">`,
-        metadataLetter: obj => `
+        metadataLetter: (obj) => {
+            let approveBtn
+            let returnBtn
+            if (DLA_USER['http://dunbar.rerum.io/user_roles'].roles.includes('dunbar_user_reviewer')) {
+                approveBtn = `<button role="button" id="approveBtn" onclick="approveByReviewer()">Suggest Publication</button>`
+                returnBtn = `<button role="button" id="returnBtn" onclick="returnByReviewer()">Return For Contributions</button>`
+            }
+            if (DLA_USER['http://dunbar.rerum.io/user_roles'].roles.includes('dunbar_user_curator')) {
+                approveBtn = `<button role="button" id="approveBtn" onclick="curatorApproval()">Approve for Publication</button>`
+                returnBtn = `<button role="button" id="returnBtn" onclick="curatorReturn()">Ask For Changes</button>`
+            }
+            /**
+             * Tried to move these into here, but there is so much baggage because of click handlers.
+             * <dt> Available Actions </dt>
+                <div id="actions">
+                    <div class="btn-group">
+                        ${approveBtn}
+                        ${returnBtn}
+                    </div>
+                    <span class="message"></span>
+                </div>
+             */ 
+            return `
             <p>Letter between Paul and Alice, sent ${obj.date?.value ?? obj.date ?? '<span class="alert">⚠ NO DATE SET ⚠</span>'}
             from ${obj.fromLocation?.value ?? obj.fromLocation ?? '<span class="alert">⚠ NO CITY WHENCE ⚠</span>'} to 
             ${obj.toLocation?.value ?? obj.toLocation ?? '<span class="alert">⚠ NO CITY WHITHER ⚠</span>'}.</p>
@@ -82,8 +104,31 @@ export default {
                 <dd> <deer-view deer-id="${ obj.creator?.value ?? obj.creator }" deer-template="label">${ obj.creator?.value ?? obj.creator }</deer-view></dd>
             </dl>
             <deer-view id="previewTranscription" deer-template="folioTranscription" deer-id="${obj['@id']}"></deer-view>
-        `,
-        metadataPoem: obj => `
+            `
+        },
+        metadataPoem: (obj) => {
+            let approveBtn
+            let returnBtn
+            if (DLA_USER['http://dunbar.rerum.io/user_roles'].roles.includes('dunbar_user_reviewer')) {
+                approveBtn = `<button role="button" id="approveBtn" onclick="approveByReviewer()">Suggest Publication</button>`
+                returnBtn = `<button role="button" id="returnBtn" onclick="returnByReviewer()">Return for Contributions</button>`
+            }
+            if (DLA_USER['http://dunbar.rerum.io/user_roles'].roles.includes('dunbar_user_curator')) {
+                approveBtn = `<button role="button" id="approveBtn" onclick="curatorApproval()">Approve for Publication</button>`
+                returnBtn = `<button role="button" id="returnBtn" onclick="curatorReturn()">Ask For Changes</button>`
+            }
+            /**
+             * Tried to move these into here, but there is so much baggage because of click handlers.
+             * <dt> Available Actions </dt>
+                <div id="actions">
+                    <div class="btn-group">
+                        ${approveBtn}
+                        ${returnBtn}
+                    </div>
+                    <span class="message"></span>
+                </div>
+             */ 
+            return `
             <p> Paul Dunbar Poem </p>
             <dl class="metadata">
                 <dt> Record Label </dt>
@@ -97,7 +142,8 @@ export default {
                 <dt> Record creator </dt>
                 <dd> <deer-view deer-id="${ obj.creator?.value ?? obj.creator }" deer-template="label">${ obj.creator?.value ?? obj.creator ?? "⚠ Creator Unknown" }</deer-view></dd>
             </dl>
-        `,
+        `
+        },
         preview: obj => {
             let templateDetail = "json"
             let templateLink = "#"
@@ -418,4 +464,61 @@ function httpsIdArray(id,justArray) {
     if (!id.startsWith("http")) return justArray ? [ id ] : id
     if (id.startsWith("https://")) return justArray ? [ id, id.replace('https','http') ] : { $or: [ id, id.replace('https','http') ] }
     return justArray ? [ id, id.replace('http','https') ] : { $or: [ id, id.replace('http','https') ] }
+}
+
+async function approveByReviewer() {
+    const headers = {
+        'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
+        'Content-Type': "application/json; charset=utf-8"
+    }
+    const activeCollection = collectionMap.get(selectedCollectionElement.value)
+    // Handle this positive moderation assertion
+    const queryObj = {
+        "type" : "Moderation",
+        "about": httpsIdArray(preview.getAttribute("deer-id"))
+    }
+    let moderated = await fetch(DEER.URLS.QUERY, {
+        method: 'POST',
+        mode: 'cors',
+        body: JSON.stringify(queryObj),
+        headers
+    })
+    .then(res => res.ok ? res.json() : Promise.reject(res))
+    .catch(err => console.error(err))
+
+    const moderation = Object.assign(moderated[0] ?? {
+        "@context": {"@vocab":"https://made.up/"},
+        type: "Moderation",
+        about: preview.getAttribute("deer-id"),
+    }, {
+        author: DLA_USER['http://store.rerum.io/agent'],
+        releasedTo: activeCollection.public,
+        resultComment: null
+    })
+    // You will need to create or overwrite this moderation action for the moderation flow.
+    const publishFetch = (moderated.length === 0)
+        ? fetch(DEER.URLS.CREATE, {
+            method: 'POST',
+            mode: 'cors',
+            body: JSON.stringify(moderation),
+            headers
+        })
+        : fetch(DEER.URLS.OVERWRITE, {
+            method: 'PUT',
+            mode: 'cors',
+            body: JSON.stringify(moderation),
+            headers
+        })
+    publishFetch
+        .then(res => res.ok || Promise.reject(res))
+        .then(success => actions.querySelector('span').innerHTML=("✔ published"))
+        .then(ok=>{
+            queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).remove()
+            queue.querySelector('li').click()
+        })
+        .catch(err => {
+            alert("There was an issue approving this item.")
+            console.error(err)
+        })
+
 }

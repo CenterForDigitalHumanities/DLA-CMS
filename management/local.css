@@ -27,7 +27,8 @@
 }
 
 #actions button {
-    display: block;
+    display: inline-block;
+    cursor: pointer;
     width  : 15em;
     padding: 0.68em;
     margin : 0.32em;
