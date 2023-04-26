@@ -43,7 +43,15 @@
     cursor: pointer;
     width  : auto;
     padding: 0.68em;
-    margin : 0.32em;
+    margin-top : 0.32em;
+    color: red;
+    border: 1px solid black;
+}
+
+#preview button:hover {
+    color: white;
+    background-color: red;
+    font-weight: 600;
 }
 
 #selectedRecordTitle{
