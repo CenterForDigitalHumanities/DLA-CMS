@@ -519,8 +519,6 @@ function giveFeedback(text){
 
 /**
  * A reviewer should see items on the managed list which are not in the public list.
- * Items promoted to the managed list by a contributor should take precedent
- * Not sure how to detect a new/promoted record vs. one that has been there b/c of the script.
  */ 
 async function getReviewerQueue(publicCollection, managedCollection, limit = 10) {
     let recordsToSee = []
@@ -561,9 +559,8 @@ async function getReviewerQueue(publicCollection, managedCollection, limit = 10)
 }
 
 /**
- * A reviewer should see items on the managed list which are not in the public list.
- * They also need a way to access the public list upon request to remove from it.
- * Items which have a moderating Annotation requesting to be public should take precedent and be seen by default.
+ * A curator has the option to look at the managed list or the public list for each collection.  
+ * Items which have a moderating Annotation requesting to be public for a collection take precedent.
  */ 
 async function getCuratorQueue(publicCollection, managedCollection, limit = 10) {
     const selectedCollection = selectedCollectionElement.selectedOptions[0].innerText
@@ -597,9 +594,8 @@ async function getCuratorQueue(publicCollection, managedCollection, limit = 10) 
     }
     else if(selectedCollection.includes("Published")){
         //They want to see items in the published list, even if 0.
-        
         recordsToSee = publicCollection.itemListElement
-         records.innerText = `${recordsToSee.length} published records!`
+        records.innerText = `${recordsToSee.length} published records!`
     }
     else{
         //They want to see the managed list.
@@ -610,9 +606,8 @@ async function getCuratorQueue(publicCollection, managedCollection, limit = 10) 
     queue.innerHTML = (reviewed.length) 
         ? queue.innerHTML = `<ol>${reviewed.reduce((a, b) => a += `<li data-id="${b.about}"><deer-view deer-template="label" deer-id="${b.about}"></deer-view></li>`, ``)}</ol>`
         : queue.innerHTML = `<ol>${tempQueue.reduce((a, b) => a += `<li data-id="${b['@id']}">${b.label}</li>`, ``)}</ol>`
-    // The preview was already on the page and is recognized by DEER.
     queue.querySelectorAll('li').forEach(addRecordHandlers)
-    // The queue is full of new deer-template="label" elems.  Broadcast those new views to DEER so they render.
+    // The queue may have new deer-template="label" elems.  Broadcast those new views to DEER so they render.
     const newViews = (queue.querySelectorAll(DEER.VIEW).length) ? queue.querySelectorAll(DEER.VIEW) : []
     UTILS.broadcast(undefined, DEER.EVENTS.NEW_VIEW, queue, { set: newViews })
 }
