@@ -11,6 +11,13 @@ function httpsIdArray(id,justArray) {
 
 function fetchItems(event) {
     const selectedCollection = event.target.selectedOptions[0]
+    if(selectedCollection.dataset.uri === ""){
+        // Then there will be nothing for the queue because the collection URI is not yet available.
+        preview.innerHTML = ""
+        selectedRecordTitle.innerText = ""
+        actions.style.opacity = 0
+        records.innerText = "This collection is not available yet."
+    }
     return Promise.all([fetch(selectedCollection.dataset.uri, {cache: "no-cache"}).then(res => res.json()),
     fetch(selectedCollection.dataset.managed, {cache: "no-cache"}).then(res => res.json())])
         .then(([publicCollection, managedCollection]) => {
@@ -508,7 +515,36 @@ function giveFeedback(text){
  * Not sure how to detect a new/promoted record vs. one that has been there b/c of the script.
  */ 
 async function getReviewerQueue(publicCollection, managedCollection, limit = 10) {
-    const disclusions = managedCollection.itemListElement.filter(record => !publicCollection.itemListElement.includes(record))
+    let recordsToSee = []
+    // Preference seeing records that have been suggested for publication by reviewers
+    const queryObj = {
+        "releasedTo": httpsIdArray(publicCollection["@id"]),
+        "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] }
+    }
+    let reviewed = await fetch(DEER.URLS.QUERY, {
+        method: 'POST',
+        mode: 'cors',
+        body: JSON.stringify(queryObj),
+        headers:{
+            "Content-Type":"application/json; charset=utf-8"
+        }
+    })
+    .then(res => res.ok ? res.json() : Promise.reject(res))
+    let disclusions = managedCollection.itemListElement.filter(record => !publicCollection.itemListElement.includes(record))
+    if(reviewed.length){
+        //Also disclude any that have been suggested for publication -- awaiting Curator action.
+        disclusions = disclusions.filter(record => {
+            let included = false
+            reviewed.forEach(moderation => {
+                if(moderation.about.split("/").pop() === record["@id"].split("/").pop()) {
+                    included = true
+                    return
+                }
+            })
+            return !included
+        })    
+    }
+
     let tempQueue = disclusions.slice(0, limit)
     records.innerText = `${disclusions.length} records are not published`
     queue.innerHTML = `<h3>Queue for Review</h3>
