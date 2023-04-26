@@ -27,16 +27,16 @@ function fetchItems(event) {
             }
         })
         .then(ok=>queue.querySelector('li').click())
-        .catch(err=>console.error(err))
+        .catch(err=>Promise.reject(err))
 }
 
 function showRecordPreview(event) {
     preview.innerHTML = ``
-    actions.querySelector('span').innerHTML = ``
     preview.setAttribute("deer-template", "preview")
     preview.setAttribute("deer-id", event.target.dataset.id)
     queue.querySelector(".selected")?.classList.remove("selected")
     event.target.classList.add('selected')
+    selectedRecordTitle.innerText = event.target.innerText
     const headers = {
         'Content-Type': "application/json; charset=utf-8"
     }
@@ -53,15 +53,16 @@ function showRecordPreview(event) {
     })
     .then(res => res.ok ? res.json() : Promise.reject(res))
     .then(comment=> {
-        (comment[0]) ? actions.querySelector('span').innerHTML = 
-         `Comment from <deer-view deer-template="label" deer-id="${comment[0].author}"></deer-view>: <p>${comment[0].text}</p> ` : ``
+        if(comment.length && comment[0]){
+            commentToggle.innerHTML = `Comment from <deer-view deer-template="label" deer-id="${comment[0].author}"></deer-view> `
+            commentText.innerHTML = `<pre>${comment[0].text}</pre>`  
+        }
          //We will need need to broadcast the view
-        setTimeout(() => UTILS.broadcast(undefined, DEER.EVENTS.NEW_VIEW, actions.querySelector('span'), { set: actions.querySelector('span').querySelectorAll(DEER.VIEW) }))    
-            
+        setTimeout(() => UTILS.broadcast(undefined, DEER.EVENTS.NEW_VIEW, commentToggle, { set: commentToggle.querySelectorAll(DEER.VIEW) }))    
     })
     .catch(err => {
-        console.log("Trouble loading preview")
-        console.error(err)
+        giveFeedback("Trouble loading preview")
+        Promise.reject(err)
     })
 
 }
@@ -84,7 +85,7 @@ async function approveByReviewer() {
         headers
     })
     .then(res => res.ok ? res.json() : Promise.reject(res))
-    .catch(err => console.error(err))
+    .catch(err => Promise.reject(err))
 
     const moderation = Object.assign(moderated[0] ?? {
         "@context": {"@vocab":"https://made.up/"},
@@ -111,15 +112,14 @@ async function approveByReviewer() {
         })
     publishFetch
         .then(res => res.ok || Promise.reject(res))
-        .then(success => actions.querySelector('span').innerHTML= `✔ publication suggested for '${queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).innerText}'`)
+        .then(success => giveFeedback(`Publication suggested for '${queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).innerText}'`))
         .then(ok=>{
             queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).remove()
             queue.querySelector('li').click()
-            setTimeout(function () {actions.querySelector('span').innerHTML=""}, 4000)
         })
         .catch(err => {
             alert("There was an issue approving this item.")
-            console.error(err)
+            Promise.reject(err)
         })
 
 }
@@ -151,7 +151,7 @@ async function returnByReviewer() {
             headers
         })
         .then(res => res.ok ? res.json() : Promise.reject(res))
-        .catch(err => console.error(err))
+        .catch(err => Promise.reject(err))
 
         const moderation = Object.assign(moderated[0] ?? {
             "@context": {"@vocab":"https://made.up/"},
@@ -190,20 +190,19 @@ async function returnByReviewer() {
                 headers
             })
             .then(res => res.ok ? res.json() : Promise.reject(res))
-            .then(success => actions.querySelector('span').innerHTML= `❌ '${queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).innerText}' was returned to contributors.`)
+            .then(success => giveFeedback(`'${queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).innerText}' was returned to contributors.`))
             .then(ok=>{
                 queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).remove()
                 queue.querySelector('li').click()
-                setTimeout(function () {actions.querySelector('span').innerHTML=""}, 4000)
             })
             .catch(err => {
                 alert("There was an issue removing this item.")
-                console.log(err)
+                Promise.reject(err)
             })
         })
         .catch(err => {
             alert("There was an issue removing this item.")
-            console.error(err)
+            Promise.reject(err)
         })
     }
     // Record the comment for this moderation action
@@ -247,7 +246,7 @@ async function saveComment(target, text) {
         headers
     })
     .then(res => res.ok ? res.json() : Promise.reject(res))
-    .catch(err => console.error(err))
+    .catch(err => Promise.reject(err))
 
     const dismissingComment = Object.assign(commented[0] ?? {
         "@context": {"@vocab":"https://schema.org/"},
@@ -287,7 +286,6 @@ async function curatorApproval() {
     let list = await fetch(activeCollection.public, {cache: "no-cache"})
         .then(res => res.ok ? res.json() : Promise.reject(res))
     if (list.itemListElement.includes(activeRecord)) {
-        actions.querySelector('span').innerHTML= `✔ '${queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).innerText}' is now public.`
         return // already published, somehow
     }
     list.itemListElement.push(activeRecord)
@@ -299,15 +297,14 @@ async function curatorApproval() {
         headers
     })
     .then(res => res.ok ? res.json() : Promise.reject(res))
-    .then(success => actions.querySelector('span').innerHTML= `✔ '${queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).innerText}' is now public.`)
+    .then(success => giveFeedback(`'${queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).innerText}' is now public.`))
     .then(ok=>{
         queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).remove()
         queue.querySelector('li').click()
-        setTimeout(function () {actions.querySelector('span').innerHTML=""}, 4000)
     })
     .catch(err => {
         alert("Issue publishing item")
-        console.error(err)
+        Promise.reject(err)
     })
 }
 
@@ -331,7 +328,7 @@ async function curatorReturn() {
         headers
     })
     .then(res => res.ok ? res.json() : Promise.reject(res))
-    .catch(err => {console.error(err)})
+    .catch(err => Promise.reject(err))
 
     let moderation = Object.assign(reviewed[0] ?? {
         "@context": {"@vocab":"https://made.up/"},
@@ -360,7 +357,7 @@ async function curatorReturn() {
         })
         publishFetch
             .then(res => res.ok || Promise.reject(res))
-            .then(success => actions.querySelector('span').innerHTML=`❌ Public visibility denied for '${queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).innerText}'`)
+            .then(success => giveFeedback(`Public visibility denied for '${queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).innerText}'`))
             .then(ok=>{
                 queue.querySelector(`[data-id="${activeRecord}"]`).remove()
                 if(queue.querySelector(`li`)){
@@ -369,15 +366,130 @@ async function curatorReturn() {
                 else{
                     selectedCollectionElement.dispatchEvent(new Event('input'))
                 }
-                setTimeout(function () {actions.querySelector('span').innerHTML=""}, 4000)
             })
             .catch(err => {
                 alert("There was an issue rejecting this item")
-                console.error(err)
+                Promise.reject(err)
             })
     }
     recordComment(callback)
 }
+
+async function curatorDelete() {
+    const instructions = "This record will be removed from the project and deleted.  You cannot undo this action. \n Click 'OK' to continue."
+    if (confirm(instructions) === false) return
+    
+    const activeCollection = collectionMap.get(selectedCollectionElement.value)
+    const activeRecord = preview.getAttribute("deer-id")
+    const headers = {
+        'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
+        'Content-Type': "application/json; charset=utf-8"
+    }
+
+    // This is going to require a handful of fetches that all need to succeed.
+    let allFetches = []
+
+    // Get the Comments and Moderations about this item and delete them
+    const queryObj = {
+        "$or" : [{"type": "Moderation"}, {"type":"Comment"}],
+        "about": httpsIdArray(preview.getAttribute("deer-id"))
+    }
+    let moderation_flow_data = await fetch(DEER.URLS.QUERY, {
+        method: 'POST',
+        mode: 'cors',
+        body: JSON.stringify(queryObj),
+        headers
+    })
+    .then(res => res.ok ? res.json() : Promise.reject(res))
+    .then(data_arr => {
+        data_arr.forEach(datapoint => {
+            const deleteFetch = fetch("//tinypaul.rerum.io/dla/delete", {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                    "Authorization": `Bearer ${window.DLA_USER.authorization}`
+                },
+                body: datapoint["@id"] ?? datapoint.id
+            })
+            .catch(err => Promise.reject(err) )
+            allFetches.push(deleteFetch)
+        })
+    })
+    .catch(err => {
+        console.error(err)
+        return null
+    })
+    // If there is a query error, fail out.
+    if(moderation_flow_data === null) return
+
+    const publishedList = await fetch(activeCollection.public, {cache: "no-cache"})
+        .then(res => res.ok ? res.json() : Promise.reject(res))
+        .then(list => {
+            const numnow = list.numberOfItems
+            list.itemListElement = list.itemListElement.filter(r => r['@id'].split("/").pop() !== preview.getAttribute("deer-id").split("/").pop())
+            list.numberOfItems = list.itemListElement.length
+            if(numnow !== list.numberOfItems){
+                // Gotta overwrite, add that to our array of fetches
+                allFetches.push(fetch(DEER.URLS.OVERWRITE, {
+                    method: 'PUT',
+                    mode: 'cors',
+                    body: JSON.stringify(list),
+                    headers
+                })
+                .then(r => r.ok ? r.json() : Promise.reject(Error(r.text)))
+                .catch(err => Promise.reject(err)))
+            }
+            return list
+        })
+
+    const managedlist = await fetch(activeCollection.managed, {cache: "no-cache"})
+    .then(res => res.ok ? res.json() : Promise.reject(res))
+    .then(list => {
+        const numnow = list.numberOfItems
+        list.itemListElement = list.itemListElement.filter(r => r['@id'].split("/").pop() !== preview.getAttribute("deer-id").split("/").pop())
+        list.numberOfItems = list.itemListElement.length
+        if(numnow !== list.numberOfItems){
+            // Gotta overwrite, add that to our array of fetches
+            allFetches.push(fetch(DEER.URLS.OVERWRITE, {
+                method: 'PUT',
+                mode: 'cors',
+                body: JSON.stringify(list),
+                headers
+            })
+            .then(r => r.ok ? r.json() : Promise.reject(Error(r.text)))
+            .catch(err => Promise.reject(err) ))
+        }
+        return list
+    })
+    //Do all of the deletes and overwrites.  This should only be considered successful if they all work.
+    return Promise.all(all)
+        .then(success => giveFeedback(`Successfully deleted '${queue.querySelector(`[data-id="${activeRecord}"]`).innerText}'`))
+        .then(ok => {
+            queue.querySelector(`[data-id="${activeRecord}"]`).remove()
+            if(queue.querySelector(`li`)){
+                queue.querySelector(`li`).click()
+            }
+            else{
+                selectedCollectionElement.dispatchEvent(new Event('input'))
+            }
+        })
+        .catch(err => {
+            alert(`Trouble while removing record '${queue.querySelector(`[data-id="${activeRecord}"]`).innerText}'`)
+            Promise.reject(err)
+        })
+}
+
+/**
+ * Short lived feedback to tell the user what has happened.
+ */ 
+function giveFeedback(text){
+    feedback.innerHTML = `&#8505; ${text}`
+    feedback.style.opacity = 1
+    setTimeout(function () {
+        feedback.style.opacity = 0
+    }, 4000)
+}
+
 
 /**
  * A reviewer should see items on the managed list which are not in the public list.
@@ -438,6 +550,18 @@ function countItems(collection) {
 }
 
 document.querySelector('auth-button button').addEventListener('dla-authenticated', drawInterface)
+commentToggle.addEventListener("click", e => {
+    if(e.target.tagName === "PRE"){
+        //This way they can highlight and select text
+        return
+    }
+    if(commentText.classList.contains("is-hidden")){
+        commentText.querySelector(".statusDrawer").classList.remove("is-hidden")
+    }
+    else{
+        commentText.querySelector(".statusDrawer").classList.add("is-hidden")
+    }
+})
 
 if (window?.DLA_USER) drawInterface()
 
@@ -460,12 +584,12 @@ function drawInterface() {
         sanity = sanity.replace("Published", "")
         sanity = sanity.replace("Managed", "")
         //It would be idea to do the buttons in the preview template.
-        if (roles.includes("dunbar_user_curator")){
+        if (user.dataset.role === "curator"){
             sanity = `Published ${sanity}`
             approveBtn.innerText = "Approve for Publication"
             returnBtn.innerText = "Ask for Changes"
         }
-        if (roles.includes("dunbar_user_reviewer")){
+        if (user.dataset.role === "reviewer"){
             sanity = `Managed ${sanity}`
             approveBtn.innerText = "Suggest Publication"
             returnBtn.innerText = "Return for Contributions"

@@ -109,6 +109,7 @@ export default {
         metadataPoem: (obj) => {
             let approveBtn
             let returnBtn
+            let deleteBtn
             if (DLA_USER['http://dunbar.rerum.io/user_roles'].roles.includes('dunbar_user_reviewer')) {
                 approveBtn = `<button role="button" id="approveBtn" onclick="approveByReviewer()">Suggest Publication</button>`
                 returnBtn = `<button role="button" id="returnBtn" onclick="returnByReviewer()">Return for Contributions</button>`
@@ -116,18 +117,8 @@ export default {
             if (DLA_USER['http://dunbar.rerum.io/user_roles'].roles.includes('dunbar_user_curator')) {
                 approveBtn = `<button role="button" id="approveBtn" onclick="curatorApproval()">Approve for Publication</button>`
                 returnBtn = `<button role="button" id="returnBtn" onclick="curatorReturn()">Ask For Changes</button>`
+                deleteBtn = `<button role="button" id="deleteBtn" onclick="curatorDelete()">Delete '${ UTILS.getLabel(obj) ?? ""  }'</button>`
             }
-            /**
-             * Tried to move these into here, but there is so much baggage because of click handlers.
-             * <dt> Available Actions </dt>
-                <div id="actions">
-                    <div class="btn-group">
-                        ${approveBtn}
-                        ${returnBtn}
-                    </div>
-                    <span class="message"></span>
-                </div>
-             */ 
             return `
             <p> Paul Dunbar Poem </p>
             <dl class="metadata">
@@ -142,6 +133,7 @@ export default {
                 <dt> Record creator </dt>
                 <dd> <deer-view deer-id="${ obj.creator?.value ?? obj.creator }" deer-template="label">${ obj.creator?.value ?? obj.creator ?? "⚠ Creator Unknown" }</deer-view></dd>
             </dl>
+            ${deleteBtn ?? ""}
         `
         },
         preview: obj => {

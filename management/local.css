@@ -23,15 +23,26 @@
 #actions {
     grid-area : actions;
     background: hsl(120deg 25% 40%);
-    padding   : 1em;
+    width: fit-content;
+    padding: 1em;
+}
+
+#actionsInfo{
+
 }
 
 #actions button {
-    display: inline-block;
+    display: block;
     cursor: pointer;
     width  : 15em;
     padding: 0.68em;
     margin : 0.32em;
+}
+
+#selectedRecordTitle{
+    color: white;
+    font-weight: 600;
+    margin-bottom: 1em;
 }
 
 #queue {
@@ -98,3 +109,17 @@
     color: crimson !important;
     background-color: lightpink;
 }
+ 
+ #feedback {
+    opacity: 0;
+    height: fit-content;
+    -webkit-transition: opacity 0.5s linear;
+    -moz-transition: opacity 0.5s linear;
+    -ms-transition: opacity 0.5s linear;
+    margin-left: 3em;
+    padding: 1em;
+    color: #24334d;
+    font-family: monospace;
+    font-weight: 600;
+    background-color: rgba(36,51,77,.25);
+ }
