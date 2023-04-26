@@ -43,6 +43,8 @@
     color: white;
     font-weight: 600;
     margin-bottom: 1em;
+    text-align: center;
+    border-bottom: 1px solid white;
 }
 
 #queue {
@@ -68,10 +70,6 @@
 #preview {
     grid-area: preview;
 
-}
-
-#records::after {
-    content: " public records"
 }
 
 #resultsGrid {

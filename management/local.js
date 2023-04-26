@@ -14,7 +14,6 @@ function fetchItems(event) {
     return Promise.all([fetch(selectedCollection.dataset.uri, {cache: "no-cache"}).then(res => res.json()),
     fetch(selectedCollection.dataset.managed, {cache: "no-cache"}).then(res => res.json())])
         .then(([publicCollection, managedCollection]) => {
-            countItems(publicCollection)
             if (DLA_USER['http://dunbar.rerum.io/user_roles'].roles.includes('dunbar_user_reviewer')) {
                 approveBtn.addEventListener('click', approveByReviewer)
                 returnBtn.addEventListener('click', returnByReviewer)
@@ -26,7 +25,19 @@ function fetchItems(event) {
                 return getCuratorQueue(publicCollection, managedCollection)
             }
         })
-        .then(ok=>queue.querySelector('li').click())
+        .then(ok=>{
+            if(queue.querySelector('li')){
+                actions.style.opacity = 1
+                queue.querySelector('li').click()
+            }
+            else{
+                // Nothing in the queue to click, reset.
+                preview.innerHTML = ""
+                selectedRecordTitle.innerText = ""
+                actions.style.opacity = 0
+            }
+
+        })
         .catch(err=>Promise.reject(err))
 }
 
@@ -499,6 +510,7 @@ function giveFeedback(text){
 async function getReviewerQueue(publicCollection, managedCollection, limit = 10) {
     const disclusions = managedCollection.itemListElement.filter(record => !publicCollection.itemListElement.includes(record))
     let tempQueue = disclusions.slice(0, limit)
+    records.innerText = `${disclusions.length} records are not published`
     queue.innerHTML = `<h3>Queue for Review</h3>
     <ol>${tempQueue.reduce((a, b) => a += `<li data-id="${b['@id'].replace('http:','https:')}">${b.label}</li>`, ``)}</ol>`
     queue.querySelectorAll('li').forEach(addRecordHandlers)
@@ -510,10 +522,10 @@ async function getReviewerQueue(publicCollection, managedCollection, limit = 10)
  * Items which have a moderating Annotation requesting to be public should take precedent and be seen by default.
  */ 
 async function getCuratorQueue(publicCollection, managedCollection, limit = 10) {
-    const disclusions = managedCollection.itemListElement.filter(record => !publicCollection.itemListElement.includes(record))
-    let tempQueue = disclusions.slice(0, limit)
+    const selectedCollection = selectedCollectionElement.selectedOptions[0].innerText
     const activeCollection = collectionMap.get(selectedCollectionElement.value)
-    //Check for any records waiting to be released.  If there are some, show them by default
+    let recordsToSee = []
+    // Preference seeing records that have been suggested for publication by reviewers
     const queryObj = {
         "releasedTo": httpsIdArray(activeCollection.public),
         "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] }
@@ -527,6 +539,25 @@ async function getCuratorQueue(publicCollection, managedCollection, limit = 10) 
         }
     })
     .then(res => res.ok ? res.json() : Promise.reject(res))
+
+    if(reviewed.length){
+        //Preference records suggested for publication by reviewers
+        selectedCollectionElement.setAttribute("disabled", "")
+        giveFeedback("You must address suggestions before viewing the collections!")
+        records.innerText = `${reviewed.length} records suggested for publication`
+        recordsToSee = reviewed
+    }
+    else if(selectedCollection.includes("Published")){
+        //They want to see items in the published list, even if 0.
+         recordsToSee = publicCollection.itemListElement
+         records.innerText = `${recordsToSee.length} published records`
+    }
+    else{
+        //They want to see the managed list.
+        recordsToSee = managedCollection.itemListElement.filter(record => !publicCollection.itemListElement.includes(record))
+        records.innerText = `${recordsToSee.length} records are not published`
+    }
+    let tempQueue = recordsToSee.slice(0, limit)    
     queue.innerHTML = (reviewed.length) 
         ? queue.innerHTML = `<ol>${reviewed.reduce((a, b) => a += `<li data-id="${b.about}"><deer-view deer-template="label" deer-id="${b.about}"></deer-view></li>`, ``)}</ol>`
         : queue.innerHTML = `<ol>${tempQueue.reduce((a, b) => a += `<li data-id="${b['@id']}">${b.label}</li>`, ``)}</ol>`
@@ -575,28 +606,35 @@ function drawInterface() {
     const select = document.createElement('select')
     select.id = "selectedCollectionElement"
     collectionMap.forEach((v, k) => {
-        const opt = document.createElement('option')
-        opt.classList.add('collection')
-        opt.dataset.uri = v.public
-        opt.dataset.managed = v.managed
+        const opt_managed_list = document.createElement('option')
+        const opt_published_list = document.createElement('option')
+        opt_managed_list.classList.add('collection')
+        opt_published_list.classList.add('collection')
+        opt_managed_list.dataset.uri = v.public
+        opt_published_list.dataset.uri = v.public
+        opt_managed_list.dataset.managed = v.managed
+        opt_published_list.dataset.managed = v.managed
         const roles = DLA_USER['http://dunbar.rerum.io/user_roles']?.roles.filter(role => role.includes('dunbar_user'))
         let sanity = k
         sanity = sanity.replace("Published", "")
         sanity = sanity.replace("Managed", "")
-        //It would be idea to do the buttons in the preview template.
         if (user.dataset.role === "curator"){
-            sanity = `Published ${sanity}`
+            opt_published_list.innerText = `Published ${sanity}`
+            opt_managed_list.innerText = `Managed ${sanity}`
+            opt_published_list.value = k
+            opt_managed_list.value = k
+            select.append(opt_published_list)
+            select.append(opt_managed_list)
             approveBtn.innerText = "Approve for Publication"
             returnBtn.innerText = "Ask for Changes"
         }
         if (user.dataset.role === "reviewer"){
-            sanity = `Managed ${sanity}`
+            opt_managed_list.innerText = `Managed ${sanity}`
+            opt_managed_list.value = k
+            select.append(opt_managed_list)
             approveBtn.innerText = "Suggest Publication"
             returnBtn.innerText = "Return for Contributions"
         }
-        opt.innerText = sanity
-        opt.value = k
-        select.append(opt)
     })
     collections.append(select)
     attachCollectionHandler(select)
