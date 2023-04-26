@@ -15,7 +15,6 @@
     width     : 100%;
     text-align: center;
     font-size : larger;
-    padding   : 2em;
     color     : #530268;
     grid-area : records;
 }

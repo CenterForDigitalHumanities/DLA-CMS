@@ -516,7 +516,6 @@ function giveFeedback(text){
  */ 
 async function getReviewerQueue(publicCollection, managedCollection, limit = 10) {
     let recordsToSee = []
-    // Preference seeing records that have been suggested for publication by reviewers
     const queryObj = {
         "releasedTo": httpsIdArray(publicCollection["@id"]),
         "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] }
@@ -530,6 +529,7 @@ async function getReviewerQueue(publicCollection, managedCollection, limit = 10)
         }
     })
     .then(res => res.ok ? res.json() : Promise.reject(res))
+
     let disclusions = managedCollection.itemListElement.filter(record => !publicCollection.itemListElement.includes(record))
     if(reviewed.length){
         //Also disclude any that have been suggested for publication -- awaiting Curator action.
@@ -546,7 +546,7 @@ async function getReviewerQueue(publicCollection, managedCollection, limit = 10)
     }
 
     let tempQueue = disclusions.slice(0, limit)
-    records.innerText = `${disclusions.length} records are not published`
+    records.innerText = `${disclusions.length} records are not published.  Select a record to suggest publication.`
     queue.innerHTML = `<h3>Queue for Review</h3>
     <ol>${tempQueue.reduce((a, b) => a += `<li data-id="${b['@id'].replace('http:','https:')}">${b.label}</li>`, ``)}</ol>`
     queue.querySelectorAll('li').forEach(addRecordHandlers)
@@ -586,12 +586,12 @@ async function getCuratorQueue(publicCollection, managedCollection, limit = 10) 
     else if(selectedCollection.includes("Published")){
         //They want to see items in the published list, even if 0.
          recordsToSee = publicCollection.itemListElement
-         records.innerText = `${recordsToSee.length} published records`
+         records.innerText = `${recordsToSee.length} published records!`
     }
     else{
         //They want to see the managed list.
         recordsToSee = managedCollection.itemListElement.filter(record => !publicCollection.itemListElement.includes(record))
-        records.innerText = `${recordsToSee.length} records are not published`
+        records.innerText = `${recordsToSee.length} records are not published.  Select a record to review it for publication.`
     }
     let tempQueue = recordsToSee.slice(0, limit)    
     queue.innerHTML = (reviewed.length) 
