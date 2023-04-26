@@ -55,6 +55,14 @@ function showRecordPreview(event) {
     queue.querySelector(".selected")?.classList.remove("selected")
     event.target.classList.add('selected')
     selectedRecordTitle.innerText = event.target.innerText
+    // Sometimes this is a deer form and does not have the label yet...
+    if(!event.target.innerText){
+        //Cheat and force this delay.  The text will be there.  Or we can make it a label template itself.
+        setTimeout(function(){
+            selectedRecordTitle.innerText = event.target.innerText
+        },2000)
+    }
+    
     const headers = {
         'Content-Type': "application/json; charset=utf-8"
     }
@@ -394,7 +402,7 @@ async function curatorReturn() {
 }
 
 async function curatorDelete() {
-    const instructions = "This record will be removed from the project and deleted.  You cannot undo this action. \n Click 'OK' to continue."
+    const instructions = "This record will be removed from the project and deleted.  You cannot undo this action. \nClick 'OK' to continue."
     if (confirm(instructions) === false) return
     
     const activeCollection = collectionMap.get(selectedCollectionElement.value)
@@ -532,16 +540,16 @@ async function getReviewerQueue(publicCollection, managedCollection, limit = 10)
 
     let disclusions = managedCollection.itemListElement.filter(record => !publicCollection.itemListElement.includes(record))
     if(reviewed.length){
-        //Also disclude any that have been suggested for publication -- awaiting Curator action.
+        //Also disclude any that have been suggested for publication and are awaiting Curator action.
         disclusions = disclusions.filter(record => {
-            let included = false
+            let included = true
             reviewed.forEach(moderation => {
-                if(moderation.about.split("/").pop() === record["@id"].split("/").pop()) {
-                    included = true
+                if(moderation.releasedTo && moderation.about.split("/").pop() === record["@id"].split("/").pop()) {
+                    included = false
                     return
                 }
             })
-            return !included
+            return included
         })    
     }
 
@@ -560,6 +568,9 @@ async function getReviewerQueue(publicCollection, managedCollection, limit = 10)
 async function getCuratorQueue(publicCollection, managedCollection, limit = 10) {
     const selectedCollection = selectedCollectionElement.selectedOptions[0].innerText
     const activeCollection = collectionMap.get(selectedCollectionElement.value)
+    selectedCollectionElement.style.opacity = 1
+    // Curators do not see comments.
+    commentArea.style.display = "none"
     let recordsToSee = []
     // Preference seeing records that have been suggested for publication by reviewers
     const queryObj = {
@@ -576,16 +587,18 @@ async function getCuratorQueue(publicCollection, managedCollection, limit = 10) 
     })
     .then(res => res.ok ? res.json() : Promise.reject(res))
 
+    selectedCollectionElement.style.opacity = 1
     if(reviewed.length){
         //Preference records suggested for publication by reviewers
-        selectedCollectionElement.setAttribute("disabled", "")
-        giveFeedback("You must address suggestions before viewing the collections!")
+        selectedCollectionElement.style.opacity = 0.5
+        giveFeedback("You must address all publication suggestions before viewing this collection")
         records.innerText = `${reviewed.length} records suggested for publication`
         recordsToSee = reviewed
     }
     else if(selectedCollection.includes("Published")){
         //They want to see items in the published list, even if 0.
-         recordsToSee = publicCollection.itemListElement
+        
+        recordsToSee = publicCollection.itemListElement
          records.innerText = `${recordsToSee.length} published records!`
     }
     else{
