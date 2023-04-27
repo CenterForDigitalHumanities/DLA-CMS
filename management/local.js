@@ -1,5 +1,6 @@
 const collectionsFile = await fetch('/manage/collections').then(res => res.json())
 const collectionMap = new Map(Object.entries(collectionsFile))
+let headers = {}
 import DEER from '/js/deer-config.js'
 import UTILS from '/js/deer-utils.js'
 
@@ -9,6 +10,65 @@ function httpsIdArray(id,justArray) {
     return justArray ? [ id, id.replace('http','https') ] : { $in: [ id, id.replace('http','https') ] }
 }
 
+/**
+ * Get the moderation or moderations for a record or collection.
+ * If there is an error, return null.
+ * 
+ * @param a The record URI to match on 'about'
+ * @param r The collection URI to match on 'releasedTo'
+ * @return null or an array, even if 0 or 1 matches.
+ */ 
+function getModerations(a, r){
+    let queryObj = {
+        "type" : "Moderation"
+    }
+    if(a) queryObj.about = a
+    if(r) queryObj.releasedTo = httpsIdArray(r)
+    return fetch(DEER.URLS.QUERY, {
+        method: 'POST',
+        mode: 'cors',
+        body: JSON.stringify(queryObj),
+        headers
+    })
+    .then(res => res.ok ? res.json() : null)
+    .catch(err => {
+        alert("There was an error getting the Moderations.")
+        Promise.reject(err)
+        return null
+    })
+}
+
+/**
+ * Get the most recent comment about a record, generated from a review workflow.
+ * If there is an error, return null.
+ * 
+ * @param a The record URI to match on 'about'
+ * @param r The collection URI to match on 'releasedTo'
+ * @return null or an array, even if 0 or 1 matches.
+ */ 
+function getComment(uri){
+    const queryObj = {
+        "type" : "Comment",
+        "about": httpsIdArray(uri),
+        "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] }
+    }
+    return fetch(DEER.URLS.QUERY, {
+        method: 'POST',
+        mode: 'cors',
+        body: JSON.stringify(queryObj),
+        headers
+    })
+    .then(res => res.ok ? res.json() : null)
+    .catch(err => {
+        alert("There was an error getting the Comment for this record.")
+        Promise.reject(err)
+        return null
+    })
+}
+
+/**
+ * Get the public and managed collection to generate a queue from
+ */ 
 function fetchItems(event) {
     const selectedCollection = event.target.selectedOptions[0]
     if(selectedCollection.dataset.uri === ""){
@@ -17,6 +77,8 @@ function fetchItems(event) {
         selectedRecordTitle.innerText = ""
         actions.style.opacity = 0
         records.innerText = "This collection is not available yet."
+        commentToggle.innerHTML = ""
+        commentText.innerText = ""
     }
     return Promise.all([fetch(selectedCollection.dataset.uri, {cache: "no-cache"}).then(res => res.json()),
     fetch(selectedCollection.dataset.managed, {cache: "no-cache"}).then(res => res.json())])
@@ -42,14 +104,24 @@ function fetchItems(event) {
                 preview.innerHTML = ""
                 selectedRecordTitle.innerText = ""
                 actions.style.opacity = 0
+                commentToggle.innerHTML = ""
+                commentText.innerText = ""
             }
 
         })
-        .catch(err=>Promise.reject(err))
+        .catch(err=>{
+            alert("There was an issue gathering the collections.  Refresh to try again.")
+            Promise.reject(err)
+        })
 }
 
-function showRecordPreview(event) {
+/**
+ * Intitate a DEER view to generate a preview UI for a selected record from the queue.
+ */ 
+async function showRecordPreview(event) {
     preview.innerHTML = ``
+    commentToggle.innerHTML = ""
+    commentText.innerText = ""
     preview.setAttribute("deer-template", "preview")
     preview.setAttribute("deer-id", event.target.dataset.id)
     queue.querySelector(".selected")?.classList.remove("selected")
@@ -62,57 +134,23 @@ function showRecordPreview(event) {
             selectedRecordTitle.innerText = event.target.innerText
         },2000)
     }
-    
-    const headers = {
-        'Content-Type': "application/json; charset=utf-8"
-    }
-    const queryObj = {
-        "type" : "Comment",
-        "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] },
-        "about": httpsIdArray(event.target.dataset.id)
-    }
-    fetch(DEER.URLS.QUERY, {
-        method: 'POST',
-        mode: 'cors',
-        body: JSON.stringify(queryObj),
-        headers
-    })
-    .then(res => res.ok ? res.json() : Promise.reject(res))
-    .then(comment=> {
-        if(comment.length && comment[0]){
-            commentToggle.innerHTML = `Comment from <deer-view deer-template="label" deer-id="${comment[0].author}"></deer-view> `
-            commentText.innerHTML = `<pre>${comment[0].text}</pre>`  
-        }
-         //We will need need to broadcast the view
+    const commented = await getComment(event.target.dataset.id)
+    //If null, there was an issue getting the comment but we will continue anyway
+    if(commented.length){
+        commentToggle.innerHTML = `Comment from <deer-view deer-template="label" deer-id="${commented[0].author ?? ""}"></deer-view> `
+        commentText.innerHTML = `<pre>${commented[0].text ?? ""}</pre>`   
         setTimeout(() => UTILS.broadcast(undefined, DEER.EVENTS.NEW_VIEW, commentToggle, { set: commentToggle.querySelectorAll(DEER.VIEW) }))    
-    })
-    .catch(err => {
-        giveFeedback("Trouble loading preview")
-        Promise.reject(err)
-    })
-
+    }
 }
 
+/**
+ * Generate or update the Moderation about a record as a reviewer, suggesting publication for this record.
+ * This will alert Curators to review the publication suggestion.
+ */ 
 async function approveByReviewer() {
-    const headers = {
-        'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
-        'Content-Type': "application/json; charset=utf-8"
-    }
     const activeCollection = collectionMap.get(selectedCollectionElement.value)
     // Handle this positive moderation assertion
-    const queryObj = {
-        "type" : "Moderation",
-        "about": httpsIdArray(preview.getAttribute("deer-id"))
-    }
-    let moderated = await fetch(DEER.URLS.QUERY, {
-        method: 'POST',
-        mode: 'cors',
-        body: JSON.stringify(queryObj),
-        headers
-    })
-    .then(res => res.ok ? res.json() : Promise.reject(res))
-    .catch(err => Promise.reject(err))
-
+    let moderated = await getModerations(preview.getAttribute("deer-id"), null)
     const moderation = Object.assign(moderated[0] ?? {
         "@context": {"@vocab":"https://made.up/"},
         type: "Moderation",
@@ -150,11 +188,11 @@ async function approveByReviewer() {
 
 }
 
+/**
+ * Require changes for a record and provide a comment for contributors.
+ * This will alert contributors of an upstream rejection by a reviewer.
+ */ 
 async function returnByReviewer() {
-    const headers = {
-        'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
-        'Content-Type': "application/json; charset=utf-8"
-    }
     const activeCollection = collectionMap.get(selectedCollectionElement.value)
     const managedlist = await fetch(activeCollection.managed, {cache: "no-cache"})
         .then(res => res.ok ? res.json() : Promise.reject(res))
@@ -163,22 +201,16 @@ async function returnByReviewer() {
             list.numberOfItems = list.itemListElement.length
             return list
         })
-
-    const callback = async (commentID) =>{
-        // Handle the negative moderation assertion.
-        const moderationQuery = {
-            "type" : "Moderation",
-            "about": httpsIdArray(preview.getAttribute("deer-id"))
-        }
-        let moderated = await fetch(DEER.URLS.QUERY, {
-            method: 'POST',
-            mode: 'cors',
-            body: JSON.stringify(moderationQuery),
-            headers
+        .catch(err => {
+            alert("There was an issue with returning this item for contributions.")
+            Promise.reject(err)
+            return null
         })
-        .then(res => res.ok ? res.json() : Promise.reject(res))
-        .catch(err => Promise.reject(err))
+    if(!managedList) return
 
+    // Handle the negative moderation assertion.
+    const callback = async (commentID) =>{
+        let moderated = await getModerations(preview.getAttribute("deer-id"), null)
         const moderation = Object.assign(moderated[0] ?? {
             "@context": {"@vocab":"https://made.up/"},
             type: "Moderation",
@@ -188,7 +220,6 @@ async function returnByReviewer() {
             releasedTo: null,
             resultComment: commentID
         })
-
         // You will need to create or overwrite this moderation action for the moderation flow.
         const moderateFetch = (moderated.length === 0)
         ? fetch(DEER.URLS.CREATE, {
@@ -222,12 +253,12 @@ async function returnByReviewer() {
                 queue.querySelector('li').click()
             })
             .catch(err => {
-                alert("There was an issue removing this item.")
+                alert("There was an issue with returning this item for contributions.")
                 Promise.reject(err)
             })
         })
         .catch(err => {
-            alert("There was an issue removing this item.")
+            alert("There was an issue with returning this item for contributions.")
             Promise.reject(err)
         })
     }
@@ -235,6 +266,9 @@ async function returnByReviewer() {
     recordComment(callback)
 }
 
+/**
+ * Generate a UI to record a Comment for a Moderation 'rejection'
+ */ 
 async function recordComment(callback) {
     const modalComment = document.createElement('div')
     modalComment.classList.add('modal')
@@ -255,25 +289,12 @@ async function recordComment(callback) {
     })
 }
 
+/**
+ * Save or update the Comment about a record, thus recording a Moderation conversation.
+ */ 
 async function saveComment(target, text) {
-    const headers = {
-        'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
-        'Content-Type': "application/json; charset=utf-8"
-    }
-    const queryObj = {
-        "type": "Comment",
-        "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] },
-        "about": target
-    }
-    let commented = await fetch(DEER.URLS.QUERY, {
-        method: 'POST',
-        mode: 'cors',
-        body: JSON.stringify(queryObj),
-        headers
-    })
-    .then(res => res.ok ? res.json() : Promise.reject(res))
-    .catch(err => Promise.reject(err))
-
+    let commented = await getComment(target)
+    if(commented === null) return
     const dismissingComment = Object.assign(commented[0] ?? {
         "@context": {"@vocab":"https://schema.org/"},
         "type": "Comment"
@@ -282,7 +303,7 @@ async function saveComment(target, text) {
         "about": target,
         author: DLA_USER['http://store.rerum.io/agent']
     })
-    let commentFetch = (commented.length === 0)
+    let commentFetch = (commented)
         ? fetch(DEER.URLS.CREATE, {
             method: 'POST',
             mode: 'cors',
@@ -297,23 +318,36 @@ async function saveComment(target, text) {
         })
     return commentFetch
         .then(res => res.ok ? res.headers.get('location') : Promise.reject(res))
-        .catch(err => Promise.reject(err))
+        .catch(err => {
+            alert("Could not record comment")
+            Promise.reject(err)
+        })
 }
 
+/**
+ * Place a record into the published collection as a curator.
+ */ 
 async function curatorApproval() {
-    const headers = {
-        'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
-        'Content-Type': "application/json; charset=utf-8"
-    }
     const activeCollection = collectionMap.get(selectedCollectionElement.value)
     const activeRecord = await fetch(activeCollection.managed, {cache: "no-cache"})
         .then(res => res.ok ? res.json() : Promise.reject(res))
         .then(array => array.itemListElement.find(r => r['@id'] === preview.getAttribute("deer-id")))
+        .catch(err => {
+            alert("There was an error getting the Comment for this record.")
+            Promise.reject(err)
+            return null
+        })
     let list = await fetch(activeCollection.public, {cache: "no-cache"})
         .then(res => res.ok ? res.json() : Promise.reject(res))
-    if (list.itemListElement.includes(activeRecord)) {
-        return // already published, somehow
-    }
+        .catch(err => {
+            alert("There was an error getting the Comment for this record.")
+            Promise.reject(err)
+            return null
+        })
+
+    if(!(activeRecord && list)) return    
+    if (list.itemListElement.includes(activeRecord)) return // already published, somehow
+    
     list.itemListElement.push(activeRecord)
     list.numberOfItems = list.itemListElement.length
     fetch(DEER.URLS.UPDATE, {
@@ -334,28 +368,15 @@ async function curatorApproval() {
     })
 }
 
+/**
+ * Deny the publication suggestion for a record and provide a comment.
+ * This will alert reviewers that this record needs more work, and they can pass it down to a contributor.
+ */ 
 async function curatorReturn() {
     const activeCollection = collectionMap.get(selectedCollectionElement.value)
     const activeRecord = preview.getAttribute("deer-id")
-
-    const headers = {
-        'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
-        'Content-Type': "application/json; charset=utf-8"
-    }
-    const queryObj = {
-        "releasedTo": activeCollection.public,
-        "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] },
-        "about": httpsIdArray(preview.getAttribute("deer-id"))
-    }
-    let reviewed = await fetch(DEER.URLS.QUERY, {
-        method: 'POST',
-        mode: 'cors',
-        body: JSON.stringify(queryObj),
-        headers
-    })
-    .then(res => res.ok ? res.json() : Promise.reject(res))
-    .catch(err => Promise.reject(err))
-
+    let reviewed = await getModerations(preview.getAttribute("deer-id"), null)
+    if(reviewed === null) return
     let moderation = Object.assign(reviewed[0] ?? {
         "@context": {"@vocab":"https://made.up/"},
         type: "Moderation",
@@ -366,6 +387,7 @@ async function curatorReturn() {
         resultComment: null
     })
 
+    // Handle the negative moderation assertion.
     const callback = (commentID) => {
         moderation.resultComment = commentID
         const publishFetch = (reviewed.length === 0)
@@ -390,6 +412,8 @@ async function curatorReturn() {
                     queue.querySelector(`li`).click()
                 }
                 else{
+                    // You may have finished your queue of suggestions so there is no <li>.  
+                    // This will initiate your other queue for this collection, which may also be empty.
                     selectedCollectionElement.dispatchEvent(new Event('input'))
                 }
             })
@@ -401,53 +425,20 @@ async function curatorReturn() {
     recordComment(callback)
 }
 
+/**
+ * Actually delete a record so that it is no longer connected with any collection.
+ * The record itself will be RERUM deleted and the targetCollection Annotations will be deleted.
+ * Comment and Moderation will not be altered, but will be orphaned to No Man's Land in RERUM.
+ */ 
 async function curatorDelete() {
     const instructions = "This record will be removed from the project and deleted.  You cannot undo this action. \nClick 'OK' to continue."
     if (confirm(instructions) === false) return
-    
     const activeCollection = collectionMap.get(selectedCollectionElement.value)
     const activeRecord = preview.getAttribute("deer-id")
-    const headers = {
-        'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
-        'Content-Type': "application/json; charset=utf-8"
-    }
-
     // This is going to require a handful of fetches that all need to succeed.
     let allFetches = []
 
-    // Get the Comments and Moderations about this item and delete them
-    const queryObj = {
-        "$or" : [{"type": "Moderation"}, {"type":"Comment"}],
-        "about": httpsIdArray(preview.getAttribute("deer-id"))
-    }
-    let moderation_flow_data = await fetch(DEER.URLS.QUERY, {
-        method: 'POST',
-        mode: 'cors',
-        body: JSON.stringify(queryObj),
-        headers
-    })
-    .then(res => res.ok ? res.json() : Promise.reject(res))
-    .then(data_arr => {
-        data_arr.forEach(datapoint => {
-            const deleteFetch = fetch("//tinypaul.rerum.io/dla/delete", {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json; charset=utf-8",
-                    "Authorization": `Bearer ${window.DLA_USER.authorization}`
-                },
-                body: datapoint["@id"] ?? datapoint.id
-            })
-            .catch(err => Promise.reject(err) )
-            allFetches.push(deleteFetch)
-        })
-    })
-    .catch(err => {
-        console.error(err)
-        return null
-    })
-    // If there is a query error, fail out.
-    if(moderation_flow_data === null) return
-
+    // If this record is on the published list, it needs to be removed via an OVERWRITE
     const publishedList = await fetch(activeCollection.public, {cache: "no-cache"})
         .then(res => res.ok ? res.json() : Promise.reject(res))
         .then(list => {
@@ -467,7 +458,13 @@ async function curatorDelete() {
             }
             return list
         })
+        .catch(err => {
+            alert("There was an issue with deleting this item.")
+            Promise.reject(err)
+            return null
+        })
 
+    // If this record is on the managed list, it needs to be removed via an OVERWRITE
     const managedlist = await fetch(activeCollection.managed, {cache: "no-cache"})
     .then(res => res.ok ? res.json() : Promise.reject(res))
     .then(list => {
@@ -487,8 +484,52 @@ async function curatorDelete() {
         }
         return list
     })
+    .catch(err => {
+        alert("There was an issue with deleting this item.")
+        Promise.reject(err)
+        return null
+    })
+    if(!(managedList && publicList)) return
+    
+    // Delete the 'targetCollection' Annotation(s) placing this record into this collection
+    const queryObj = {
+        $or: [{
+            "targetCollection": selectedCollectionElement.value
+        }, {
+            "body.targetCollection": selectedCollectionElement.value
+        }],
+        target: httpsIdArray(id),
+        "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] }
+    }
+    let placingAnnotations = await fetch(DEER.URLS.QUERY, {
+        method: 'POST',
+        mode: 'cors',
+        body: JSON.stringify(queryObj),
+        headers
+    })
+    .then(res => res.ok ? res.json() : Promise.reject(res))
+    .then(data_arr => {
+        data_arr.forEach(datapoint => {
+            const deleteFetch = fetch(DEER.URLS.DELETE, {
+                method: "DELETE",
+                headers,
+                body: datapoint["@id"] ?? datapoint.id
+            })
+            .catch(err => Promise.reject(err) )
+            allFetches.push(deleteFetch)
+        })
+        return data_arr
+    })
+    .catch(err => {
+        alert("There was an issue with deleting this item.")
+        Promise.reject(err)
+        return null
+    })
+    //If there is an error with the targetCollection Annotations, fail out
+    if(!placingAnnotations) return
+
     //Do all of the deletes and overwrites.  This should only be considered successful if they all work.
-    return Promise.all(all)
+    Promise.all(all)
         .then(success => giveFeedback(`Successfully deleted '${queue.querySelector(`[data-id="${activeRecord}"]`).innerText}'`))
         .then(ok => {
             queue.querySelector(`[data-id="${activeRecord}"]`).remove()
@@ -496,6 +537,8 @@ async function curatorDelete() {
                 queue.querySelector(`li`).click()
             }
             else{
+                // You may have finished your queue vai this delete so there is no <li>.  
+                // This will initiate your other queue for this collection, which may also be empty.
                 selectedCollectionElement.dispatchEvent(new Event('input'))
             }
         })
@@ -522,27 +565,15 @@ function giveFeedback(text){
  */ 
 async function getReviewerQueue(publicCollection, managedCollection, limit = 10) {
     let recordsToSee = []
-    const queryObj = {
-        "releasedTo": httpsIdArray(publicCollection["@id"]),
-        "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] }
-    }
-    let reviewed = await fetch(DEER.URLS.QUERY, {
-        method: 'POST',
-        mode: 'cors',
-        body: JSON.stringify(queryObj),
-        headers:{
-            "Content-Type":"application/json; charset=utf-8"
-        }
-    })
-    .then(res => res.ok ? res.json() : Promise.reject(res))
-
+    let reviewed = await getModerations(null, publicCollection["@id"])
+    if(reviewed === null) return
     let disclusions = managedCollection.itemListElement.filter(record => !publicCollection.itemListElement.includes(record))
     if(reviewed.length){
         //Also disclude any that have been suggested for publication and are awaiting Curator action.
         disclusions = disclusions.filter(record => {
             let included = true
             reviewed.forEach(moderation => {
-                if(moderation.releasedTo && moderation.about.split("/").pop() === record["@id"].split("/").pop()) {
+                if(moderation.about.split("/").pop() === record["@id"].split("/").pop()) {
                     included = false
                     return
                 }
@@ -570,20 +601,8 @@ async function getCuratorQueue(publicCollection, managedCollection, limit = 10) 
     commentArea.style.display = "none"
     let recordsToSee = []
     // Preference seeing records that have been suggested for publication by reviewers
-    const queryObj = {
-        "releasedTo": httpsIdArray(activeCollection.public),
-        "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] }
-    }
-    let reviewed = await fetch(DEER.URLS.QUERY, {
-        method: 'POST',
-        mode: 'cors',
-        body: JSON.stringify(queryObj),
-        headers:{
-            "Content-Type":"application/json; charset=utf-8"
-        }
-    })
-    .then(res => res.ok ? res.json() : Promise.reject(res))
-
+    let reviewed = await getModerations(null, activeCollection.public)
+    if(reviewed === null) return
     selectedCollectionElement.style.opacity = 1
     if(reviewed.length){
         //Preference records suggested for publication by reviewers
@@ -638,8 +657,18 @@ commentToggle.addEventListener("click", e => {
     }
 })
 
-if (window?.DLA_USER) drawInterface()
+if (window?.DLA_USER) {
+    headers = {
+        'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
+        'Content-Type': "application/json; charset=utf-8"
+    }
+    drawInterface()
+}
 
+/**
+ * Generate the Collections selector based on user role, and select one so initiate the interface for that collection.
+ * Also set the user information in the UI for the logged in user.
+ */ 
 function drawInterface() {
     const roles = DLA_USER['http://dunbar.rerum.io/user_roles']?.roles.filter(role => role.includes('dunbar_user'))
     if (roles.includes("dunbar_user_curator")) user.dataset.role = "curator"
@@ -684,6 +713,5 @@ function drawInterface() {
     attachCollectionHandler(select)
     select.options[0].selected = true
     select.dispatchEvent(new Event('input'))
-
 }
 export { collectionMap }
