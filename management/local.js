@@ -1,6 +1,5 @@
 const collectionsFile = await fetch('/manage/collections').then(res => res.json())
 const collectionMap = new Map(Object.entries(collectionsFile))
-let headers = {}
 import DEER from '/js/deer-config.js'
 import UTILS from '/js/deer-utils.js'
 
@@ -19,6 +18,10 @@ function httpsIdArray(id,justArray) {
  * @return null or an array, even if 0 or 1 matches.
  */ 
 function getModerations(a, r){
+    const headers = {
+        'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
+        'Content-Type': "application/json; charset=utf-8"
+    }
     let queryObj = {
         "type" : "Moderation"
     }
@@ -47,6 +50,10 @@ function getModerations(a, r){
  * @return null or an array, even if 0 or 1 matches.
  */ 
 function getComment(uri){
+    const headers = {
+        'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
+        'Content-Type': "application/json; charset=utf-8"
+    }
     const queryObj = {
         "type" : "Comment",
         "about": httpsIdArray(uri),
@@ -91,6 +98,8 @@ function fetchItems(event) {
             if (DLA_USER['http://dunbar.rerum.io/user_roles'].roles.includes('dunbar_user_curator')) {
                 approveBtn.addEventListener('click', curatorApproval)
                 returnBtn.addEventListener('click', curatorReturn)
+                deleteBtn.addEventListener('click', curatorDelete)
+                deleteBtn.classList.remove("is-hidden")
                 return getCuratorQueue(publicCollection, managedCollection)
             }
         })
@@ -127,11 +136,13 @@ async function showRecordPreview(event) {
     queue.querySelector(".selected")?.classList.remove("selected")
     event.target.classList.add('selected')
     selectedRecordTitle.innerText = event.target.innerText
-    // Sometimes this is a deer form and does not have the label yet...
+    //deleteBtn.innerText = `Delete '${event.target.innerText}'`
+    // Sometimes this is a DEER view and does not have the label yet...
     if(!event.target.innerText){
         //Cheat and force this delay.  The text will be there.  Or we can make it a label template itself.
         setTimeout(function(){
             selectedRecordTitle.innerText = event.target.innerText
+            //deleteBtn.innerText = `Delete '${event.target.innerText}'`
         },2000)
     }
     const commented = await getComment(event.target.dataset.id)
@@ -148,6 +159,10 @@ async function showRecordPreview(event) {
  * This will alert Curators to review the publication suggestion.
  */ 
 async function approveByReviewer() {
+    const headers = {
+        'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
+        'Content-Type': "application/json; charset=utf-8"
+    }
     const activeCollection = collectionMap.get(selectedCollectionElement.value)
     // Handle this positive moderation assertion
     let moderated = await getModerations(preview.getAttribute("deer-id"), null)
@@ -193,6 +208,10 @@ async function approveByReviewer() {
  * This will alert contributors of an upstream rejection by a reviewer.
  */ 
 async function returnByReviewer() {
+    const headers =  {
+        'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
+        'Content-Type': "application/json; charset=utf-8"
+    }
     const activeCollection = collectionMap.get(selectedCollectionElement.value)
     const managedlist = await fetch(activeCollection.managed, {cache: "no-cache"})
         .then(res => res.ok ? res.json() : Promise.reject(res))
@@ -293,6 +312,10 @@ async function recordComment(callback) {
  * Save or update the Comment about a record, thus recording a Moderation conversation.
  */ 
 async function saveComment(target, text) {
+    const headers =  {
+        'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
+        'Content-Type': "application/json; charset=utf-8"
+    }
     let commented = await getComment(target)
     if(commented === null) return
     const dismissingComment = Object.assign(commented[0] ?? {
@@ -328,6 +351,10 @@ async function saveComment(target, text) {
  * Place a record into the published collection as a curator.
  */ 
 async function curatorApproval() {
+    const headers =  {
+        'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
+        'Content-Type': "application/json; charset=utf-8"
+    }
     const activeCollection = collectionMap.get(selectedCollectionElement.value)
     const activeRecord = await fetch(activeCollection.managed, {cache: "no-cache"})
         .then(res => res.ok ? res.json() : Promise.reject(res))
@@ -373,6 +400,10 @@ async function curatorApproval() {
  * This will alert reviewers that this record needs more work, and they can pass it down to a contributor.
  */ 
 async function curatorReturn() {
+    const headers = {
+        'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
+        'Content-Type': "application/json; charset=utf-8"
+    }
     const activeCollection = collectionMap.get(selectedCollectionElement.value)
     const activeRecord = preview.getAttribute("deer-id")
     let reviewed = await getModerations(preview.getAttribute("deer-id"), null)
@@ -431,12 +462,14 @@ async function curatorReturn() {
  * Comment and Moderation will not be altered, but will be orphaned to No Man's Land in RERUM.
  */ 
 async function curatorDelete() {
-    const instructions = "This record will be removed from the project and deleted.  You cannot undo this action. \nClick 'OK' to continue."
-    if (confirm(instructions) === false) return
+    const headers = {
+        'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
+        'Content-Type': "application/json; charset=utf-8"
+    }
     const activeCollection = collectionMap.get(selectedCollectionElement.value)
     const activeRecord = preview.getAttribute("deer-id")
-    // This is going to require a handful of fetches that all need to succeed.
-    let allFetches = []
+    const instructions = `'${queue.querySelector(`[data-id="${activeRecord}"]`).innerText}' will be removed from the project and deleted.  You cannot undo this action. \nClick 'OK' to continue.`
+    if (confirm(instructions) === false) return
 
     // If this record is on the published list, it needs to be removed via an OVERWRITE
     const publishedList = await fetch(activeCollection.public, {cache: "no-cache"})
@@ -447,25 +480,25 @@ async function curatorDelete() {
             list.numberOfItems = list.itemListElement.length
             if(numnow !== list.numberOfItems){
                 // Gotta overwrite, add that to our array of fetches
-                allFetches.push(fetch(DEER.URLS.OVERWRITE, {
+                fetch(DEER.URLS.OVERWRITE, {
                     method: 'PUT',
                     mode: 'cors',
                     body: JSON.stringify(list),
                     headers
                 })
-                .then(r => r.ok ? r.json() : Promise.reject(Error(r.text)))
-                .catch(err => Promise.reject(err)))
+                .then(r => r.ok ? r.json() : Promise.reject(r))
+                .catch(err => Promise.reject(err))
             }
             return list
         })
         .catch(err => {
-            alert("There was an issue with deleting this item.")
+            alert("There was an issue with deleting this record.")
             Promise.reject(err)
             return null
         })
 
     // If this record is on the managed list, it needs to be removed via an OVERWRITE
-    const managedlist = await fetch(activeCollection.managed, {cache: "no-cache"})
+    const managedList = await fetch(activeCollection.managed, {cache: "no-cache"})
     .then(res => res.ok ? res.json() : Promise.reject(res))
     .then(list => {
         const numnow = list.numberOfItems
@@ -473,32 +506,32 @@ async function curatorDelete() {
         list.numberOfItems = list.itemListElement.length
         if(numnow !== list.numberOfItems){
             // Gotta overwrite, add that to our array of fetches
-            allFetches.push(fetch(DEER.URLS.OVERWRITE, {
+            fetch(DEER.URLS.OVERWRITE, {
                 method: 'PUT',
                 mode: 'cors',
                 body: JSON.stringify(list),
                 headers
             })
-            .then(r => r.ok ? r.json() : Promise.reject(Error(r.text)))
-            .catch(err => Promise.reject(err) ))
+            .then(r => r.ok ? r.json() : Promise.reject(r))
+            .catch(err => Promise.reject(err) )
         }
         return list
     })
     .catch(err => {
-        alert("There was an issue with deleting this item.")
+        alert("There was an issue with deleting this record.")
         Promise.reject(err)
         return null
     })
-    if(!(managedList && publicList)) return
+    if(managedList === null || publishedList === null) return
     
     // Delete the 'targetCollection' Annotation(s) placing this record into this collection
     const queryObj = {
         $or: [{
-            "targetCollection": selectedCollectionElement.value
+            "targetCollection": activeCollection.targetCollection
         }, {
-            "body.targetCollection": selectedCollectionElement.value
+            "body.targetCollection": activeCollection.targetCollection
         }],
-        target: httpsIdArray(id),
+        target: httpsIdArray(activeRecord),
         "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] }
     }
     let placingAnnotations = await fetch(DEER.URLS.QUERY, {
@@ -509,43 +542,30 @@ async function curatorDelete() {
     })
     .then(res => res.ok ? res.json() : Promise.reject(res))
     .then(data_arr => {
-        data_arr.forEach(datapoint => {
-            const deleteFetch = fetch(DEER.URLS.DELETE, {
-                method: "DELETE",
-                headers,
-                body: datapoint["@id"] ?? datapoint.id
-            })
-            .catch(err => Promise.reject(err) )
-            allFetches.push(deleteFetch)
+        let all = data_arr.map(datapoint => {
+            return fetch(DEER.URLS.DELETE, {
+                    method: "DELETE",
+                    headers,
+                    body: JSON.stringify(datapoint)
+                })
+                .catch(err => Promise.reject(err) )
         })
-        return data_arr
+        Promise.all(all)
+        .then(success => {
+            queue.querySelector(`[data-id="${activeRecord}"]`).remove()
+            selectedCollectionElement.dispatchEvent(new Event('input'))
+            giveFeedback(`Successfully deleted '${queue.querySelector(`[data-id="${activeRecord}"]`).innerText}'`)
+        })
+        .catch(err => {
+            alert(`Trouble while deleting target collections annos for '${queue.querySelector(`[data-id="${activeRecord}"]`).innerText}'`)
+            Promise.reject(err)
+        })
     })
     .catch(err => {
-        alert("There was an issue with deleting this item.")
+        alert("There was an issue with deleting this record.")
         Promise.reject(err)
         return null
     })
-    //If there is an error with the targetCollection Annotations, fail out
-    if(!placingAnnotations) return
-
-    //Do all of the deletes and overwrites.  This should only be considered successful if they all work.
-    Promise.all(all)
-        .then(success => giveFeedback(`Successfully deleted '${queue.querySelector(`[data-id="${activeRecord}"]`).innerText}'`))
-        .then(ok => {
-            queue.querySelector(`[data-id="${activeRecord}"]`).remove()
-            if(queue.querySelector(`li`)){
-                queue.querySelector(`li`).click()
-            }
-            else{
-                // You may have finished your queue vai this delete so there is no <li>.  
-                // This will initiate your other queue for this collection, which may also be empty.
-                selectedCollectionElement.dispatchEvent(new Event('input'))
-            }
-        })
-        .catch(err => {
-            alert(`Trouble while removing record '${queue.querySelector(`[data-id="${activeRecord}"]`).innerText}'`)
-            Promise.reject(err)
-        })
 }
 
 /**
@@ -581,9 +601,10 @@ async function getReviewerQueue(publicCollection, managedCollection, limit = 10)
             return included
         })    
     }
-
+    let total = publicCollection.itemListElement.length + managedCollection.itemListElement.length
     let tempQueue = disclusions.slice(0, limit)
-    records.innerText = `${disclusions.length} records are not published.  Select a record to suggest publication.`
+    records.innerText = `${disclusions.length} of ${total} records need review.`
+    // Select a record to suggest publication.
     queue.innerHTML = `<h3>Queue for Review</h3>
     <ol>${tempQueue.reduce((a, b) => a += `<li data-id="${b['@id'].replace('http:','https:')}">${b.label}</li>`, ``)}</ol>`
     queue.querySelectorAll('li').forEach(addRecordHandlers)
@@ -604,22 +625,25 @@ async function getCuratorQueue(publicCollection, managedCollection, limit = 10) 
     let reviewed = await getModerations(null, activeCollection.public)
     if(reviewed === null) return
     selectedCollectionElement.style.opacity = 1
+    const total = publicCollection.itemListElement.length + managedCollection.itemListElement.length
     if(reviewed.length){
         //Preference records suggested for publication by reviewers
         selectedCollectionElement.style.opacity = 0.5
         giveFeedback("You must address all publication suggestions before viewing this collection")
-        records.innerText = `${reviewed.length} records suggested for publication`
+        records.innerText = `${reviewed.length} records suggested for publication.  Select a record to publish it.`
         recordsToSee = reviewed
     }
     else if(selectedCollection.includes("Published")){
         //They want to see items in the published list, even if 0.
         recordsToSee = publicCollection.itemListElement
-        records.innerText = `${recordsToSee.length} published records!`
+        records.innerText = `${recordsToSee.length} of ${total} records are public!`
+        //  Select a record to view its details.
     }
     else{
         //They want to see the managed list.
         recordsToSee = managedCollection.itemListElement.filter(record => !publicCollection.itemListElement.includes(record))
-        records.innerText = `${recordsToSee.length} records are not published.  Select a record to review it for publication.`
+        records.innerText = `${recordsToSee.length} of ${total} records are not public.`
+        // Select a record to publish it.
     }
     let tempQueue = recordsToSee.slice(0, limit)    
     queue.innerHTML = (reviewed.length) 
@@ -644,26 +668,8 @@ function countItems(collection) {
 }
 
 document.querySelector('auth-button button').addEventListener('dla-authenticated', drawInterface)
-commentToggle.addEventListener("click", e => {
-    if(e.target.tagName === "PRE"){
-        //This way they can highlight and select text
-        return
-    }
-    if(commentText.classList.contains("is-hidden")){
-        commentText.querySelector(".statusDrawer").classList.remove("is-hidden")
-    }
-    else{
-        commentText.querySelector(".statusDrawer").classList.add("is-hidden")
-    }
-})
 
-if (window?.DLA_USER) {
-    headers = {
-        'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
-        'Content-Type': "application/json; charset=utf-8"
-    }
-    drawInterface()
-}
+if (window?.DLA_USER) drawInterface()
 
 /**
  * Generate the Collections selector based on user role, and select one so initiate the interface for that collection.
@@ -693,7 +699,7 @@ function drawInterface() {
         sanity = sanity.replace("Managed", "")
         if (user.dataset.role === "curator"){
             opt_published_list.innerText = `Published ${sanity}`
-            opt_managed_list.innerText = `Managed ${sanity}`
+            opt_managed_list.innerText = `Unreviewed ${sanity}`
             opt_published_list.value = k
             opt_managed_list.value = k
             select.append(opt_published_list)
@@ -702,7 +708,7 @@ function drawInterface() {
             returnBtn.innerText = "Ask for Changes"
         }
         if (user.dataset.role === "reviewer"){
-            opt_managed_list.innerText = `Managed ${sanity}`
+            opt_managed_list.innerText = `Unreviewed ${sanity}`
             opt_managed_list.value = k
             select.append(opt_managed_list)
             approveBtn.innerText = "Suggest Publication"

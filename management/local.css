@@ -30,16 +30,20 @@
 
 }
 
+.is-hidden{
+    display: none;
+}
+
 #actions button {
     display: block;
     cursor: pointer;
     width  : 15em;
     padding: 0.68em;
-    margin : 0.32em;
+    margin : 0.32em auto;
 }
 
-#preview button {
-    display: block;
+#deleteBtn {
+    display: none;
     cursor: pointer;
     width  : auto;
     padding: 0.68em;
@@ -48,7 +52,7 @@
     border: 1px solid black;
 }
 
-#preview button:hover {
+#deleteBtn:hover {
     color: white;
     background-color: red;
     font-weight: 600;

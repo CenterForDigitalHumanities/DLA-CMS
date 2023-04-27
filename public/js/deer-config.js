@@ -36,6 +36,7 @@ export default {
         UPDATE: tiny + "update",
         OVERWRITE: tiny + "overwrite",
         QUERY: tiny + "query",
+        DELETE: tiny + "delete",
         SINCE: baseV1 + "since"
     },
 
@@ -64,18 +65,6 @@ export default {
     TEMPLATES: {
         cat: (obj) => `<h5>${obj.name}</h5><img src="https://placekitten.com/300/150" style="width:100%;">`,
         metadataLetter: (obj) => {
-            let approveBtn
-            let returnBtn
-            let deleteBtn
-            if (DLA_USER['http://dunbar.rerum.io/user_roles'].roles.includes('dunbar_user_reviewer')) {
-                approveBtn = `<button role="button" id="approveBtn" onclick="approveByReviewer()">Suggest Publication</button>`
-                returnBtn = `<button role="button" id="returnBtn" onclick="returnByReviewer()">Return For Contributions</button>`
-            }
-            if (DLA_USER['http://dunbar.rerum.io/user_roles'].roles.includes('dunbar_user_curator')) {
-                approveBtn = `<button role="button" id="approveBtn" onclick="curatorApproval()">Approve for Publication</button>`
-                returnBtn = `<button role="button" id="returnBtn" onclick="curatorReturn()">Ask For Changes</button>`
-                deleteBtn = `<button role="button" id="deleteBtn" onclick="curatorDelete()">Delete '${ UTILS.getLabel(obj) ?? ""  }'</button>`
-            }
             return `
             <p>Letter between Paul and Alice, sent ${obj.date?.value ?? obj.date ?? '<span class="alert">⚠ NO DATE SET ⚠</span>'}
             from ${obj.fromLocation?.value ?? obj.fromLocation ?? '<span class="alert">⚠ NO CITY WHENCE ⚠</span>'} to 
@@ -93,7 +82,6 @@ export default {
                 <dd> ${ obj.tpenProject?.[0].value ?? obj.tpenProject?.value ?? obj.tpenProject ?? '<span class="alert">⚠ No connected project</span>'}</dd>
                 <dt> Record creator </dt>
                 <dd> <deer-view deer-id="${ obj.creator?.value ?? obj.creator }" deer-template="label">${ obj.creator?.value ?? obj.creator }</deer-view></dd>
-                ${deleteBtn ?? ""}
             </dl>
             <deer-view id="previewTranscription" deer-template="folioTranscription" deer-id="${obj['@id']}"></deer-view>
             `
@@ -124,7 +112,6 @@ export default {
                 <dd> ${ obj.targetCollection?.value }</dd>
                 <dt> Record creator </dt>
                 <dd> <deer-view deer-id="${ obj.creator?.value ?? obj.creator }" deer-template="label">${ obj.creator?.value ?? obj.creator ?? "⚠ Creator Unknown" }</deer-view></dd>
-                ${deleteBtn ?? ""}
             </dl>
         `
         },
