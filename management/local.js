@@ -148,9 +148,14 @@ async function showRecordPreview(event) {
     const commented = await getComment(event.target.dataset.id)
     //If null, there was an issue getting the comment but we will continue anyway
     if(commented.length){
-        commentToggle.innerHTML = `Comment from <deer-view deer-template="label" deer-id="${commented[0].author ?? ""}"></deer-view> `
-        commentText.innerHTML = `<pre>${commented[0].text ?? ""}</pre>`   
-        setTimeout(() => UTILS.broadcast(undefined, DEER.EVENTS.NEW_VIEW, commentToggle, { set: commentToggle.querySelectorAll(DEER.VIEW) }))    
+        // Don't show empty comments
+        if(commented[0].text.trim().length){
+            commentArea.classList.remove("is-hidden")
+            commentToggle.innerHTML = `Comment from <deer-view deer-template="label" deer-id="${commented[0].author ?? ""}"></deer-view> `
+            commentText.innerHTML = `<pre>${commented[0].text ?? ""}</pre>`   
+            setTimeout(() => UTILS.broadcast(undefined, DEER.EVENTS.NEW_VIEW, commentToggle, { set: commentToggle.querySelectorAll(DEER.VIEW) }))    
+        }
+        // What if this is the currently logged in user's comment?  For now, we still show it.
     }
 }
 
@@ -213,7 +218,7 @@ async function returnByReviewer() {
         'Content-Type': "application/json; charset=utf-8"
     }
     const activeCollection = collectionMap.get(selectedCollectionElement.value)
-    const managedlist = await fetch(activeCollection.managed, {cache: "no-cache"})
+    const managedList = await fetch(activeCollection.managed, {cache: "no-cache"})
         .then(res => res.ok ? res.json() : Promise.reject(res))
         .then(list => {
             list.itemListElement = list.itemListElement.filter(r => r['@id'].split("/").pop() !== preview.getAttribute("deer-id").split("/").pop())
@@ -262,14 +267,22 @@ async function returnByReviewer() {
             fetch(DEER.URLS.OVERWRITE, {
                 method: 'PUT',
                 mode: 'cors',
-                body: JSON.stringify(managedlist),
+                body: JSON.stringify(managedList),
                 headers
             })
             .then(res => res.ok ? res.json() : Promise.reject(res))
-            .then(success => giveFeedback(`'${queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).innerText}' was returned to contributors.`))
-            .then(ok=>{
-                queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).remove()
-                queue.querySelector('li').click()
+            .then(success => {
+                queue.querySelector(`[data-id="${activeRecord}"]`).remove()
+                giveFeedback(`'${queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).innerText}' was returned to contributors.`)
+                if(queue.querySelector(`li`)){
+                    queue.querySelector(`li`).click()
+                }
+                else{
+                    // You may have finished your queue so there is no <li>.  
+                    // What should the reviewer see next?
+                    // Refresh on empty queue view.
+                    selectedCollectionElement.dispatchEvent(new Event('input'))
+                }
             })
             .catch(err => {
                 alert("There was an issue with returning this item for contributions.")
@@ -292,11 +305,17 @@ async function recordComment(callback) {
     const modalComment = document.createElement('div')
     modalComment.classList.add('modal')
     modalComment.innerHTML = `
-    <header>Return with comment</header>
-    <p> Explain why this Record is not ready for release or request changes. </p>
-    <textarea></textarea>
-    <button role="button">Commit message</button>
-    <a href="#" onclick="this.parentElement.remove()">❌ Cancel</a>
+    <h3>Return With Comment</h3>
+    <h4> 
+        Explain why this Record is not ready and detail any changes you are requesting.
+        Your comment will be visible to other users.  
+    </h4>
+    <textarea id="moderationMsg"></textarea>
+    <div id="modBtns">
+        <button id="msgBtn" role="button">Return For Changes</button>
+        <button id="msgCancelButton" onclick="this.parentElement.remove()">❌ Cancel</button>
+    </div>
+    
     `
     document.body.append(modalComment)
     document.querySelector('.modal button').addEventListener('click', async ev => {
@@ -435,16 +454,17 @@ async function curatorReturn() {
             headers
         })
         publishFetch
-            .then(res => res.ok || Promise.reject(res))
-            .then(success => giveFeedback(`Public visibility denied for '${queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).innerText}'`))
-            .then(ok=>{
+            .then(res => res.ok ? res.json() : Promise.reject(res))
+            .then(success => {
                 queue.querySelector(`[data-id="${activeRecord}"]`).remove()
+                giveFeedback(`'${queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).innerText}' was returned to contributors.`)
                 if(queue.querySelector(`li`)){
                     queue.querySelector(`li`).click()
                 }
                 else{
-                    // You may have finished your queue of suggestions so there is no <li>.  
-                    // This will initiate your other queue for this collection, which may also be empty.
+                    // You may have finished your queue so there is no <li>.  
+                    // What should the reviewer see next?
+                    // Refresh on empty queue view.
                     selectedCollectionElement.dispatchEvent(new Event('input'))
                 }
             })
@@ -619,7 +639,7 @@ async function getCuratorQueue(publicCollection, managedCollection, limit = 10) 
     const activeCollection = collectionMap.get(selectedCollectionElement.value)
     selectedCollectionElement.style.opacity = 1
     // Curators do not see comments.
-    commentArea.style.display = "none"
+    commentArea.classList.add("is-hidden")
     let recordsToSee = []
     // Preference seeing records that have been suggested for publication by reviewers
     let reviewed = await getModerations(null, activeCollection.public)
@@ -706,6 +726,7 @@ function drawInterface() {
             select.append(opt_managed_list)
             approveBtn.innerText = "Approve for Publication"
             returnBtn.innerText = "Ask for Changes"
+            deleteBtn.classList.remove("is-hidden")
         }
         if (user.dataset.role === "reviewer"){
             opt_managed_list.innerText = `Unreviewed ${sanity}`
