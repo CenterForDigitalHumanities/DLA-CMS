@@ -196,8 +196,8 @@ async function approveByReviewer() {
         })
     publishFetch
         .then(res => res.ok || Promise.reject(res))
-        .then(success => giveFeedback(`Publication suggested for '${queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).innerText}'`))
-        .then(ok=>{
+        .then(success => {
+            giveFeedback(`Publication suggested for '${queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).innerText}'`)
             queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).remove()
             queue.querySelector('li').click()
         })
@@ -272,8 +272,8 @@ async function returnByReviewer() {
             })
             .then(res => res.ok ? res.json() : Promise.reject(res))
             .then(success => {
-                queue.querySelector(`[data-id="${activeRecord}"]`).remove()
                 giveFeedback(`'${queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).innerText}' was returned to contributors.`)
+                queue.querySelector(`[data-id="${activeRecord}"]`).remove()
                 if(queue.querySelector(`li`)){
                     queue.querySelector(`li`).click()
                 }
@@ -375,41 +375,68 @@ async function curatorApproval() {
         'Content-Type': "application/json; charset=utf-8"
     }
     const activeCollection = collectionMap.get(selectedCollectionElement.value)
-    const activeRecord = await fetch(activeCollection.managed, {cache: "no-cache"})
+    const activeRecord = preview.getAttribute("deer-id")
+
+    // Pull down the managed list and take this record out of it.
+    const managedList = await fetch(activeCollection.managed, {cache: "no-cache"})
         .then(res => res.ok ? res.json() : Promise.reject(res))
-        .then(array => array.itemListElement.find(r => r['@id'] === preview.getAttribute("deer-id")))
-        .catch(err => {
-            alert("There was an error getting the Comment for this record.")
-            Promise.reject(err)
-            return null
+        .then(list => {
+            list.itemListElement = list.itemListElement.filter(r => r['@id'].split("/").pop() !== preview.getAttribute("deer-id").split("/").pop())
+            list.numberOfItems = list.itemListElement.length
+            return list
         })
-    let list = await fetch(activeCollection.public, {cache: "no-cache"})
-        .then(res => res.ok ? res.json() : Promise.reject(res))
         .catch(err => {
-            alert("There was an error getting the Comment for this record.")
+            alert("There was an error updating the managed list.")
             Promise.reject(err)
             return null
         })
 
-    if(!(activeRecord && list)) return    
-    if (list.itemListElement.includes(activeRecord)) return // already published, somehow
-    
-    list.itemListElement.push(activeRecord)
-    list.numberOfItems = list.itemListElement.length
-    fetch(DEER.URLS.UPDATE, {
+    // Pull down the public list, and add this record to it
+    let publicList = await fetch(activeCollection.public, {cache: "no-cache"})
+        .then(res => res.ok ? res.json() : Promise.reject(res))
+        .then(list => {
+            const l = queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).innerText
+            list.itemListElement.push({"@id":activeRecord, "label":selectedRecordTitle.innerText})
+            list.numberOfItems = list.itemListElement.length
+            return list
+        })
+        .catch(err => {
+            alert("There was an error updating the public list.")
+            Promise.reject(err)
+            return null
+        })
+
+    if(!(activeRecord && publicList)) return   
+    // already published, somehow.  What should we do about this record on the managed list? 
+    if (publicList.itemListElement.includes(activeRecord)) return 
+        
+    fetch(DEER.URLS.OVERWRITE, {
         method: 'PUT',
         mode: 'cors',
-        body: JSON.stringify(list),
+        body: JSON.stringify(managedList),
         headers
     })
     .then(res => res.ok ? res.json() : Promise.reject(res))
-    .then(success => giveFeedback(`'${queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).innerText}' is now public.`))
-    .then(ok=>{
-        queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).remove()
-        queue.querySelector('li').click()
+    .then(success => {
+        fetch(DEER.URLS.OVERWRITE, {
+            method: 'PUT',
+            mode: 'cors',
+            body: JSON.stringify(publicList),
+            headers
+        })
+        .then(res => res.ok ? res.json() : Promise.reject(res))
+        .then(success => {
+            giveFeedback(`'${queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).innerText}' is now public.`)
+            queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).remove()
+            queue.querySelector('li').click()
+        })
+        .catch(err => {
+            alert("Issue updating")
+            Promise.reject(err)
+        })
     })
     .catch(err => {
-        alert("Issue publishing item")
+        alert("Issue updating managed list")
         Promise.reject(err)
     })
 }
@@ -425,6 +452,10 @@ async function curatorReturn() {
     }
     const activeCollection = collectionMap.get(selectedCollectionElement.value)
     const activeRecord = preview.getAttribute("deer-id")
+    if(selectedCollectionElement.selectedOptions[0].innerText.includes("Published")){
+        alert("Curators cannot remove items from the public list at this time")
+        return
+    }
     let reviewed = await getModerations(preview.getAttribute("deer-id"), null)
     if(reviewed === null) return
     let moderation = Object.assign(reviewed[0] ?? {
@@ -456,8 +487,8 @@ async function curatorReturn() {
         publishFetch
             .then(res => res.ok ? res.json() : Promise.reject(res))
             .then(success => {
+                giveFeedback(`'${queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).innerText}' was returned to reviewers.`)
                 queue.querySelector(`[data-id="${activeRecord}"]`).remove()
-                giveFeedback(`'${queue.querySelector(`[data-id="${preview.getAttribute("deer-id")}"]`).innerText}' was returned to contributors.`)
                 if(queue.querySelector(`li`)){
                     queue.querySelector(`li`).click()
                 }
@@ -499,7 +530,7 @@ async function curatorDelete() {
             list.itemListElement = list.itemListElement.filter(r => r['@id'].split("/").pop() !== preview.getAttribute("deer-id").split("/").pop())
             list.numberOfItems = list.itemListElement.length
             if(numnow !== list.numberOfItems){
-                // Gotta overwrite, add that to our array of fetches
+                // Gotta overwrite
                 fetch(DEER.URLS.OVERWRITE, {
                     method: 'PUT',
                     mode: 'cors',
@@ -525,7 +556,7 @@ async function curatorDelete() {
         list.itemListElement = list.itemListElement.filter(r => r['@id'].split("/").pop() !== preview.getAttribute("deer-id").split("/").pop())
         list.numberOfItems = list.itemListElement.length
         if(numnow !== list.numberOfItems){
-            // Gotta overwrite, add that to our array of fetches
+            // Gotta overwrite
             fetch(DEER.URLS.OVERWRITE, {
                 method: 'PUT',
                 mode: 'cors',
@@ -544,8 +575,47 @@ async function curatorDelete() {
     })
     if(managedList === null || publishedList === null) return
     
-    // Delete the 'targetCollection' Annotation(s) placing this record into this collection
+    // Get the Comments and Moderations about this item and delete them
     const queryObj = {
+        "$or" : [{"type": "Moderation"}, {"type":"Comment"}],
+        "about": httpsIdArray(preview.getAttribute("deer-id"))
+    }
+    let moderation_flow_data = await fetch(DEER.URLS.QUERY, {
+        method: 'POST',
+        mode: 'cors',
+        body: JSON.stringify(queryObj),
+        headers
+    })
+    .then(res => res.ok ? res.json() : Promise.reject(res))
+    .then(data_arr => {
+        let all = data_arr.map(datapoint => {
+            return fetch(DEER.URLS.DELETE, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                    "Authorization": `Bearer ${window.DLA_USER.authorization}`
+                },
+                body: JSON.stringify(datapoint)
+            })
+            .catch(err => Promise.reject(err) )
+        })
+        Promise.all(all)
+        .then(success => {
+            
+        })
+        .catch(err => {
+            alert(`Trouble while deleting target collections annos for '${queue.querySelector(`[data-id="${activeRecord}"]`).innerText}'`)
+            Promise.reject(err)
+        })
+
+    })
+    .catch(err => {
+        console.error(err)
+        return null
+    })
+
+    // Delete the 'targetCollection' Annotation(s) placing this record into this collection
+    const qObj = {
         $or: [{
             "targetCollection": activeCollection.targetCollection
         }, {
@@ -557,27 +627,27 @@ async function curatorDelete() {
     let placingAnnotations = await fetch(DEER.URLS.QUERY, {
         method: 'POST',
         mode: 'cors',
-        body: JSON.stringify(queryObj),
+        body: JSON.stringify(qObj),
         headers
     })
     .then(res => res.ok ? res.json() : Promise.reject(res))
-    .then(data_arr => {
-        let all = data_arr.map(datapoint => {
+    .then(annos => {
+        let all = annos.map(anno => {
             return fetch(DEER.URLS.DELETE, {
-                    method: "DELETE",
-                    headers,
-                    body: JSON.stringify(datapoint)
-                })
-                .catch(err => Promise.reject(err) )
+                method: "DELETE",
+                headers,
+                body: JSON.stringify(anno)
+            })
+            .catch(err => Promise.reject(err) )
         })
         Promise.all(all)
         .then(success => {
+            giveFeedback(`Successfully deleted '${queue.querySelector(`[data-id="${activeRecord}"]`).innerText}'`)
             queue.querySelector(`[data-id="${activeRecord}"]`).remove()
             selectedCollectionElement.dispatchEvent(new Event('input'))
-            giveFeedback(`Successfully deleted '${queue.querySelector(`[data-id="${activeRecord}"]`).innerText}'`)
         })
         .catch(err => {
-            alert(`Trouble while deleting target collections annos for '${queue.querySelector(`[data-id="${activeRecord}"]`).innerText}'`)
+            alert(`Trouble while deleting Moderation for '${queue.querySelector(`[data-id="${activeRecord}"]`).innerText}'`)
             Promise.reject(err)
         })
     })

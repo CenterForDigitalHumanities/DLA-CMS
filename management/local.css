@@ -68,7 +68,7 @@
 }
 
 #deleteBtn {
-    display: none;
+    display: block;
     cursor: pointer;
     width  : 15em;
     padding: 0.68em;
@@ -180,5 +180,5 @@
  }
 
 .is-hidden{
-    display: none;
+    display: none !important;
 }

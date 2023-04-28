@@ -404,7 +404,7 @@ export default {
                                         let all = annos.map(anno => {
                                             return fetch(`${tiny}delete`, {
                                                 method: "DELETE",
-                                                body: anno["@id"],
+                                                body: anno,
                                                 headers
                                             })
                                                 .then(r => r.ok ? r.json() : Promise.reject(Error(r.text)))
