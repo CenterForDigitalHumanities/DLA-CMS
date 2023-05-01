@@ -16,11 +16,11 @@ jobs:
       steps:
         - uses: actions/checkout@v3
         - run: |
-            if [[ ! -e /opt/nodeapps/logs/dlacms.txt ]]; then
+            if [[ ! -e /srv/node/logs/dlacms.txt ]]; then
                 mkdir -p /opt/nodeapps/logs
-                touch /opt/nodeapps/logs/dlacms.txt
+                touch /srv/node/logs/dlacms.txt
             fi
-            cd /opt/nodeapps/dla-cms/
+            cd /srv/node/dla-cms/
             pm2 stop dla_cms
             git stash
             git pull
