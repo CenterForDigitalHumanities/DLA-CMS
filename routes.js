@@ -8,7 +8,7 @@ indexRouter.use('/manage', manageRoutes)
 const statusRouter = require('./status/status.router')
 indexRouter.use('/status', statusRouter)
 
-indexRouter.get('/',(req,res)=>res.redirect('index.html'))
+indexRouter.get('/',(req,res)=>res.redirect('/manage'))
 
 indexRouter.use(express.static('public'))
 
