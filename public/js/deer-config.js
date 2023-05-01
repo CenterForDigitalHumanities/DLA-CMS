@@ -87,18 +87,6 @@ export default {
             `
         },
         metadataPoem: (obj) => {
-            let approveBtn
-            let returnBtn
-            let deleteBtn
-            if (DLA_USER['http://dunbar.rerum.io/user_roles'].roles.includes('dunbar_user_reviewer')) {
-                approveBtn = `<button role="button" id="approveBtn" onclick="approveByReviewer()">Suggest Publication</button>`
-                returnBtn = `<button role="button" id="returnBtn" onclick="returnByReviewer()">Return for Contributions</button>`
-            }
-            if (DLA_USER['http://dunbar.rerum.io/user_roles'].roles.includes('dunbar_user_curator')) {
-                approveBtn = `<button role="button" id="approveBtn" onclick="curatorApproval()">Approve for Publication</button>`
-                returnBtn = `<button role="button" id="returnBtn" onclick="curatorReturn()">Ask For Changes</button>`
-                deleteBtn = `<button role="button" id="deleteBtn" onclick="curatorDelete()">Delete '${ UTILS.getLabel(obj) ?? ""  }'</button>`
-            }
             return `
             <p> Paul Dunbar Poem </p>
             <dl class="metadata">
@@ -366,7 +354,7 @@ export default {
                                 mode: 'cors',
                                 body: JSON.stringify(list_project),
                                 headers
-                            }).then(r => r.ok ? r.json() : Promise.reject(Error(r.text)))
+                            }).then(r => r.ok ? r.json() : Promise.reject(r))
                                 .catch(err => alert(`Failed to save: ${err}`))
 
                             fetch(`${tiny}overwrite`, {
@@ -374,7 +362,7 @@ export default {
                                 mode: 'cors',
                                 body: JSON.stringify(list_public),
                                 headers
-                            }).then(r => r.ok ? r.json() : Promise.reject(Error(r.text)))
+                            }).then(r => r.ok ? r.json() : Promise.reject(r))
                                 .catch(err => alert(`Failed to save: ${err}`))
                         }
 
@@ -399,7 +387,7 @@ export default {
                                     body: JSON.stringify(queryObj),
                                     headers
                                 })
-                                    .then(r => r.ok ? r.json() : Promise.reject(new Error(r?.text)))
+                                    .then(r => r.ok ? r.json() : Promise.reject(r))
                                     .then(annos => {
                                         let all = annos.map(anno => {
                                             return fetch(`${tiny}delete`, {
@@ -407,7 +395,7 @@ export default {
                                                 body: anno,
                                                 headers
                                             })
-                                                .then(r => r.ok ? r.json() : Promise.reject(Error(r.text)))
+                                                .then(r => r.ok ? r.json() : Promise.reject(r))
                                                 .catch(err => { throw err })
                                         })
                                         Promise.all(all).then(success => {

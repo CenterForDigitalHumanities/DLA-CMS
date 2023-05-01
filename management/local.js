@@ -10,7 +10,7 @@ function httpsIdArray(id,justArray) {
 }
 
 /**
- * Get the moderation or moderations for a record or collection.
+ * Get the moderations for a record or collection.
  * If there is an error, return null.
  * 
  * @param a The record URI to match on 'about'
@@ -78,15 +78,6 @@ function getComment(uri){
  */ 
 function fetchItems(event) {
     const selectedCollection = event.target.selectedOptions[0]
-    if(selectedCollection.dataset.uri === ""){
-        // Then there will be nothing for the queue because the collection URI is not yet available.
-        preview.innerHTML = ""
-        selectedRecordTitle.innerText = ""
-        actions.style.opacity = 0
-        records.innerText = "This collection is not available yet."
-        commentToggle.innerHTML = ""
-        commentText.innerText = ""
-    }
     return Promise.all([fetch(selectedCollection.dataset.uri, {cache: "no-cache"}).then(res => res.json()),
     fetch(selectedCollection.dataset.managed, {cache: "no-cache"}).then(res => res.json())])
         .then(([publicCollection, managedCollection]) => {
@@ -136,7 +127,6 @@ async function showRecordPreview(event) {
     queue.querySelector(".selected")?.classList.remove("selected")
     event.target.classList.add('selected')
     selectedRecordTitle.innerText = event.target.innerText
-    //deleteBtn.innerText = `Delete '${event.target.innerText}'`
     // Sometimes this is a DEER view and does not have the label yet...
     if(!event.target.innerText){
         //Cheat and force this delay.  The text will be there.  Or we can make it a label template itself.
@@ -174,7 +164,7 @@ async function approveByReviewer() {
     const moderation = Object.assign(moderated[0] ?? {
         "@context": {"@vocab":"https://made.up/"},
         type: "Moderation",
-        about: preview.getAttribute("deer-id"),
+        about: preview.getAttribute("deer-id")
     }, {
         author: DLA_USER['http://store.rerum.io/agent'],
         releasedTo: activeCollection.public,
@@ -205,7 +195,6 @@ async function approveByReviewer() {
             alert("There was an issue approving this item.")
             Promise.reject(err)
         })
-
 }
 
 /**
@@ -238,7 +227,7 @@ async function returnByReviewer() {
         const moderation = Object.assign(moderated[0] ?? {
             "@context": {"@vocab":"https://made.up/"},
             type: "Moderation",
-            about: preview.getAttribute("deer-id"),
+            about: preview.getAttribute("deer-id")
         }, {
             author: DLA_USER['http://store.rerum.io/agent'],
             releasedTo: null,
@@ -278,8 +267,6 @@ async function returnByReviewer() {
                     queue.querySelector(`li`).click()
                 }
                 else{
-                    // You may have finished your queue so there is no <li>.  
-                    // What should the reviewer see next?
                     // Refresh on empty queue view.
                     selectedCollectionElement.dispatchEvent(new Event('input'))
                 }
@@ -452,16 +439,13 @@ async function curatorReturn() {
     }
     const activeCollection = collectionMap.get(selectedCollectionElement.value)
     const activeRecord = preview.getAttribute("deer-id")
-    if(selectedCollectionElement.selectedOptions[0].innerText.includes("Published")){
-        alert("Curators cannot remove items from the public list at this time")
-        return
-    }
+    
     let reviewed = await getModerations(preview.getAttribute("deer-id"), null)
     if(reviewed === null) return
     let moderation = Object.assign(reviewed[0] ?? {
         "@context": {"@vocab":"https://made.up/"},
         type: "Moderation",
-        about: preview.getAttribute("deer-id"),
+        about: preview.getAttribute("deer-id")
     }, {
         author: DLA_USER['http://store.rerum.io/agent'],
         releasedTo: null,
@@ -493,8 +477,6 @@ async function curatorReturn() {
                     queue.querySelector(`li`).click()
                 }
                 else{
-                    // You may have finished your queue so there is no <li>.  
-                    // What should the reviewer see next?
                     // Refresh on empty queue view.
                     selectedCollectionElement.dispatchEvent(new Event('input'))
                 }
@@ -509,8 +491,9 @@ async function curatorReturn() {
 
 /**
  * Actually delete a record so that it is no longer connected with any collection.
- * The record itself will be RERUM deleted and the targetCollection Annotations will be deleted.
- * Comment and Moderation will not be altered, but will be orphaned to No Man's Land in RERUM.
+ * The targetCollection Annotations will be deleted.
+ * Comments and Moderations will be deleted.
+ * The Entity itself is not deleted.
  */ 
 async function curatorDelete() {
     const headers = {
@@ -526,10 +509,10 @@ async function curatorDelete() {
     const publishedList = await fetch(activeCollection.public, {cache: "no-cache"})
         .then(res => res.ok ? res.json() : Promise.reject(res))
         .then(list => {
-            const numnow = list.numberOfItems
+            const numthen = list.numberOfItems
             list.itemListElement = list.itemListElement.filter(r => r['@id'].split("/").pop() !== preview.getAttribute("deer-id").split("/").pop())
             list.numberOfItems = list.itemListElement.length
-            if(numnow !== list.numberOfItems){
+            if(numthen !== list.numberOfItems){
                 // Gotta overwrite
                 fetch(DEER.URLS.OVERWRITE, {
                     method: 'PUT',
@@ -552,10 +535,10 @@ async function curatorDelete() {
     const managedList = await fetch(activeCollection.managed, {cache: "no-cache"})
     .then(res => res.ok ? res.json() : Promise.reject(res))
     .then(list => {
-        const numnow = list.numberOfItems
+        const numthen = list.numberOfItems
         list.itemListElement = list.itemListElement.filter(r => r['@id'].split("/").pop() !== preview.getAttribute("deer-id").split("/").pop())
         list.numberOfItems = list.itemListElement.length
-        if(numnow !== list.numberOfItems){
+        if(numthen !== list.numberOfItems){
             // Gotta overwrite
             fetch(DEER.URLS.OVERWRITE, {
                 method: 'PUT',
@@ -601,7 +584,7 @@ async function curatorDelete() {
         })
         Promise.all(all)
         .then(success => {
-            
+            return true
         })
         .catch(err => {
             alert(`Trouble while deleting target collections annos for '${queue.querySelector(`[data-id="${activeRecord}"]`).innerText}'`)
@@ -614,6 +597,9 @@ async function curatorDelete() {
         return null
     })
 
+    // Do we care enough to stop, or do we continue on to the targetCollections Annos?
+    // if(!moderationFlowData) return
+
     // Delete the 'targetCollection' Annotation(s) placing this record into this collection
     const qObj = {
         $or: [{
@@ -624,7 +610,7 @@ async function curatorDelete() {
         target: httpsIdArray(activeRecord),
         "__rerum.history.next": { $exists: true, $type: 'array', $eq: [] }
     }
-    let placingAnnotations = await fetch(DEER.URLS.QUERY, {
+    fetch(DEER.URLS.QUERY, {
         method: 'POST',
         mode: 'cors',
         body: JSON.stringify(qObj),
@@ -675,6 +661,7 @@ function giveFeedback(text){
  */ 
 async function getReviewerQueue(publicCollection, managedCollection, limit = 10) {
     let recordsToSee = []
+    actions.classList.remove("is-hidden")
     let reviewed = await getModerations(null, publicCollection["@id"])
     if(reviewed === null) return
     let disclusions = managedCollection.itemListElement.filter(record => !publicCollection.itemListElement.includes(record))
@@ -710,6 +697,7 @@ async function getCuratorQueue(publicCollection, managedCollection, limit = 10) 
     selectedCollectionElement.style.opacity = 1
     // Curators do not see comments.
     commentArea.classList.add("is-hidden")
+    actions.classList.remove("is-hidden")
     let recordsToSee = []
     // Preference seeing records that have been suggested for publication by reviewers
     let reviewed = await getModerations(null, activeCollection.public)
@@ -727,11 +715,23 @@ async function getCuratorQueue(publicCollection, managedCollection, limit = 10) 
         //They want to see items in the published list, even if 0.
         recordsToSee = publicCollection.itemListElement
         records.innerText = `${recordsToSee.length} of ${total} records are public!`
-        //  Select a record to view its details.
+        // Curators do not have available actions for the published list -- that is a different interface.
+        actions.classList.add("is-hidden")
     }
     else{
-        //They want to see the managed list.
+        // They want to see the managed list.
+        // Disclude public items and items with positive moderation
         recordsToSee = managedCollection.itemListElement.filter(record => !publicCollection.itemListElement.includes(record))
+        recordsToSee = recordsToSee.filter(record => {
+            let included = true
+            reviewed.forEach(moderation => {
+                if(moderation.about.split("/").pop() === record["@id"].split("/").pop()) {
+                    included = false
+                    return
+                }
+            })
+            return included
+        })    
         records.innerText = `${recordsToSee.length} of ${total} records are not public.`
         // Select a record to publish it.
     }
