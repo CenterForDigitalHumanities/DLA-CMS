@@ -154,6 +154,8 @@ async function showRecordPreview(event) {
  * This will alert Curators to review the publication suggestion.
  */ 
 async function approveByReviewer() {
+    let proceed = confirm("This action is connected with your username.  Curators will see this suggestion.\nClick OK to proceed.") 
+    if(!proceed){return}
     const headers = {
         'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
         'Content-Type': "application/json; charset=utf-8"
@@ -357,6 +359,8 @@ async function saveComment(target, text) {
  * Place a record into the published collection as a curator.
  */ 
 async function curatorApproval() {
+    let proceed = confirm("This item will become public.  Click OK to proceed.") 
+    if(!proceed){return}
     const headers =  {
         'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
         'Content-Type': "application/json; charset=utf-8"
