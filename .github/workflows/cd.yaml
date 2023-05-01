@@ -17,7 +17,7 @@ jobs:
         - uses: actions/checkout@v3
         - run: |
             if [[ ! -e /srv/node/logs/dlacms.txt ]]; then
-                mkdir -p /opt/nodeapps/logs
+                mkdir -p /srv/node/logs
                 touch /srv/node/logs/dlacms.txt
             fi
             cd /srv/node/dla-cms/
