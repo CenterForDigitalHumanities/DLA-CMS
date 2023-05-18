@@ -1,4 +1,4 @@
-name: DLA CMS Deploy
+name: Dunbar CMS Deploy
 on: 
   push:
     branches:
@@ -8,7 +8,7 @@ on:
       main
 jobs:
     deploy:
-      # Deploy to dev
+      # Deploy to newprd01 with SSH
       runs-on: [self-hosted, vlcdhp02]
       strategy: 
         matrix:
@@ -16,11 +16,11 @@ jobs:
       steps:
         - uses: actions/checkout@v3
         - run: |
-            if [[ ! -e /srv/node/logs/dlacms.txt ]]; then
+            if [[ ! -e /srv/node/logs/dunbarcms.txt ]]; then
                 mkdir -p /srv/node/logs
-                touch /srv/node/logs/dlacms.txt
+                touch /srv/node/logs/dunbarcms.txt
             fi
-            cd /srv/node/dla-cms/
+            cd /srv/node/dunbar-cms/
             pm2 stop dla_cms
             git stash
             git pull
