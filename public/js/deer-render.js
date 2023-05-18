@@ -34,7 +34,7 @@ async function renderChange(mutationsList) {
                     obj = JSON.parse(localStorage.getItem(id))
                 } catch (err) { }
                 if (!obj || !obj["@id"]) {
-                    obj = await fetch(id).then(response => response.json()).catch(error => error)
+                    obj = await fetch(id.replace('http:','https:')).then(response => response.json()).catch(error => error)
                     if (obj) {
                         localStorage.setItem(obj["@id"] || obj.id, JSON.stringify(obj))
                     } else {
@@ -205,7 +205,10 @@ DEER.TEMPLATES.shadow = (obj, options = {}) => {
 
 DEER.TEMPLATES.transcriptionStatus = function (obj, options = {}) {
     if(!obj['@id']) return null
-
+    const headers = {
+        'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
+        'Content-Type': "application/json; charset=utf-8"
+    }
     return {
         html: `<p> looking up transcription status... </p>`,
         then: (elem) => {
@@ -217,10 +220,8 @@ DEER.TEMPLATES.transcriptionStatus = function (obj, options = {}) {
             }
             fetch(DEER.URLS.QUERY, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                    },
-                body: JSON.stringify(query)
+                body: JSON.stringify(query),
+                headers
             }).then(response => response.json())
             .then(data => {
                 elem.dataset.transcriptionStatus = data[0]?.body["dla:transcriptionStatus"]
@@ -243,10 +244,8 @@ DEER.TEMPLATES.transcriptionStatus = function (obj, options = {}) {
                 }
                 fetch(url, {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                        },
-                    body: JSON.stringify(approval)
+                    body: JSON.stringify(approval),
+                    headers
                 }).then(response => response.json())
                 .then(data => {
                     elem.dataset.transcriptionStatus = data[0]?.body["dla:transcriptionStatus"]
@@ -491,7 +490,7 @@ export default class DeerRender {
                 throw err
             } else {
                 if (this.id) {
-                    fetch(this.id).then(response => response.json()).then(obj => RENDER.element(this.elem, obj)).catch(err => err)
+                    fetch(this.id.replace('http:','https:')).then(response => response.json()).then(obj => RENDER.element(this.elem, obj)).catch(err => err)
                 } else if (this.collection) {
                     // Look not only for direct objects, but also collection annotations
                     // Only the most recent, do not consider history parent or children history nodes
@@ -525,6 +524,9 @@ export default class DeerRender {
                         return fetch(`${DEER.URLS.QUERY}?limit=${lim}&skip=${it}`, {
                             method: "POST",
                             mode: "cors",
+                            headers: {
+                                "Content-Type": "application/json; charset=utf-8"
+                            },
                             body: JSON.stringify(queryObj)
                         }).then(response => response.json())
                             // .then(pointers => {

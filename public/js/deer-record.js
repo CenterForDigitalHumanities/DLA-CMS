@@ -225,6 +225,10 @@ export default class DeerReport {
     }
 
     processRecord(event) {
+        const headers = {
+            'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
+            'Content-Type': "application/json; charset=utf-8"
+        }
         event.preventDefault()
         this.evidence = this.elem.getAttribute(DEER.EVIDENCE) // inherited to inputs
         this.context = this.elem.getAttribute(DEER.CONTEXT) // inherited to inputs
@@ -261,10 +265,8 @@ export default class DeerReport {
             let self = this
             formAction = fetch(DEER.URLS.CREATE, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json; charset=utf-8"
-                },
-                body: JSON.stringify(record)
+                body: JSON.stringify(record),
+                headers
             })
                 .then(response => response.json())
                 .then(data => {
@@ -368,10 +370,8 @@ export default class DeerReport {
                     if (name) { annotation.body[input.getAttribute(DEER.KEY)].name = name }
                     return fetch(DEER.URLS[action], {
                         method: (inputId) ? "PUT" : "POST",
-                        headers: {
-                            "Content-Type": "application/json; charset=utf-8"
-                        },
-                        body: JSON.stringify(annotation)
+                        body: JSON.stringify(annotation),
+                        headers
                     })
                         .then(response => response.json())
                         .then(anno => {
@@ -395,6 +395,10 @@ export default class DeerReport {
 
     simpleUpsert(event) {
         let record = {}
+        const headers = {
+            'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
+            'Content-Type': "application/json; charset=utf-8"
+        }
         //Since this is simple, we don't need to filter around $isDirty.
         Array.from(this.elem.querySelectorAll(DEER.INPUTS.map(s => s + "[" + DEER.KEY + "]").join(","))).map(input => {
             let key = input.getAttribute(DEER.KEY)
@@ -470,10 +474,8 @@ export default class DeerReport {
         }
         return fetch(DEER.URLS[action], {
             method: (formId) ? "PUT" : "POST",
-            headers: {
-                "Content-Type": "application/json; charset=utf-8"
-            },
-            body: JSON.stringify(record)
+            body: JSON.stringify(record),
+            headers
         })
             .then(response => response.json())
             .then(obj => { return obj.new_obj_state })

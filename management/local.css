@@ -15,7 +15,6 @@
     width     : 100%;
     text-align: center;
     font-size : larger;
-    padding   : 2em;
     color     : #530268;
     grid-area : records;
 }
@@ -23,14 +22,73 @@
 #actions {
     grid-area : actions;
     background: hsl(120deg 25% 40%);
-    padding   : 1em;
+    width: fit-content;
+    padding: 1em;
 }
 
-#actions button {
+#actionsInfo{
+
+}
+
+#approveBtn, #returnBtn {
     display: block;
+    cursor: pointer;
     width  : 15em;
     padding: 0.68em;
-    margin : 0.32em;
+    margin : 0.32em auto;
+}
+
+#modBtns{
+    display: block;
+    text-align: center;
+}
+#msgBtn{
+    display: inline-block;
+    cursor: pointer;
+    width  : 15em;
+    padding: 0.68em;
+    margin : 0.32em auto;
+}
+
+#moderationMsg{
+    margin: 0 auto;
+    margin-bottom: 2em;
+    padding: 1.25em;
+    display: block;
+    width: 75%;
+    height: 10em;
+}
+
+#msgCancelButton{
+    display: inline-block;
+    cursor: pointer;
+    width  : 15em;
+    padding: 0.68em;
+    margin : 0.32em auto;
+}
+
+#deleteBtn {
+    display: block;
+    cursor: pointer;
+    width  : 15em;
+    padding: 0.68em;
+    margin : 0.32em auto;
+    color: red;
+    border: 1px solid black;
+}
+
+#deleteBtn:hover {
+    color: white;
+    background-color: red;
+    font-weight: 600;
+}
+
+#selectedRecordTitle{
+    color: white;
+    font-weight: 600;
+    margin-bottom: 1em;
+    text-align: center;
+    border-bottom: 1px solid white;
 }
 
 #queue {
@@ -58,10 +116,6 @@
 
 }
 
-#records::after {
-    content: " public records"
-}
-
 #resultsGrid {
     display              : grid;
     grid-template-columns: 25% 73%;
@@ -79,7 +133,7 @@
 
 .modal {
     left: 50%;
-    top: 50%;
+    top: 40%;
     transform: translate(-50%, -50%);
     background: skyblue;
     position: fixed;
@@ -96,4 +150,35 @@
 .alert {
     color: crimson !important;
     background-color: lightpink;
+}
+ 
+ #feedback {
+    opacity: 0;
+    height: fit-content;
+    -webkit-transition: opacity 0.5s linear;
+    -moz-transition: opacity 0.5s linear;
+    -ms-transition: opacity 0.5s linear;
+    margin-left: 3em;
+    padding: 1em;
+    color: #24334d;
+    font-family: monospace;
+    font-weight: 600;
+    background-color: rgba(36,51,77,.25);
+ }
+
+ #commentArea{
+    background-color: rgba(36,51,77,.10);
+    padding: 1em;
+ }
+
+ #commentToggle{
+    font-weight: 600;
+ }
+
+ #commentText{
+    font-size: 11pt;
+ }
+
+.is-hidden{
+    display: none !important;
 }

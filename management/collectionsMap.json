@@ -1,22 +1,12 @@
 {
   "Correspondence between Paul Laurence Dunbar and Alice Moore Dunbar": {
     "public": "https://store.rerum.io/v1/id/61ae694e50c86821e60b5d15",
-    "managed": "https://store.rerum.io/v1/id/61ae693050c86821e60b5d13"
+    "managed": "https://store.rerum.io/v1/id/61ae693050c86821e60b5d13",
+    "targetCollection" : "Correspondence between Paul Laurence Dunbar and Alice Moore Dunbar"
   },
   "Published Poems Collection": {
     "public": "https://store.rerum.io/v1/id/6439970f3c28e3793e96735b",
-    "managed": "https://store.rerum.io/v1/id/6353016612678843589262b0"
-  },
-  "(pending) Music": {
-    "public": "https://store.rerum.io/v1/id/6353016612678843589262b0",
-    "managed": "https://store.rerum.io/v1/id/6353016612678843589262b0"
-  },
-  "(pending) Dialect Glossary": {
-    "public": "https://store.rerum.io/v1/id/6353016612678843589262b0",
-    "managed": "https://store.rerum.io/v1/id/6353016612678843589262b0"
-  },
-  "(pending) Schools": {
-    "public": "https://store.rerum.io/v1/id/6353016612678843589262b0",
-    "managed": "https://store.rerum.io/v1/id/6353016612678843589262b0"
+    "managed": "https://store.rerum.io/v1/id/6353016612678843589262b0",
+    "targetCollection" : "DLA Poems Collection"
   }
 }

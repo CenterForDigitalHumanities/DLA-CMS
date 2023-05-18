@@ -3,6 +3,8 @@ const DEV = false // false or comment to turn off
 const baseV1 = DEV ? "https://devstore.rerum.io/" : "https://store.rerum.io/"
 const tiny = DEV ? "https://tinydev.rerum.io/app/" : "https://tinypaul.rerum.io/dla/"
 
+import { default as UTILS } from '/js/deer-utils.js'
+
 export default {
     ID: "deer-id", // attribute, URI for resource to render
     TYPE: "deer-type", // attribute, JSON-LD @type
@@ -34,6 +36,7 @@ export default {
         UPDATE: tiny + "update",
         OVERWRITE: tiny + "overwrite",
         QUERY: tiny + "query",
+        DELETE: tiny + "delete",
         SINCE: baseV1 + "since"
     },
 
@@ -61,7 +64,8 @@ export default {
      */
     TEMPLATES: {
         cat: (obj) => `<h5>${obj.name}</h5><img src="https://placekitten.com/300/150" style="width:100%;">`,
-        metadataLetter: obj => `
+        metadataLetter: (obj) => {
+            return `
             <p>Letter between Paul and Alice, sent ${obj.date?.value ?? obj.date ?? '<span class="alert">⚠ NO DATE SET ⚠</span>'}
             from ${obj.fromLocation?.value ?? obj.fromLocation ?? '<span class="alert">⚠ NO CITY WHENCE ⚠</span>'} to 
             ${obj.toLocation?.value ?? obj.toLocation ?? '<span class="alert">⚠ NO CITY WHITHER ⚠</span>'}.</p>
@@ -80,8 +84,25 @@ export default {
                 <dd> <deer-view deer-id="${ obj.creator?.value ?? obj.creator }" deer-template="label">${ obj.creator?.value ?? obj.creator }</deer-view></dd>
             </dl>
             <deer-view id="previewTranscription" deer-template="folioTranscription" deer-id="${obj['@id']}"></deer-view>
-        `,
-        metadataPoem: obj => this.TEMPLATES.entity,
+            `
+        },
+        metadataPoem: (obj) => {
+            return `
+            <p> Paul Dunbar Poem </p>
+            <dl class="metadata">
+                <dt> Record Label </dt>
+                <dd> ${ UTILS.getLabel(obj) ?? '<span class="alert">⚠ Missing label</span>' }</dd>
+                <dt> URI </dt>
+                <dd> ${ obj['@id'] ?? obj.id }</dd>
+                <dt> Type </dt>
+                <dd> ${ obj['@type'] ?? obj.type }</dd>
+                <dt> Collection </dt>
+                <dd> ${ obj.targetCollection?.value }</dd>
+                <dt> Record creator </dt>
+                <dd> <deer-view deer-id="${ obj.creator?.value ?? obj.creator }" deer-template="label">${ obj.creator?.value ?? obj.creator ?? "⚠ Creator Unknown" }</deer-view></dd>
+            </dl>
+        `
+        },
         preview: obj => {
             let templateDetail = "json"
             let templateLink = "#"
@@ -293,7 +314,10 @@ export default {
                         function overwriteList() {
                             let mss_project = []
                             let mss_public = []
-
+                            const headers = {
+                                'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
+                                'Content-Type': "application/json; charset=utf-8"
+                            }
                             elem.projectCache.forEach(uri => {
                                 mss_project.push({
                                     label: document.querySelector(`deer-view[deer-id='${uri}']`).textContent.trim(),
@@ -328,19 +352,25 @@ export default {
                             fetch(`${tiny}overwrite`, {
                                 method: "PUT",
                                 mode: 'cors',
-                                body: JSON.stringify(list_project)
-                            }).then(r => r.ok ? r.json() : Promise.reject(Error(r.text)))
+                                body: JSON.stringify(list_project),
+                                headers
+                            }).then(r => r.ok ? r.json() : Promise.reject(r))
                                 .catch(err => alert(`Failed to save: ${err}`))
 
                             fetch(`${tiny}overwrite`, {
                                 method: "PUT",
                                 mode: 'cors',
-                                body: JSON.stringify(list_public)
-                            }).then(r => r.ok ? r.json() : Promise.reject(Error(r.text)))
+                                body: JSON.stringify(list_public),
+                                headers
+                            }).then(r => r.ok ? r.json() : Promise.reject(r))
                                 .catch(err => alert(`Failed to save: ${err}`))
                         }
 
                         function deleteThis(id, collection) {
+                            const headers = {
+                                'Authorization': `Bearer ${window.DLA_USER?.authorization}`,
+                                'Content-Type': "application/json; charset=utf-8"
+                            }
                             if (confirm("Really remove this record?\n(Cannot be undone)")) {
                                 const historyWildcard = { "$exists": true, "$eq": [] }
                                 const queryObj = {
@@ -354,16 +384,18 @@ export default {
                                 }
                                 fetch(`${tiny}query`, {
                                     method: "POST",
-                                    body: JSON.stringify(queryObj)
+                                    body: JSON.stringify(queryObj),
+                                    headers
                                 })
-                                    .then(r => r.ok ? r.json() : Promise.reject(new Error(r?.text)))
+                                    .then(r => r.ok ? r.json() : Promise.reject(r))
                                     .then(annos => {
                                         let all = annos.map(anno => {
                                             return fetch(`${tiny}delete`, {
                                                 method: "DELETE",
-                                                body: anno["@id"]
+                                                body: anno,
+                                                headers
                                             })
-                                                .then(r => r.ok ? r.json() : Promise.reject(Error(r.text)))
+                                                .then(r => r.ok ? r.json() : Promise.reject(r))
                                                 .catch(err => { throw err })
                                         })
                                         Promise.all(all).then(success => {

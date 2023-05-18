@@ -98,7 +98,10 @@ async function getTranscriptionProjects(){
     {
         method: "GET",
         cache: "default",
-        mode: "cors"
+        mode: "cors",
+        headers:{
+            "Content-Type":"application/json; charset=utf-8"
+        }
     })
     .then(res=>res.ok?res.json():[])
     .then(projects=>{
@@ -126,7 +129,10 @@ async function getDLAManagedList(){
         return fetch(managedList, {
             method: "GET",
             cache: "default",
-            mode: "cors"
+            mode: "cors",
+            headers:{
+                "Content-Type":"application/json; charset=utf-8"
+            }
         })
         .then(response => response.json())
         .then(list => {
@@ -152,7 +158,10 @@ async function getDLAReleasedList(){
         return fetch(releasedListURI, {
             method: "GET",
             cache: "default",
-            mode: "cors"
+            mode: "cors",
+            headers:{
+                "Content-Type":"application/json; charset=utf-8"
+            }
         })
         .then(response => response.json())
         .then(list => {
@@ -206,6 +215,9 @@ async function getLetterCollectionFromRERUM(){
         return fetch(`${DEER.URLS.QUERY}?limit=${lim}&skip=${it}`, {
             method: "POST",
             mode: "cors",
+            headers: {
+                "Content-Type": "application/json; charset=utf-8"
+            },
             //cache: "default",
             body: JSON.stringify(queryObj)
         })
@@ -471,6 +483,9 @@ async function fetchQuery(params){
     return statlimiter(() => fetch(DEER.URLS.QUERY, {
             method: 'POST',
             //cache: "default",
+            headers: {
+                "Content-Type": "application/json; charset=utf-8"
+            },
             mode: 'cors',
             body: JSON.stringify(queryObj)
         })
@@ -507,7 +522,10 @@ async function findUdelRecordWithCode(Fcode, projID) {
             {
                 method: "GET",
                 cache: "default",
-                mode: "cors"
+                mode: "cors",
+                headers:{
+                    "Content-Type":"application/json; charset=utf-8"
+                }
             })
             .then(res => res.ok ? res.json() : Promise.reject(res))
             .then(meta => getFolderFromMetadata(meta.metadata))
@@ -549,7 +567,10 @@ async function matchTranscriptionRecords(dlaRecord) {
             {
                 method: "GET",
                 cache: "default",
-                mode: "cors"
+                mode: "cors",
+                headers:{
+                    "Content-Type":"application/json; charset=utf-8"
+                }
             })
             .then(res => res.ok ? res.json() : Promise.reject(res))
             .then(meta => getFolderFromMetadata(meta.metadata))
@@ -668,7 +689,10 @@ async function loadInterfaceDLA() {
                 {
                     method: "GET",
                     cache: "default",
-                    mode: "cors"
+                    mode: "cors",
+                    headers:{
+                        "Content-Type":"application/json; charset=utf-8"
+                    }
                 })
                 .then(status => { if (!status.ok) { throw Error(status) } return status })
                 .then(response => response.json())
@@ -810,7 +834,10 @@ async function loadInterfaceTPEN() {
                 {
                     method: "GET",
                     cache: "default",
-                    mode: "cors"
+                    mode: "cors",
+                    headers:{
+                        "Content-Type":"application/json; charset=utf-8"
+                    }
                 })
                 .then(status => { if (!status.ok) { throw Error(status) } return status })
                 .then(response => response.json())

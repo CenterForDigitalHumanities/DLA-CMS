@@ -20,6 +20,14 @@
         </p>
         <!-- <button class="collections" data-uri="https:">collection</button> -->
     </div>
+    <div class="is-hidden" id="commentArea">
+        <div id="commentToggle"> </div>
+        <div id="commentText">           
+            
+        </div>
+    </div>
+    <!-- Feedback from actions.  They will show for a few seconds then go away.  -->
+    <p id="feedback"> Feedback Will Appear Here </p>
     <div id="resultsGrid">
         <div id="records">
             0
@@ -28,11 +36,12 @@
     
         </div>
         <div id="actions">
+            <div id="selectedRecordTitle"> </div>
             <div class="btn-group">
                 <button role="button" id="approveBtn">Approve for Publication</button>
                 <button role="button" id="returnBtn">Return for Changes</button>
+                <button class="is-hidden" role="button" id="deleteBtn">Drop From Collection</button>
             </div>
-            <span class="message"></span>
         </div>
         <deer-view id="preview"> [ preview ]</deer-view>
     </div>
