@@ -1,4 +1,4 @@
-name: dla-cms-app Deploy
+name: Dunbar CMS Deploy
 on: 
   push:
     branches:
