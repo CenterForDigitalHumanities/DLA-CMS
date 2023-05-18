@@ -1,4 +1,4 @@
-name: dla-cms-app Deploy
+name: DLA CMS Deploy
 on: 
   push:
     branches:
@@ -8,7 +8,7 @@ on:
       main
 jobs:
     deploy:
-      # Deploy to newprd01 with SSH
+      # Deploy to dev
       runs-on: [self-hosted, vlcdhp02]
       strategy: 
         matrix:
