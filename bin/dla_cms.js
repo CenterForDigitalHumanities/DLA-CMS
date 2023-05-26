@@ -4,24 +4,24 @@
  * Module dependencies.
  */
 
-const app = require('../app');
-// const debug = require('debug')('dlacms:server');
-const http = require('http');
-const dotenv = require('dotenv')
+var app = require('../app');
+var debug = require('debug')('dlacms:server');
+var http = require('http');
+var dotenv = require('dotenv')
 dotenv.config()
 
 /**
  * Get port from environment and store in Express.
  */
 
-const port = normalizePort(process.env.PORT || "3000");
+var port = normalizePort(process.env.PORT || "3003");
 app.set('port', port);
 
 /**
  * Create HTTP server.
  */
 
-const server = http.createServer(app);
+var server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -36,7 +36,7 @@ server.on('listening', onListening);
  */
 
 function normalizePort(val) {
-  const port = parseInt(val, 10);
+  var port = parseInt(val, 10);
 
   if (isNaN(port)) {
     // named pipe
@@ -60,7 +60,7 @@ function onError(error) {
     throw error;
   }
 
-  const bind = typeof port === 'string'
+  var bind = typeof port === 'string'
     ? 'Pipe ' + port
     : 'Port ' + port;
 
@@ -84,8 +84,10 @@ function onError(error) {
  */
 
 function onListening() {
-  const addr = server.address();
-  const bind = typeof addr === 'string'
+  console.log("listening")
+  console.log(server.address())
+  var addr = server.address();
+  var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   console.log('Listening on ' + bind);
