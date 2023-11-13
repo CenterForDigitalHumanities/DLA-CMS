@@ -14,7 +14,7 @@ jobs:
         matrix:
             node-version: [21]
       steps:
-        - uses: actions/checkout@v3
+        - uses: actions/checkout@master
         - run: |
             if [[ ! -e /srv/node/logs/dunbarcms.txt ]]; then
                 mkdir -p /srv/node/logs
